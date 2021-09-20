@@ -17,14 +17,24 @@ const BasicPage = () => {
   );
 };
 
+const dimensions = { height: 300, width: 400 };
+
 const defaultImage =
   'https://images.unsplash.com/photo-1593642634402-b0eb5e2eebc9?ixid=MnwxMjA3fDF8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&ixlib=rb-1.2.1&auto=format&fit=crop&w=400&q=80';
 
 const Template1 = (data: CustomImageData) => {
   const { name, question } = data.variables;
   return (
-    <div id="data_to_screenshot" style={{ width: 'fit-content' }}>
-      <img width="400" height="300" src={data.imageUrl || defaultImage} />
+    <div
+      id="data_to_screenshot"
+      style={{ width: 'fit-content', ...dimensions }}
+    >
+      <img
+        width={dimensions.width}
+        height={dimensions.height}
+        src={data.imageUrl || defaultImage}
+        style={{ objectFit: 'cover' }}
+      />
       <div style={{ position: 'absolute', top: 0, left: 20 }}>
         <h1 style={{ marginBottom: 10 }}>Hello {name} !</h1>
         <div
