@@ -23,7 +23,7 @@ const defaultImage =
 const Template1 = (data: CustomImageData) => {
   const { name, question } = data.variables;
   return (
-    <div id="data_to_screenshot">
+    <div id="data_to_screenshot" style={{ width: 'fit-content' }}>
       <img width="400" height="300" src={data.imageUrl || defaultImage} />
       <div style={{ position: 'absolute', top: 0, left: 20 }}>
         <h1 style={{ marginBottom: 10 }}>Hello {name} !</h1>
