@@ -35,7 +35,7 @@ const Template1 = (data: CustomImageData) => {
         src={data.imageUrl || defaultImage}
         style={{ objectFit: 'cover' }}
       />
-      <div style={{ position: 'absolute', top: 0, left: 20 }}>
+      <div style={{ position: 'absolute', top: 0, left: 20, maxWidth: 350 }}>
         <h1 style={{ marginBottom: 10 }}>Hello {name} !</h1>
         <div
           style={{
