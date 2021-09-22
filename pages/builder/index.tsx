@@ -118,7 +118,6 @@ const BuilderPage = () => {
               }}
               onSubmit={({ value, ...style }) => {
                 updateElement(itemToUpdate, { value, style });
-                setItemToUpdate(null);
               }}
             />
           </div>
