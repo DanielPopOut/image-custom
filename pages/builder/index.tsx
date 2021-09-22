@@ -126,34 +126,39 @@ const BuilderPage = () => {
       </div>
 
       <div style={{ padding: 20 }}>
-        <div
-          ref={onRefChange}
-          style={{
-            backgroundColor: 'white',
-            position: 'relative',
-            ...state.page,
-          }}
-        >
-          {Object.values(state.elements).map((item) => {
-            return (
-              <TextItem
-                isSelected={itemToUpdate === item.id}
-                key={item.id}
-                {...item}
-                draggable
-                onDragStart={(data) => {
-                  console.log('here drag start', data);
-                  const clientRect = data.currentTarget.getBoundingClientRect();
-                  setDragStartOffSet({
-                    x: data.clientX - clientRect.left,
-                    y: data.clientY - clientRect.y,
-                  });
-                }}
-                onDragEnd={(data) => updateItemPositionOnDragEnd(item.id, data)}
-                onClick={(data) => setItemToUpdate(item.id)}
-              />
-            );
-          })}
+        <div style={{ border: '1px solid black' }}>
+          <div
+            ref={onRefChange}
+            style={{
+              backgroundColor: 'white',
+              position: 'relative',
+              ...state.page,
+            }}
+          >
+            {Object.values(state.elements).map((item) => {
+              return (
+                <TextItem
+                  isSelected={itemToUpdate === item.id}
+                  key={item.id}
+                  {...item}
+                  draggable
+                  onDragStart={(data) => {
+                    console.log('here drag start', data);
+                    const clientRect =
+                      data.currentTarget.getBoundingClientRect();
+                    setDragStartOffSet({
+                      x: data.clientX - clientRect.left,
+                      y: data.clientY - clientRect.y,
+                    });
+                  }}
+                  onDragEnd={(data) =>
+                    updateItemPositionOnDragEnd(item.id, data)
+                  }
+                  onClick={(data) => setItemToUpdate(item.id)}
+                />
+              );
+            })}
+          </div>
         </div>
       </div>
     </div>
@@ -173,7 +178,13 @@ const ParametersForm = ({
       onSubmit={(data) => {
         onSubmit(data);
       }}
-      style={{ display: 'flex', flexDirection: 'column', maxWidth: 200 }}
+      style={{
+        display: 'flex',
+        flexDirection: 'column',
+        maxWidth: 250,
+        padding: 20,
+        border: '1px solid grey',
+      }}
     >
       <DimensionInput name='width' label='width' />
       {/* <Input name='width' label='width'></Input> */}

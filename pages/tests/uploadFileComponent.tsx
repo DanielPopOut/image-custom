@@ -19,13 +19,18 @@ export const UploadFileComponent = ({
         .then((res) => res.json())
         .then((result: { imageUrl: string }) => {
           onChange(result.imageUrl);
+          setImageUrl(result.imageUrl);
           return result;
         });
     },
     null,
     { loading: false, value: { imageUrl: url } },
   );
-  const imageUrl = uploadFileState.value?.imageUrl;
+  const [imageUrl, setImageUrl] = useState(url);
+  const onDeleteImage = () => {
+    setImageUrl(null);
+    onChange(null);
+  };
   return (
     <div>
       {!imageUrl ? (
@@ -49,15 +54,34 @@ export const UploadFileComponent = ({
           </button>
         </div>
       ) : (
-        <ImagePreview url={uploadFileState.value?.imageUrl} />
+        <ImagePreview
+          url={uploadFileState.value?.imageUrl}
+          onDelete={() => onDeleteImage()}
+        />
       )}
     </div>
   );
 };
 
-const ImagePreview = ({ url }: { url: string }) => {
+const ImagePreview = ({
+  url,
+  onDelete,
+}: {
+  url: string;
+  onDelete: () => void;
+}) => {
   if (!url) {
     return null;
   }
-  return <Image src={url} width={200} height={200} objectFit='cover' />;
+  return (
+    <div style={{ position: 'relative' }}>
+      <Image src={url} width={200} height={200} objectFit='cover' />
+      <button
+        onClick={() => onDelete()}
+        style={{ position: 'absolute', top: 10, left: 10 }}
+      >
+        Supprimer
+      </button>
+    </div>
+  );
 };
