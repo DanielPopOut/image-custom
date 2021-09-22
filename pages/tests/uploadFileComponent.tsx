@@ -2,15 +2,28 @@ import Image from 'next/image';
 import { useState } from 'react';
 import { useAsyncFn } from 'react-use';
 
-const UploadFile = () => {
+export const UploadFileComponent = ({
+  url,
+  onChange,
+}: {
+  url: string;
+  onChange: (newValue: string) => void;
+}) => {
   const [file, setFile] = useState<File>(null);
   const [uploadFileState, uploadFileFn] = useAsyncFn(
     (formData: FormData): Promise<{ imageUrl: string }> => {
       return fetch('/api/images/upload', {
         method: 'POST',
         body: formData,
-      }).then((res) => res.json());
+      })
+        .then((res) => res.json())
+        .then((result: { imageUrl: string }) => {
+          onChange(result.imageUrl);
+          return result;
+        });
     },
+    null,
+    { loading: false, value: { imageUrl: url } },
   );
   const imageUrl = uploadFileState.value?.imageUrl;
   return (
@@ -48,5 +61,3 @@ const ImagePreview = ({ url }: { url: string }) => {
   }
   return <Image src={url} width={200} height={200} objectFit='cover' />;
 };
-
-export default UploadFile;

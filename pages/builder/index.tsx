@@ -5,6 +5,7 @@ import {
   useCallback,
   useState,
 } from 'react';
+import { BackgroundInput } from '../../src/modules/form/BackgroundInput';
 import { DimensionInput } from '../../src/modules/form/DimensionInput';
 import Form from '../../src/modules/form/Form';
 import { Input } from '../../src/modules/form/Input';
@@ -14,7 +15,7 @@ const initialPageWidth = 400;
 
 const BuilderPage = () => {
   const [state, setState] = useState({
-    page: { width: '400px', height: '300px' },
+    page: { width: '400px', height: '300px' } as CSSProperties,
     elements: {
       text1: {
         id: 'text1',
@@ -128,10 +129,9 @@ const BuilderPage = () => {
         <div
           ref={onRefChange}
           style={{
-            width: state.page.width,
-            height: state.page.height,
             backgroundColor: 'white',
             position: 'relative',
+            ...state.page,
           }}
         >
           {Object.values(state.elements).map((item) => {
@@ -178,6 +178,25 @@ const ParametersForm = ({
       <DimensionInput name='width' label='width' />
       {/* <Input name='width' label='width'></Input> */}
       <DimensionInput name='height' label='height' />
+
+      <BackgroundInput name='background' />
+
+      <Input label='Background color' name='backgroundColor' type='color' />
+      <Select
+        label='Background size'
+        name='backgroundSize'
+        options={['auto', 'contain', 'cover']}
+      />
+      <Select
+        label='Background repeat'
+        name='backgroundRepeat'
+        options={['no-repeat', 'repeat-x', 'repeat-y', 'round']}
+      />
+      <Select
+        label='Background size'
+        name='backgroundPosition'
+        options={['center', 'left', 'right', 'top', 'bottom', 'unset']}
+      />
       {/* <Input name='height' label='height'></Input> */}
     </Form>
   );
@@ -243,6 +262,13 @@ const TextInputFormFields = ({
         label='Vertical alignment'
         options={['center', 'start', 'end']}
       />
+      <Input label='Color' name='color' type='color' />
+      <Select
+        label='Font weight'
+        name='fontWeight'
+        options={['normal', 'bolder', 'bold', 'lighter']}
+      />
+      <DimensionInput label='Font size' name='fontSize' />
       {/* <Input name='height' label='height'></Input> */}
     </Form>
   );
