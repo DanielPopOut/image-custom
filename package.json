@@ -9,9 +9,12 @@
   },
   "dependencies": {
     "cloudinary": "^1.27.0",
+    "multer": "^1.4.3",
     "next": "^10.2.3",
+    "next-connect": "^0.10.2",
     "react": "17.0.1",
-    "react-dom": "17.0.1"
+    "react-dom": "17.0.1",
+    "react-use": "^17.3.1"
   },
   "devDependencies": {
     "@types/react": "^17.0.22",
