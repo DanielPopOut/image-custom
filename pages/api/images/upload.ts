@@ -1,8 +1,8 @@
 // Next.js API route support: https://nextjs.org/docs/api-routes/introduction
-import nextConnect from 'next-connect';
 import multer from 'multer';
-import { cloudinaryService } from '../../../server/modules/cloudinary/cloudinaryService';
 import { NextApiRequest, NextApiResponse } from 'next';
+import nextConnect from 'next-connect';
+import { cloudinaryService } from '../../../server/modules/cloudinary/cloudinaryService';
 
 type NextApiRequestWithFormData = NextApiRequest & {
   file: {
@@ -21,12 +21,10 @@ apiRoute.use(upload.single('file'));
 
 apiRoute.post(async (req: NextApiRequestWithFormData, res: NextApiResponse) => {
   try {
-    console.log('hello jonhy');
-    const result = await cloudinaryService.unsigned_upload(req.file.path, {
+    const result = await cloudinaryService.upload(req.file.path, {
       resource_type: 'image',
-      public_id: `/user1/nininini/${new Date().toISOString()}`,
+      public_id: `test/`,
     });
-    console.log('result', { result });
     res.json({ result });
   } catch (e) {
     console.error(e);
