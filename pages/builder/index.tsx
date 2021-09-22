@@ -254,7 +254,7 @@ const TextInputFormFields = ({
   return (
     <Form
       defaultValues={defaultValues}
-      onSubmit={(data) => {
+      onSubmit={({ top, left, ...data }) => {
         onSubmit(data);
       }}
       style={{ display: 'flex', flexDirection: 'column', maxWidth: 200 }}
