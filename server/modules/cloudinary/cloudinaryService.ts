@@ -56,6 +56,7 @@ class CloudinaryService {
     image,
     options: UploadApiOptions = {}
   ): Promise<UploadApiResponse> {
+    console.log('honniunio');
     console.log(cloudinary.config().api_key, { image, options });
     const result = await cloudinary.uploader.unsigned_upload(
       image,

@@ -22,9 +22,8 @@ apiRoute.use(upload.single('file'));
 apiRoute.post(async (req: NextApiRequestWithFormData, res: NextApiResponse) => {
   try {
     console.log('hello jonhy');
-    const result = await cloudinaryService.upload(req.file.path, {
+    const result = await cloudinaryService.unsigned_upload(req.file.path, {
       resource_type: 'image',
-      upload_preset: 'ml_default',
       public_id: `/user1/nininini/${new Date().toISOString()}`,
     });
     console.log('result', { result });
