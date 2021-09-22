@@ -5,7 +5,7 @@ import {
   FieldValues,
   UseFormRegister,
 } from 'react-hook-form';
-import { UploadFileComponent } from '../../../pages/tests/uploadFileComponent';
+import { UploadFileComponent } from '../components/uploadFileComponent';
 import { Label } from './Label';
 
 export const BackgroundInput = ({
