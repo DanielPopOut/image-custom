@@ -5,7 +5,11 @@ import {
   useCallback,
   useState,
 } from 'react';
-import Form, { DimensionInput, Select } from '../../src/modules/form/Form';
+import Form, {
+  DimensionInput,
+  Input,
+  Select,
+} from '../../src/modules/form/Form';
 
 const initialPageWidth = 400;
 
@@ -50,9 +54,9 @@ const BuilderPage = () => {
     setState(newState);
   };
 
-  const updateElementStyle = (
+  const updateElement = (
     itemId: string,
-    styleUpdate: Partial<CSSProperties>,
+    update: Partial<{ value: string; style: CSSProperties }>,
   ) => {
     const elementToUpdate = state.elements[itemId];
     setState({
@@ -61,9 +65,10 @@ const BuilderPage = () => {
         ...state.elements,
         [itemId]: {
           ...elementToUpdate,
+          value: update.value || elementToUpdate.value,
           style: {
             ...elementToUpdate.style,
-            ...styleUpdate,
+            ...update.style,
           },
         },
       },
@@ -76,9 +81,11 @@ const BuilderPage = () => {
   ) => {
     const mainPageRect = pageElementProps.getBoundingClientRect();
     console.log('here end', mainPageRect);
-    updateElementStyle(itemId, {
-      top: dragEvent.clientY - mainPageRect.top - dragStartOffSet.y,
-      left: dragEvent.clientX - mainPageRect.left - dragStartOffSet.x,
+    updateElement(itemId, {
+      style: {
+        top: dragEvent.clientY - mainPageRect.top - dragStartOffSet.y,
+        left: dragEvent.clientX - mainPageRect.left - dragStartOffSet.x,
+      },
     });
   };
 
@@ -105,9 +112,12 @@ const BuilderPage = () => {
           >
             <div>Update element</div>
             <TextInputFormFields
-              defaultValues={state.elements[itemToUpdate].style}
-              onSubmit={(data) => {
-                updateElementStyle(itemToUpdate, data);
+              defaultValues={{
+                ...state.elements[itemToUpdate].style,
+                value: state.elements[itemToUpdate].value,
+              }}
+              onSubmit={({ value, ...style }) => {
+                updateElement(itemToUpdate, { value, style });
                 setItemToUpdate(null);
               }}
             />
@@ -220,6 +230,7 @@ const TextInputFormFields = ({
       }}
       style={{ display: 'flex', flexDirection: 'column', maxWidth: 200 }}
     >
+      <Input name='value' label='value' />
       <DimensionInput name='width' label='width' />
       {/* <Input name='width' label='width'></Input> */}
       <DimensionInput name='height' label='height' />
