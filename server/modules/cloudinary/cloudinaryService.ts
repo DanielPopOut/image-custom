@@ -11,7 +11,7 @@ cloudinary.config({
   secure: true,
 });
 
-export class CloudinaryService {
+class CloudinaryService {
   testUpload = async (url?: string) => {
     try {
       console.log('jony');
@@ -46,6 +46,7 @@ export class CloudinaryService {
     image,
     options: UploadApiOptions = {}
   ): Promise<UploadApiResponse> {
+    console.log('lion');
     console.log(cloudinary.config().api_key, { image, options });
     const result = await cloudinary.uploader.upload(image, options);
     return result;
@@ -55,16 +56,14 @@ export class CloudinaryService {
     image,
     options: UploadApiOptions = {}
   ): Promise<UploadApiResponse> {
-    return new Promise((resolve, reject) => {
-      cloudinary.uploader.unsigned_upload(
-        image,
-        'c2gqlglh',
-        options,
-        (err, result) => {
-          if (err) return reject(err);
-          resolve(result);
-        }
-      );
-    });
+    console.log(cloudinary.config().api_key, { image, options });
+    const result = await cloudinary.uploader.unsigned_upload(
+      image,
+      'ml_default',
+      options
+    );
+    return result;
   }
 }
+
+export const cloudinaryService = new CloudinaryService();
