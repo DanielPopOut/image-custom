@@ -5,11 +5,10 @@ import {
   useCallback,
   useState,
 } from 'react';
-import Form, {
-  DimensionInput,
-  Input,
-  Select,
-} from '../../src/modules/form/Form';
+import { DimensionInput } from '../../src/modules/form/DimensionInput';
+import Form from '../../src/modules/form/Form';
+import { Input } from '../../src/modules/form/Input';
+import { Select } from '../../src/modules/form/Select';
 
 const initialPageWidth = 400;
 
