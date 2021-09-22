@@ -23,9 +23,9 @@ apiRoute.post(async (req: NextApiRequestWithFormData, res: NextApiResponse) => {
   try {
     const result = await cloudinaryService.upload(req.file.path, {
       resource_type: 'image',
-      public_id: `test/`,
+      folder: 'test',
     });
-    res.json({ result });
+    res.json({ imageUrl: result.secure_url });
   } catch (e) {
     console.error(e);
     res.status(400).json({ e });
