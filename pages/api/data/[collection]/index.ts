@@ -11,7 +11,7 @@ apiRoute.post(async (req: NextApiRequest, res: NextApiResponse) => {
   const insertedValue = await new DataBaseCrudService(collection).insertOne(
     data,
   );
-  res.json({ ...data, _id: insertedValue.insertedId });
+  res.json({ success: true, data: { ...data, _id: insertedValue.insertedId } });
 });
 
 export default apiRoute;

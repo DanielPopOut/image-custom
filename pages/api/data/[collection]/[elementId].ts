@@ -7,11 +7,15 @@ const apiRoute = nextConnect();
 apiRoute.get(async (req: NextApiRequest, res: NextApiResponse) => {
   const collection = req.query.collection as string;
   const elementId = req.query.elementId as string;
-
-  const elementFound = await new DataBaseCrudService(collection).getOneById(
-    elementId,
-  );
-  res.json(elementFound);
+  try {
+    const elementFound = await new DataBaseCrudService(collection).getOneById(
+      elementId,
+    );
+    res.json({ success: true, data: elementFound });
+  } catch (e) {
+    console.error(e);
+    res.status(400).json({ success: true, error: e.message });
+  }
 });
 
 apiRoute.put(async (req: NextApiRequest, res: NextApiResponse) => {
@@ -23,7 +27,7 @@ apiRoute.put(async (req: NextApiRequest, res: NextApiResponse) => {
     data,
     !!(req.query.upsert as string),
   );
-  res.json(elementFound);
+  res.json({ success: true, data: elementFound });
 });
 
 export default apiRoute;
