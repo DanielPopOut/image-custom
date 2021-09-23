@@ -6,7 +6,13 @@ import { Input } from '../../../form/Input';
 import { Select } from '../../../form/Select';
 import { Template, TextItemProps } from '../../models/template.model';
 
-export const BuilderPage = ({ initialData }: { initialData: Template }) => {
+export const BuilderPage = ({
+  initialData,
+  onChange,
+}: {
+  initialData: Template;
+  onChange?: (newState: Template) => void;
+}) => {
   const [state, setState] = useState<Template>(initialData);
   const [pageElementProps, setNodeElementProps] = useState<HTMLDivElement>();
   const [dragStartOffSet, setDragStartOffSet] =
@@ -24,10 +30,15 @@ export const BuilderPage = ({ initialData }: { initialData: Template }) => {
     [state],
   ); // adjust deps
 
+  const updateState = (newState: Template) => {
+    setState(newState);
+    onChange?.(newState);
+  };
+
   const updatePageData = (newPageProps) => {
     const newState = { ...state, page: { ...state.page, ...newPageProps } };
     console.log({ newState });
-    setState(newState);
+    updateState(newState);
   };
 
   const updateElement = (
@@ -35,7 +46,7 @@ export const BuilderPage = ({ initialData }: { initialData: Template }) => {
     update: Partial<{ value: string; style: CSSProperties }>,
   ) => {
     const elementToUpdate = state.elements[itemId];
-    setState({
+    updateState({
       ...state,
       elements: {
         ...state.elements,

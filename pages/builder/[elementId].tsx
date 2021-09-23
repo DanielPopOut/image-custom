@@ -4,6 +4,7 @@ import { ROUTES } from '../../src/modules/shared/routes/ROUTES';
 import {
   useCreateTemplate,
   useGetTemplate,
+  useUpdateTemplate,
 } from '../../src/modules/templates/hooks/hooks';
 import { Template } from '../../src/modules/templates/models/template.model';
 import { BuilderPage } from '../../src/modules/templates/pages/builderPage';
@@ -13,6 +14,7 @@ const ElementComponent = () => {
   const router = useRouter();
   const elementId = router.query.elementId as string;
   const [templateData, getTemplateData] = useGetTemplate();
+  const [templateDataUpdated, updateTemplateData] = useUpdateTemplate();
 
   useEffect(() => {
     if (elementId) {
@@ -32,7 +34,14 @@ const ElementComponent = () => {
     );
   }
 
-  return <BuilderPage initialData={templateData.value as Template} />;
+  return (
+    <BuilderPage
+      initialData={templateData.value as Template}
+      onChange={(newTemplateData) =>
+        updateTemplateData(elementId, newTemplateData)
+      }
+    />
+  );
 };
 
 const CreateNewTemplateButton = () => {
