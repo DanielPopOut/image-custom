@@ -21,7 +21,7 @@ export class DataBaseCrudService<T> {
 
   updateOne = async (
     _id,
-    data: Partial<T> & { _id: string },
+    { _id: _removed, ...data }: Partial<T> & { _id: string },
     upsert?: boolean,
   ) => {
     return (await this.getCollection()).updateOne(
