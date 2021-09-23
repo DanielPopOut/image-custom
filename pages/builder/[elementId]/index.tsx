@@ -1,14 +1,12 @@
 import { useRouter } from 'next/dist/client/router';
 import { useEffect } from 'react';
-import { ROUTES } from '../../../src/modules/shared/routes/ROUTES';
 import {
-  useCreateTemplate,
   useGetTemplate,
   useUpdateTemplate,
 } from '../../../src/modules/templates/hooks/hooks';
 import { Template } from '../../../src/modules/templates/models/template.model';
 import { BuilderPage } from '../../../src/modules/templates/pages/builderPage';
-import { defaultInitialData } from '../../../src/modules/templates/pages/builderPage/defaultInitialData';
+import { CreateNewTemplateButton } from '../../../src/modules/templates/pages/builderPage/components/CreateNewTemplateButton';
 
 const ElementComponent = () => {
   const router = useRouter();
@@ -41,25 +39,6 @@ const ElementComponent = () => {
         updateTemplateData(elementId, newTemplateData)
       }
     />
-  );
-};
-
-const CreateNewTemplateButton = () => {
-  const [templateDataResult, createTemplateData] = useCreateTemplate();
-  const router = useRouter();
-  return (
-    <button
-      disabled={templateDataResult.loading}
-      onClick={() => {
-        createTemplateData(defaultInitialData).then((result) => {
-          if (result._id) {
-            router.push(ROUTES.TEMPLATE_ID(result._id));
-          }
-        });
-      }}
-    >
-      {templateDataResult.loading ? 'Creating' : 'Create new template'}
-    </button>
   );
 };
 
