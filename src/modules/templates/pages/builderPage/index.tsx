@@ -88,27 +88,6 @@ export const BuilderPage = ({
           onSubmit={(data) => updatePageData(data)}
         />
         <div style={{ padding: 20 }}></div>
-        {itemToUpdate && (
-          <div
-            style={{
-              backgroundColor: 'white',
-              color: 'black',
-              width: 'fit-content',
-              padding: 10,
-            }}
-          >
-            <div>Update element</div>
-            <TextInputFormFields
-              defaultValues={{
-                ...state.elements[itemToUpdate].style,
-                value: state.elements[itemToUpdate].value,
-              }}
-              onSubmit={({ value, ...style }) => {
-                updateElement(itemToUpdate, { value, style });
-              }}
-            />
-          </div>
-        )}
       </div>
 
       <div style={{ padding: 20 }}>
@@ -119,6 +98,9 @@ export const BuilderPage = ({
               backgroundColor: 'white',
               position: 'relative',
               ...state.page,
+            }}
+            onClick={() => {
+              setItemToUpdate(null);
             }}
           >
             {Object.values(state.elements).map((item) => {
@@ -140,15 +122,49 @@ export const BuilderPage = ({
                   onDragEnd={(data) =>
                     updateItemPositionOnDragEnd(item.id, data)
                   }
-                  onClick={(data) => setItemToUpdate(item.id)}
+                  onClick={(e) => {
+                    setItemToUpdate(item.id);
+                    e.stopPropagation();
+                  }}
                 />
               );
             })}
           </div>
         </div>
       </div>
+      {itemToUpdate && (
+        <div
+          style={{
+            ...containerStyle,
+            height: 'fit-content',
+            backgroundColor: 'white',
+            color: 'black',
+            width: 'fit-content',
+            padding: 10,
+          }}
+        >
+          <h4 style={{ marginTop: 0 }}>Update element</h4>
+          <TextInputFormFields
+            defaultValues={{
+              ...state.elements[itemToUpdate].style,
+              value: state.elements[itemToUpdate].value,
+            }}
+            onSubmit={({ value, ...style }) => {
+              updateElement(itemToUpdate, { value, style });
+            }}
+          />
+        </div>
+      )}
     </div>
   );
+};
+
+const containerStyle: CSSProperties = {
+  display: 'flex',
+  flexDirection: 'column',
+  maxWidth: 250,
+  padding: 20,
+  border: '1px solid grey',
 };
 const ParametersForm = ({
   defaultValues,
@@ -163,14 +179,9 @@ const ParametersForm = ({
       onSubmit={(data) => {
         onSubmit(data);
       }}
-      style={{
-        display: 'flex',
-        flexDirection: 'column',
-        maxWidth: 250,
-        padding: 20,
-        border: '1px solid grey',
-      }}
+      style={containerStyle}
     >
+      <h4 style={{ marginTop: 0 }}>Page parameters</h4>
       <DimensionInput name='width' label='width' />
       {/* <Input name='width' label='width'></Input> */}
       <DimensionInput name='height' label='height' />
