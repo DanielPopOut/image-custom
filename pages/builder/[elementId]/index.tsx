@@ -1,14 +1,14 @@
 import { useRouter } from 'next/dist/client/router';
 import { useEffect } from 'react';
-import { ROUTES } from '../../src/modules/shared/routes/ROUTES';
+import { ROUTES } from '../../../src/modules/shared/routes/ROUTES';
 import {
   useCreateTemplate,
   useGetTemplate,
   useUpdateTemplate,
-} from '../../src/modules/templates/hooks/hooks';
-import { Template } from '../../src/modules/templates/models/template.model';
-import { BuilderPage } from '../../src/modules/templates/pages/builderPage';
-import { defaultInitialData } from '../../src/modules/templates/pages/builderPage/defaultInitialData';
+} from '../../../src/modules/templates/hooks/hooks';
+import { Template } from '../../../src/modules/templates/models/template.model';
+import { BuilderPage } from '../../../src/modules/templates/pages/builderPage';
+import { defaultInitialData } from '../../../src/modules/templates/pages/builderPage/defaultInitialData';
 
 const ElementComponent = () => {
   const router = useRouter();
