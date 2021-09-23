@@ -1,6 +1,7 @@
 import { NextApiRequest, NextApiResponse } from 'next';
 import nextConnect from 'next-connect';
 import { DataBaseCrudService } from '../../../../server/modules/database/databaseCRUDService';
+import { ApiResponseSuccess } from '../../../../server/shared/ApiResponseFormat';
 
 const apiRoute = nextConnect();
 
@@ -11,7 +12,7 @@ apiRoute.post(async (req: NextApiRequest, res: NextApiResponse) => {
   const insertedValue = await new DataBaseCrudService(collection).insertOne(
     data,
   );
-  res.json({ success: true, data: { ...data, _id: insertedValue.insertedId } });
+  res.json(ApiResponseSuccess({ ...data, _id: insertedValue.insertedId }));
 });
 
 export default apiRoute;
