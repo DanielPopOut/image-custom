@@ -4,6 +4,8 @@ import { DimensionInput } from '../../../form/DimensionInput';
 import Form from '../../../form/Form';
 import { Input } from '../../../form/Input';
 import { Select } from '../../../form/Select';
+import { ROUTES } from '../../../shared/routes/ROUTES';
+import { stringHelper } from '../../../shared/services/stringHelper';
 import { Template, TextItemProps } from '../../models/template.model';
 
 export const BuilderPage = ({
@@ -37,7 +39,6 @@ export const BuilderPage = ({
 
   const updatePageData = (newPageProps) => {
     const newState = { ...state, page: { ...state.page, ...newPageProps } };
-    console.log({ newState });
     updateState(newState);
   };
 
@@ -67,7 +68,6 @@ export const BuilderPage = ({
     dragEvent: DragEvent<HTMLDivElement>,
   ) => {
     const mainPageRect = pageElementProps.getBoundingClientRect();
-    console.log('here end', mainPageRect);
     updateElement(itemId, {
       style: {
         top: dragEvent.clientY - mainPageRect.top - dragStartOffSet.y,
@@ -75,6 +75,10 @@ export const BuilderPage = ({
       },
     });
   };
+
+  const allVariables = stringHelper.getValueToInterpolateInStringArray(
+    Object.values(state.elements).map((element) => element.value.toLowerCase()),
+  );
 
   return (
     <div style={{ display: 'flex' }}>
@@ -91,7 +95,7 @@ export const BuilderPage = ({
       </div>
 
       <div style={{ padding: 20 }}>
-        <div style={{ border: '1px solid black' }}>
+        <div style={{ border: '1px solid black', width: 'fit-content' }}>
           <div
             ref={onRefChange}
             style={{
@@ -129,6 +133,15 @@ export const BuilderPage = ({
                 />
               );
             })}
+          </div>
+        </div>
+
+        <div>
+          Test page :
+          <div>
+            {`${ROUTES.TEST_TEMPLATE_ID(state._id)}?${[...allVariables]
+              .map((variable) => `${variable}=VALUE_${variable.toUpperCase()}`)
+              .join('&')}`}
           </div>
         </div>
       </div>
