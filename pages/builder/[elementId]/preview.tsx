@@ -3,8 +3,8 @@ import { useEffect } from 'react';
 import { stringHelper } from '../../../src/modules/shared/services/stringHelper';
 import { useGetTemplate } from '../../../src/modules/templates/hooks/hooks';
 import { Template } from '../../../src/modules/templates/models/template.model';
-import { BuilderPage } from '../../../src/modules/templates/pages/builderPage';
 import { CreateNewTemplateButton } from '../../../src/modules/templates/pages/builderPage/components/CreateNewTemplateButton';
+import { ResultDesign } from '../../../src/modules/templates/pages/builderPage/ResultDesign';
 
 const ElementComponent = () => {
   const router = useRouter();
@@ -43,7 +43,18 @@ const ElementComponent = () => {
     console.log({ value, queryElement, result: value.value });
   }
 
-  return <BuilderPage initialData={templateDataToUse as Template} />;
+  return (
+    <ResultDesign
+      {...{
+        onRefChange: () => null,
+        state: templateDataToUse as Template,
+        setItemToUpdate: () => null,
+        itemToUpdate: '',
+        setDragStartOffSet: () => null,
+        updateItemPositionOnDragEnd: () => null,
+      }}
+    />
+  );
 };
 
 export default ElementComponent;
