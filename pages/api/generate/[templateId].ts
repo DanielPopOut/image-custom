@@ -17,7 +17,7 @@ export default async (req: NextApiRequest, res: NextApiResponse) => {
       //   'https://google.com' ||
       `https://${host}${ROUTES.PREVIEW_TEMPLATE_ID(
         templateId,
-      )}?${urlSearchParams.toString()}`;
+      )}?${encodeURIComponent(urlSearchParams.toString())}`;
     const screenshotApiUrl = `${SCREENSHOT_REMOTE_URL}/api/img?selector=${DOWNLOAD_SELECTOR}&url=${requestToDownloadResume}`;
 
     console.log({ requestToDownloadResume, screenshotApiUrl });
