@@ -1,5 +1,5 @@
 import Image from 'next/image';
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import { useAsyncFn } from 'react-use';
 
 export const UploadFileComponent = ({
@@ -26,7 +26,11 @@ export const UploadFileComponent = ({
     null,
     { loading: false, value: { imageUrl: url } },
   );
+
   const [imageUrl, setImageUrl] = useState(url);
+  useEffect(() => {
+    setImageUrl(url);
+  }, [url]);
   const onDeleteImage = () => {
     setImageUrl(null);
     onChange(null);
@@ -54,10 +58,7 @@ export const UploadFileComponent = ({
           </button>
         </div>
       ) : (
-        <ImagePreview
-          url={uploadFileState.value?.imageUrl}
-          onDelete={() => onDeleteImage()}
-        />
+        <ImagePreview url={imageUrl} onDelete={() => onDeleteImage()} />
       )}
     </div>
   );
