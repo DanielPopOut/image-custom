@@ -7,6 +7,7 @@ import { Select } from '../../../form/Select';
 import { API_ROUTES, ROUTES } from '../../../shared/routes/ROUTES';
 import { stringHelper } from '../../../shared/services/stringHelper';
 import { Template, TextItemProps } from '../../models/template.model';
+import { ResultDesign } from './ResultDesign';
 
 export const BuilderPage = ({
   initialData,
@@ -95,48 +96,14 @@ export const BuilderPage = ({
       </div>
 
       <div style={{ padding: 20 }}>
-        <div style={{ border: '1px solid black', width: 'fit-content' }}>
-          <div
-            ref={onRefChange}
-            className='to_download'
-            style={{
-              backgroundColor: 'white',
-              position: 'relative',
-              ...state.page,
-            }}
-            onClick={() => {
-              setItemToUpdate(null);
-            }}
-          >
-            {Object.values(state.elements).map((item) => {
-              return (
-                <TextItem
-                  isSelected={itemToUpdate === item.id}
-                  key={item.id}
-                  {...item}
-                  draggable
-                  onDragStart={(data) => {
-                    console.log('here drag start', data);
-                    const clientRect =
-                      data.currentTarget.getBoundingClientRect();
-                    setDragStartOffSet({
-                      x: data.clientX - clientRect.left,
-                      y: data.clientY - clientRect.y,
-                    });
-                  }}
-                  onDragEnd={(data) =>
-                    updateItemPositionOnDragEnd(item.id, data)
-                  }
-                  onClick={(e) => {
-                    setItemToUpdate(item.id);
-                    e.stopPropagation();
-                  }}
-                />
-              );
-            })}
-          </div>
-        </div>
-
+        <ResultDesign
+          onRefChange={onRefChange}
+          state={state}
+          setItemToUpdate={setItemToUpdate}
+          itemToUpdate={itemToUpdate}
+          setDragStartOffSet={setDragStartOffSet}
+          updateItemPositionOnDragEnd={updateItemPositionOnDragEnd}
+        />
         <div>
           <div>
             <a
@@ -239,20 +206,6 @@ const ParametersForm = ({
       />
       {/* <Input name='height' label='height'></Input> */}
     </Form>
-  );
-};
-const TextItem = ({ value, style, isSelected, ...rest }: TextItemProps) => {
-  return (
-    <div
-      style={{
-        position: 'absolute',
-        border: isSelected ? '1px dashed red' : null,
-        ...style,
-      }}
-      {...rest}
-    >
-      {value}
-    </div>
   );
 };
 const TextInputFormFields = ({
