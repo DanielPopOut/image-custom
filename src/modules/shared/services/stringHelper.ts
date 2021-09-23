@@ -18,6 +18,17 @@ class StringHelper {
     }
     return allValues;
   };
+
+  replaceValueInString = (
+    stringItemInit: string,
+    elements: Record<string, string>,
+  ) => {
+    let stringItem = stringItemInit;
+    for (const [key, value] of Object.entries(elements)) {
+      stringItem = stringItem.replace(`{${key}}`, value);
+    }
+    return stringItem;
+  };
 }
 
 export const stringHelper = new StringHelper();
