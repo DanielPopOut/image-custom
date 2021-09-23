@@ -81,6 +81,10 @@ export const BuilderPage = ({
     Object.values(state.elements).map((element) => element.value.toLowerCase()),
   );
 
+  const queryString = [...allVariables]
+    .map((variable) => `${variable}=VALUE_${variable.toUpperCase()}`)
+    .join('&');
+
   return (
     <div style={{ display: 'flex' }}>
       {/* <style>
@@ -108,26 +112,18 @@ export const BuilderPage = ({
           <div>
             <a
               style={{ color: 'blue', textDecoration: 'underline' }}
-              href={`${
-                process.env.NEXT_PUBLIC_VERCEL_URL
-              }${ROUTES.PREVIEW_TEMPLATE_ID(state._id)}?${[...allVariables]
-                .map(
-                  (variable) => `${variable}=VALUE_${variable.toUpperCase()}`,
-                )
-                .join('&')}`}
+              href={`${ROUTES.PREVIEW_TEMPLATE_ID(state._id)}?${queryString}`}
             >
               Preview page
             </a>
             <br />
             <div>
               Api url :
-              {`${
-                process.env.NEXT_PUBLIC_VERCEL_URL
-              }${API_ROUTES.DOWNLOAD_TEMPLATE_ID(state._id)}?${[...allVariables]
-                .map(
-                  (variable) => `${variable}=VALUE_${variable.toUpperCase()}`,
-                )
-                .join('&')}`}
+              <div>
+                {`https://${
+                  process.env.NEXT_PUBLIC_VERCEL_URL
+                }${API_ROUTES.DOWNLOAD_TEMPLATE_ID(state._id)}?${queryString}`}
+              </div>
             </div>
           </div>
         </div>
