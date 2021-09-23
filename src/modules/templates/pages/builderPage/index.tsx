@@ -4,7 +4,7 @@ import { DimensionInput } from '../../../form/DimensionInput';
 import Form from '../../../form/Form';
 import { Input } from '../../../form/Input';
 import { Select } from '../../../form/Select';
-import { ROUTES } from '../../../shared/routes/ROUTES';
+import { API_ROUTES, ROUTES } from '../../../shared/routes/ROUTES';
 import { stringHelper } from '../../../shared/services/stringHelper';
 import { Template, TextItemProps } from '../../models/template.model';
 
@@ -98,6 +98,7 @@ export const BuilderPage = ({
         <div style={{ border: '1px solid black', width: 'fit-content' }}>
           <div
             ref={onRefChange}
+            className='to_download'
             style={{
               backgroundColor: 'white',
               position: 'relative',
@@ -137,11 +138,30 @@ export const BuilderPage = ({
         </div>
 
         <div>
-          Test page :
           <div>
-            {`${ROUTES.TEST_TEMPLATE_ID(state._id)}?${[...allVariables]
-              .map((variable) => `${variable}=VALUE_${variable.toUpperCase()}`)
-              .join('&')}`}
+            <a
+              style={{ color: 'blue', textDecoration: 'underline' }}
+              href={`${
+                process.env.NEXT_PUBLIC_VERCEL_URL
+              }${ROUTES.PREVIEW_TEMPLATE_ID(state._id)}?${[...allVariables]
+                .map(
+                  (variable) => `${variable}=VALUE_${variable.toUpperCase()}`,
+                )
+                .join('&')}`}
+            >
+              Preview page
+            </a>
+            <br />
+            <div>
+              Api url :
+              {`${
+                process.env.NEXT_PUBLIC_VERCEL_URL
+              }${API_ROUTES.DOWNLOAD_TEMPLATE_ID(state._id)}?${[...allVariables]
+                .map(
+                  (variable) => `${variable}=VALUE_${variable.toUpperCase()}`,
+                )
+                .join('&')}`}
+            </div>
           </div>
         </div>
       </div>

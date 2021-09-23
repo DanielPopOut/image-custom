@@ -1,4 +1,8 @@
 export const ROUTES = {
   TEMPLATE_ID: (templateId: string) => `/builder/${templateId}`,
-  TEST_TEMPLATE_ID: (templateId: string) => `/builder/${templateId}/test`,
+  PREVIEW_TEMPLATE_ID: (templateId: string) => `/builder/${templateId}/preview`,
+};
+
+export const API_ROUTES = {
+  DOWNLOAD_TEMPLATE_ID: (templateId: string) => `/api/generate/${templateId}`,
 };
