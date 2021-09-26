@@ -8,7 +8,7 @@ export function Select({
   name,
   label,
   ...rest
-}: {
+}: React.SelectHTMLAttributes<HTMLSelectElement> & {
   options: string[];
   name: string;
   label?: string;

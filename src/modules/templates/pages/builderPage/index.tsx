@@ -215,6 +215,7 @@ const TextInputFormFields = ({
       <Select
         name='justifyContent'
         label='Horizontal alignment'
+        defaultValue='start'
         options={['center', 'start', 'end']}
       />
       <Select
