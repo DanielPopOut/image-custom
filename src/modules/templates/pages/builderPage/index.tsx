@@ -89,7 +89,7 @@ export const BuilderPage = ({
   return (
     <PageContextProvider>
       <div
-        style={{ display: 'flex', outline: 'none' }}
+        style={{ display: 'flex', outline: 'none', overflow: 'hidden' }}
         onKeyDown={(e) => {
           const key = e.key;
           if (key === 'Backspace' || key === 'Delete') {
