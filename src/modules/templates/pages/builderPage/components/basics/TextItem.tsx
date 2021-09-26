@@ -1,4 +1,5 @@
-import React from 'react';
+import { Resizable } from 're-resizable';
+import React, { CSSProperties } from 'react';
 import ContentEditable from 'react-contenteditable';
 import { useDebounce } from 'react-use';
 import { TextItemProps } from '../../../../models/template.model';
@@ -10,7 +11,9 @@ const TextItem = ({
   isSelected,
   onChange,
   ...rest
-}: TextItemProps & { onChange: (value: string) => void }) => {
+}: TextItemProps & {
+  onChange: (data: Partial<{ value: string; style: CSSProperties }>) => void;
+}) => {
   const [debouncedValue, setDebouncedValue] = React.useState(value);
   const [, cancel] = useDebounce(
     () => {
@@ -18,32 +21,58 @@ const TextItem = ({
         return;
       }
       console.log('here update');
-      onChange(debouncedValue);
+      onChange({ value: debouncedValue });
     },
     1000,
     [debouncedValue],
   );
   return (
-    <div
-      style={{
-        position: 'absolute',
-        border: isSelected ? '1px dashed red' : null,
-        ...style,
+    <Resizable
+      style={{ position: 'absolute', top: style.top, left: style.left }}
+      size={{ width: style.width, height: style.height }}
+      enable={{
+        top: false,
+        right: true,
+        bottom: true,
+        left: false,
+        topRight: false,
+        bottomRight: true,
+        bottomLeft: false,
+        topLeft: false,
       }}
-      {...rest}
+      onResizeStart={(e) => {
+        e.preventDefault();
+        e.stopPropagation();
+      }}
+      onResizeStop={(e, direction, ref, d) => {
+        onChange({
+          style: {
+            width: style.width + d.width,
+            height: style.height + d.height,
+          },
+        });
+      }}
     >
-      <ContentEditable
-        style={{ outline: 'none' }}
-        onKeyDown={(e) => {
-          e.stopPropagation();
+      <div
+        style={{
+          border: isSelected ? '1px dashed red' : null,
+          ...style,
         }}
-        html={debouncedValue} // innerHTML of the editable div
-        onChange={(data) => {
-          setDebouncedValue(data.target.value);
-        }} // handle innerHTML change
-        tagName='article' // Use a custom HTML tag (uses a div by default)
-      />
-    </div>
+        {...rest}
+      >
+        <ContentEditable
+          style={{ outline: 'none' }}
+          onKeyDown={(e) => {
+            e.stopPropagation();
+          }}
+          html={debouncedValue} // innerHTML of the editable div
+          onChange={(data) => {
+            setDebouncedValue(data.target.value);
+          }} // handle innerHTML change
+          tagName='article' // Use a custom HTML tag (uses a div by default)
+        />
+      </div>
+    </Resizable>
   );
 };
 export const DraggableTextItem = WithLiveDraggable(TextItem);
