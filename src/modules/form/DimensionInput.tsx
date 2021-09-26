@@ -33,6 +33,7 @@ export const DimensionInput = ({
   );
 };
 type DimensionInputState = { value: number; dimension: string };
+const DEFAULT_DIMENSION = 'px';
 const DimensionInputBase = ({
   value,
   onChange,
@@ -45,14 +46,12 @@ const DimensionInputBase = ({
     dimension: 'px',
   });
   useEffect(() => {
-    console.log(value);
     const matchedValues = ('' + value).match(/([\d.]+)(.*)/);
     if (matchedValues) {
       const value = +matchedValues[1];
-      const dimension = matchedValues[2];
+      const dimension = matchedValues[2] || DEFAULT_DIMENSION;
       setState({ value, dimension });
     }
-    console.log(matchedValues);
   }, [value]);
 
   const onChangeFn = (newState: DimensionInputState) => {
@@ -74,7 +73,7 @@ const DimensionInputBase = ({
         value={state.dimension}
       >
         {['px', 'em', 'rem', '%'].map((value) => (
-          <option key={value} value={value}>
+          <option key={value} value={value} defaultValue={DEFAULT_DIMENSION}>
             {value}
           </option>
         ))}
