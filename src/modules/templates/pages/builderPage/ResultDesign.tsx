@@ -6,7 +6,8 @@ import React, {
   useEffect,
   useState,
 } from 'react';
-import { Template, TextItemProps } from '../../models/template.model';
+import { Template } from '../../models/template.model';
+import { DraggableTextItem } from './components/basics/TextItem';
 import { PageContext } from './PageContext';
 
 export const ResultDesign = ({
@@ -92,15 +93,7 @@ export const ResultDesign = ({
   );
 };
 
-const setDragImageToTransparentImage = (dragStartEvent: DragEvent) => {
-  {
-    var img = new Image();
-    img.src =
-      'data:image/gif;base64,R0lGODlhAQABAAAAACH5BAEKAAEALAAAAAABAAEAAAICTAEAOw==';
-    dragStartEvent.dataTransfer.setDragImage(img, 0, 0);
-  }
-};
-const WithLiveDraggable =
+export const WithLiveDraggable =
   <P extends React.HTMLAttributes<HTMLDivElement>>(Component: React.FC<P>) =>
   ({ style, onDragStart, onDragEnd, ...props }: P) => {
     // dragOffset is the difference between the top left position of the element and my mouse click
@@ -144,25 +137,11 @@ const WithLiveDraggable =
       />
     );
   };
-
-export const TextItem = ({
-  value,
-  style,
-  isSelected,
-  ...rest
-}: TextItemProps) => {
-  return (
-    <div
-      style={{
-        position: 'absolute',
-        border: isSelected ? '1px dashed red' : null,
-        ...style,
-      }}
-      {...rest}
-    >
-      {value}
-    </div>
-  );
+const setDragImageToTransparentImage = (dragStartEvent: DragEvent) => {
+  {
+    var img = new Image();
+    img.src =
+      'data:image/gif;base64,R0lGODlhAQABAAAAACH5BAEKAAEALAAAAAABAAEAAAICTAEAOw==';
+    dragStartEvent.dataTransfer.setDragImage(img, 0, 0);
+  }
 };
-
-const DraggableTextItem = WithLiveDraggable(TextItem);
