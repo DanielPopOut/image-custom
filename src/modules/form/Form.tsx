@@ -19,6 +19,7 @@ export default function Form({
   defaultValues,
   children,
   onSubmit,
+  onChange,
   ...formProps
 }) {
   const methods = useForm({ defaultValues });
@@ -29,7 +30,16 @@ export default function Form({
   }, [defaultValues]);
 
   return (
-    <form onSubmit={handleSubmit(onSubmit)} {...formProps}>
+    <form
+      onSubmit={handleSubmit(onSubmit)}
+      onChange={() => {
+        if (!onChange) {
+          return;
+        }
+        handleSubmit(onChange)();
+      }}
+      {...formProps}
+    >
       {React.Children.map(children, (child) => {
         return child.props.name
           ? React.createElement(child.type, {

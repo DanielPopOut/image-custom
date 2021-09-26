@@ -231,6 +231,9 @@ const TextInputFormFields = ({
   return (
     <Form
       defaultValues={defaultValues}
+      onChange={({ top, left, ...data }) => {
+        onSubmit(data);
+      }}
       onSubmit={({ top, left, ...data }) => {
         onSubmit(data);
       }}
