@@ -80,6 +80,14 @@ export const ResultDesign = ({
   );
 };
 
+const setDragImageToTransparentImage = (dragStartEvent: DragEvent) => {
+  {
+    var img = new Image();
+    img.src =
+      'data:image/gif;base64,R0lGODlhAQABAAAAACH5BAEKAAEALAAAAAABAAEAAAICTAEAOw==';
+    dragStartEvent.dataTransfer.setDragImage(img, 0, 0);
+  }
+};
 const WithLiveDraggable =
   <P extends React.HTMLAttributes<HTMLDivElement>>(Component: React.FC<P>) =>
   ({ style, onDragStart, onDragEnd, ...props }: P) => {
@@ -98,13 +106,14 @@ const WithLiveDraggable =
       <Component
         {...componentProps}
         draggable
-        onDragStart={(data) => {
-          const clientRect = data.currentTarget.getBoundingClientRect();
+        onDragStart={(dragEvent) => {
+          setDragImageToTransparentImage(dragEvent);
+          const clientRect = dragEvent.currentTarget.getBoundingClientRect();
           setDragStartOffSet({
-            x: data.clientX - clientRect.left,
-            y: data.clientY - clientRect.y,
+            x: dragEvent.clientX - clientRect.left,
+            y: dragEvent.clientY - clientRect.y,
           });
-          onDragStart?.(data);
+          onDragStart?.(dragEvent);
         }}
         onDragEnd={(dragEvent) => {
           onDragEnd?.({
