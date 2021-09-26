@@ -63,14 +63,12 @@ export const ActionBar = ({
 
       {selectedItemStyle && (
         <>
-          <Input
-            name='color'
-            type='color'
-            style={{ marginRight: 10 }}
-            value={selectedItemStyle.color}
-            register={() => null}
-            onChange={(e) => updateElementStyle({ color: e.target.value })}
-          />
+          <div style={{ marginRight: 5 }}>
+            <ColorInput
+              value={selectedItemStyle.color}
+              onChange={(newColor) => updateElementStyle({ color: newColor })}
+            />
+          </div>
 
           <div style={{ marginRight: 10 }}>
             <BasicFontPicker
@@ -167,6 +165,30 @@ export const ActionBar = ({
         </>
       )}
     </div>
+  );
+};
+
+const ColorInput = ({
+  value,
+  onChange,
+}: {
+  value: string;
+  onChange: (newColor: string) => void;
+}) => {
+  return (
+    <Input
+      name='color'
+      type='color'
+      style={{
+        border: 'none',
+        backgroundColor: 'transparent',
+        width: 30,
+        height: 30,
+      }}
+      value={value}
+      register={() => null}
+      onChange={(e) => onChange(e.target.value)}
+    />
   );
 };
 
