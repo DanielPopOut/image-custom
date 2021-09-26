@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import { useForm } from 'react-hook-form';
 
 // export const Form = () => {
@@ -23,6 +23,10 @@ export default function Form({
 }) {
   const methods = useForm({ defaultValues });
   const { handleSubmit, register } = methods;
+
+  useEffect(() => {
+    methods.reset(defaultValues);
+  }, [defaultValues]);
 
   return (
     <form onSubmit={handleSubmit(onSubmit)} {...formProps}>
