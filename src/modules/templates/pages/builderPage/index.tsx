@@ -1,4 +1,4 @@
-import { CSSProperties, useState } from 'react';
+import { CSSProperties, useEffect, useState } from 'react';
 import { BackgroundInput } from '../../../form/BackgroundInput';
 import { DimensionInput } from '../../../form/DimensionInput';
 import { FontSelect } from '../../../form/FontSelector';
@@ -8,6 +8,7 @@ import { Select } from '../../../form/Select';
 import { API_ROUTES, ROUTES } from '../../../shared/routes/ROUTES';
 import { stringHelper } from '../../../shared/services/stringHelper';
 import { Template, TextItemProps } from '../../models/template.model';
+import { DownloadFonts } from '../../shared/DonwloadFonts';
 import { ActionBar } from './components/ActionBar';
 import { PageContextProvider } from './PageContext';
 import { ResultDesign } from './ResultDesign';
@@ -22,6 +23,12 @@ export const BuilderPage = ({
   const [state, setState] = useState<Template>(initialData);
 
   const [itemToUpdate, setItemToUpdate] = useState<string>(null);
+
+  const [fontFamilyRequest, setFontFamilyRequest] = useState(null);
+  useEffect(() => {
+    const template = new Template(initialData);
+    setFontFamilyRequest(template.getGoogleRequestForFonts());
+  }, [initialData]);
 
   const updateState = (newState: Template) => {
     setState(newState);
@@ -88,6 +95,8 @@ export const BuilderPage = ({
 
   return (
     <PageContextProvider>
+      <DownloadFonts fontFamilyRequest={fontFamilyRequest} />
+
       <div
         style={{ display: 'flex', outline: 'none', overflow: 'hidden' }}
         onKeyDown={(e) => {
