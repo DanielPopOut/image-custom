@@ -63,11 +63,23 @@ export const ActionBar = ({
 
       {selectedItemStyle && (
         <>
-          <IconButton
-            name='IconTrash'
-            title='Delete element'
-            onClick={deleteItem}
+          <Input
+            name='color'
+            type='color'
+            style={{ marginRight: 10 }}
+            value={selectedItemStyle.color}
+            register={() => null}
+            onChange={(e) => updateElementStyle({ color: e.target.value })}
           />
+
+          <div style={{ marginRight: 10 }}>
+            <BasicFontPicker
+              activeFontFamily={selectedItemStyle.fontFamily}
+              onChange={(newFontFamily) =>
+                updateElementStyle({ fontFamily: newFontFamily })
+              }
+            />
+          </div>
 
           <IconButtonSelect
             value={selectedItemStyle.textAlign || 'start'}
@@ -140,23 +152,11 @@ export const ActionBar = ({
             }}
           />
 
-          <Input
-            name='color'
-            type='color'
-            style={{ marginRight: 10 }}
-            value={selectedItemStyle.color}
-            register={() => null}
-            onChange={(e) => updateElementStyle({ color: e.target.value })}
+          <IconButton
+            name='IconTrash'
+            title='Delete element'
+            onClick={deleteItem}
           />
-
-          <div style={{ marginRight: 10 }}>
-            <BasicFontPicker
-              activeFontFamily={selectedItemStyle.fontFamily}
-              onChange={(newFontFamily) =>
-                updateElementStyle({ fontFamily: newFontFamily })
-              }
-            />
-          </div>
         </>
       )}
     </div>
