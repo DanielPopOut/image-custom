@@ -1,5 +1,4 @@
 import React, {
-  createContext,
   CSSProperties,
   DragEvent,
   useCallback,
@@ -8,11 +7,7 @@ import React, {
   useState,
 } from 'react';
 import { Template, TextItemProps } from '../../models/template.model';
-
-type PageContextData = { sheetPosition: { left: number; top: number } };
-const PageContext = createContext<PageContextData>({
-  sheetPosition: { left: 0, top: 0 },
-});
+import { PageContext } from './PageContext';
 
 export const ResultDesign = ({
   state,
@@ -29,9 +24,8 @@ export const ResultDesign = ({
   ) => void;
 }) => {
   const [pageElementProps, setNodeElementProps] = useState<HTMLDivElement>();
-  const [pageContext, setPageContext] = useState<PageContextData>({
-    sheetPosition: { left: 0, top: 0 },
-  });
+
+  const { updateSheetData } = useContext(PageContext);
 
   const onRefChange = useCallback(
     (node: HTMLDivElement) => {
@@ -40,8 +34,11 @@ export const ResultDesign = ({
       } else {
         setNodeElementProps(node);
         const mainPageRect = node.getBoundingClientRect();
-        setPageContext({
-          sheetPosition: { left: mainPageRect.left, top: mainPageRect.top },
+        updateSheetData({
+          left: mainPageRect.left,
+          top: mainPageRect.top,
+          width: mainPageRect.width,
+          height: mainPageRect.height,
         });
       }
     },
@@ -62,38 +59,36 @@ export const ResultDesign = ({
   };
 
   return (
-    <PageContext.Provider value={pageContext}>
-      <div style={{ border: '1px solid black', width: 'fit-content' }}>
-        <div
-          ref={onRefChange}
-          className='to_download'
-          style={{
-            backgroundColor: 'white',
-            position: 'relative',
-            ...state.page,
-          }}
-          onClick={() => {
-            setItemToUpdate(null);
-          }}
-        >
-          {Object.values(state.elements).map((item) => {
-            return (
-              <DraggableTextItem
-                isSelected={itemToUpdate === item.id}
-                key={item.id}
-                {...item}
-                onDragStart={() => setItemToUpdate(item.id)}
-                onDragEnd={(data) => updateItemPositionOnDragEnd(item.id, data)}
-                onClick={(e) => {
-                  setItemToUpdate(item.id);
-                  e.stopPropagation();
-                }}
-              />
-            );
-          })}
-        </div>
+    <div style={{ border: '1px solid black', width: 'fit-content' }}>
+      <div
+        ref={onRefChange}
+        className='to_download'
+        style={{
+          backgroundColor: 'white',
+          position: 'relative',
+          ...state.page,
+        }}
+        onClick={() => {
+          setItemToUpdate(null);
+        }}
+      >
+        {Object.values(state.elements).map((item) => {
+          return (
+            <DraggableTextItem
+              isSelected={itemToUpdate === item.id}
+              key={item.id}
+              {...item}
+              onDragStart={() => setItemToUpdate(item.id)}
+              onDragEnd={(data) => updateItemPositionOnDragEnd(item.id, data)}
+              onClick={(e) => {
+                setItemToUpdate(item.id);
+                e.stopPropagation();
+              }}
+            />
+          );
+        })}
       </div>
-    </PageContext.Provider>
+    </div>
   );
 };
 

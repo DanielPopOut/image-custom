@@ -7,6 +7,7 @@ import { Select } from '../../../form/Select';
 import { API_ROUTES, ROUTES } from '../../../shared/routes/ROUTES';
 import { stringHelper } from '../../../shared/services/stringHelper';
 import { Template, TextItemProps } from '../../models/template.model';
+import { PageContextProvider } from './PageContext';
 import { ResultDesign } from './ResultDesign';
 
 export const BuilderPage = ({
@@ -60,70 +61,74 @@ export const BuilderPage = ({
     .join('&');
 
   return (
-    <div style={{ display: 'flex' }}>
-      {/* <style>
+    <PageContextProvider>
+      <div style={{ display: 'flex' }}>
+        {/* <style>
               @import
               url('https://fonts.googleapis.com/css2?family=Roboto:ital,wght@0,300;1,400&display=swap');
             </style> */}
-      <div style={{ display: 'flex', flexDirection: 'column', width: 350 }}>
-        <ParametersForm
-          defaultValues={state.page}
-          onSubmit={(data) => updatePageData(data)}
-        />
-        <div style={{ padding: 20 }}></div>
-      </div>
+        <div style={{ display: 'flex', flexDirection: 'column', width: 350 }}>
+          <ParametersForm
+            defaultValues={state.page}
+            onSubmit={(data) => updatePageData(data)}
+          />
+          <div style={{ padding: 20 }}></div>
+        </div>
 
-      <div style={{ padding: 20 }}>
-        <ResultDesign
-          state={state}
-          setItemToUpdate={setItemToUpdate}
-          itemToUpdate={itemToUpdate}
-          updateElement={updateElement}
-        />
-        <div>
+        <div style={{ padding: 20, position: 'relative' }}>
+          <ResultDesign
+            state={state}
+            setItemToUpdate={setItemToUpdate}
+            itemToUpdate={itemToUpdate}
+            updateElement={updateElement}
+          />
           <div>
-            <a
-              style={{ color: 'blue', textDecoration: 'underline' }}
-              href={`${ROUTES.PREVIEW_TEMPLATE_ID(state._id)}?${queryString}`}
-            >
-              Preview page
-            </a>
-            <br />
             <div>
-              Api url :
+              <a
+                style={{ color: 'blue', textDecoration: 'underline' }}
+                href={`${ROUTES.PREVIEW_TEMPLATE_ID(state._id)}?${queryString}`}
+              >
+                Preview page
+              </a>
+              <br />
               <div>
-                {`https://${
-                  process.env.NEXT_PUBLIC_VERCEL_URL
-                }${API_ROUTES.DOWNLOAD_TEMPLATE_ID(state._id)}?${queryString}`}
+                Api url :
+                <div>
+                  {`https://${
+                    process.env.NEXT_PUBLIC_VERCEL_URL
+                  }${API_ROUTES.DOWNLOAD_TEMPLATE_ID(
+                    state._id,
+                  )}?${queryString}`}
+                </div>
               </div>
             </div>
           </div>
         </div>
+        {itemToUpdate && (
+          <div
+            style={{
+              ...containerStyle,
+              height: 'fit-content',
+              backgroundColor: 'white',
+              color: 'black',
+              width: 'fit-content',
+              padding: 10,
+            }}
+          >
+            <h4 style={{ marginTop: 0 }}>Update element</h4>
+            <TextInputFormFields
+              defaultValues={{
+                ...state.elements[itemToUpdate].style,
+                value: state.elements[itemToUpdate].value,
+              }}
+              onSubmit={({ value, ...style }) => {
+                updateElement(itemToUpdate, { value, style });
+              }}
+            />
+          </div>
+        )}
       </div>
-      {itemToUpdate && (
-        <div
-          style={{
-            ...containerStyle,
-            height: 'fit-content',
-            backgroundColor: 'white',
-            color: 'black',
-            width: 'fit-content',
-            padding: 10,
-          }}
-        >
-          <h4 style={{ marginTop: 0 }}>Update element</h4>
-          <TextInputFormFields
-            defaultValues={{
-              ...state.elements[itemToUpdate].style,
-              value: state.elements[itemToUpdate].value,
-            }}
-            onSubmit={({ value, ...style }) => {
-              updateElement(itemToUpdate, { value, style });
-            }}
-          />
-        </div>
-      )}
-    </div>
+    </PageContextProvider>
   );
 };
 
