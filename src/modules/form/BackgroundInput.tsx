@@ -45,13 +45,11 @@ const BackgroundInputBase = ({
     backgroundUrl: '',
   });
   useEffect(() => {
-    console.log(value);
     const matchedValues = ('' + value).match(/url\((.*)\)/);
     if (matchedValues) {
       const backgroundUrl = matchedValues[1];
       setState({ backgroundUrl });
     }
-    console.log(matchedValues);
   }, [value]);
 
   const onChangeFn = (newState: BackgroundInputState) => {
