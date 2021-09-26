@@ -237,7 +237,6 @@ const TextInputFormFields = ({
     >
       <Input name='value' label='value' />
       <DimensionInput name='width' label='width' />
-      {/* <Input name='width' label='width'></Input> */}
       <DimensionInput name='height' label='height' />
       <Select
         name='justifyContent'
@@ -248,12 +247,14 @@ const TextInputFormFields = ({
       <Select
         name='alignItems'
         label='Vertical alignment'
+        defaultValue='start'
         options={['center', 'start', 'end']}
       />
       <Input label='Color' name='color' type='color' />
       <Select
         label='Font weight'
         name='fontWeight'
+        defaultValue='normal'
         options={['normal', 'bolder', 'bold', 'lighter']}
       />
       <DimensionInput label='Font size' name='fontSize' />

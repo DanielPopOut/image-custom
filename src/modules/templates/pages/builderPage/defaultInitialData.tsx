@@ -17,6 +17,7 @@ export const getDefaultText = (data: {
       width: 300,
       height: 100,
       color: 'black',
+      fontSize: '16px',
     },
   } as Omit<TextItemProps, '_id'>;
 };
