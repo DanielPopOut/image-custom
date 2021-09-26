@@ -17,6 +17,7 @@
     "next": "^10.2.3",
     "next-connect": "^0.10.2",
     "react": "17.0.1",
+    "react-contenteditable": "^3.3.6",
     "react-dom": "17.0.1",
     "react-hook-form": "^7.15.4",
     "react-use": "^17.3.1"
