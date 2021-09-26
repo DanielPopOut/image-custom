@@ -40,7 +40,14 @@ export const FontSelect = ({
             apiKey={process.env.NEXT_PUBLIC_WEB_FONT_API_KEY}
             activeFontFamily={field.value}
             onChange={(nextFont) => field.onChange(nextFont.family)}
-            variants={['regular', 'italic', '300', '700']}
+            variants={[
+              'regular',
+              'italic',
+              '300',
+              '300italic',
+              '700',
+              '700italic',
+            ]}
           />
         )}
       />

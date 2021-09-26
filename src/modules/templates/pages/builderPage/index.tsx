@@ -242,7 +242,7 @@ const TextInputFormFields = ({
       }}
       style={{ display: 'flex', flexDirection: 'column', maxWidth: 200 }}
     >
-      <FontSelect name='font-family' label='font' />
+      <FontSelect name='fontFamily' label='font' />
       <DimensionInput name='width' label='width' />
       <DimensionInput name='height' label='height' />
       <Select
