@@ -2163,6 +2163,11 @@ supports-color@^8.0.0:
   dependencies:
     has-flag "^4.0.0"
 
+tabler-icons-react@^1.35.0:
+  version "1.35.0"
+  resolved "https://registry.yarnpkg.com/tabler-icons-react/-/tabler-icons-react-1.35.0.tgz#b4e7f8da632314d002aa5e34931f2f824395b77c"
+  integrity sha512-WiJ+dYQ71HCsxKAQpCfPrFVwSfqE6CByYFjq9Gzikmp2RijJBsNpj0sE/T5G0H+nERS9odjAWJoSryvr4FymFg==
+
 throttle-debounce@^3.0.1:
   version "3.0.1"
   resolved "https://registry.yarnpkg.com/throttle-debounce/-/throttle-debounce-3.0.1.tgz#32f94d84dfa894f786c9a1f290e7a645b6a19abb"
