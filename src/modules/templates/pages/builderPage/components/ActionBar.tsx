@@ -7,12 +7,16 @@ import { PageContext } from '../PageContext';
 
 export const ActionBar = ({
   addNewItem,
+  deleteItem,
+  selectedItem,
 }: {
   addNewItem: (textItemProps: TextItemProps) => void;
+  deleteItem: () => void;
+  selectedItem: string;
 }) => {
   const { sheetPosition } = useContext(PageContext);
   return (
-    <div style={{ height: 30, marginBottom: 10 }}>
+    <div style={{ height: 30, marginBottom: 10, display: 'flex' }}>
       <IconButton
         name='IconWriting'
         title='New text'
@@ -27,6 +31,14 @@ export const ActionBar = ({
           });
         }}
       />
+
+      {selectedItem && (
+        <IconButton
+          name='IconTrash'
+          title='Delete element'
+          onClick={deleteItem}
+        />
+      )}
     </div>
   );
 };

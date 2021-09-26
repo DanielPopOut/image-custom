@@ -63,6 +63,15 @@ export const BuilderPage = ({
     });
   };
 
+  const deleteSelectedElement = () => {
+    const allElements = { ...state.elements };
+    delete allElements[itemToUpdate];
+    updateState({
+      ...state,
+      elements: allElements,
+    });
+  };
+
   const allVariables = stringHelper.getValueToInterpolateInStringArray(
     Object.values(state.elements).map((element) => element.value.toLowerCase()),
   );
@@ -87,7 +96,11 @@ export const BuilderPage = ({
         </div>
 
         <div style={{ padding: 20, position: 'relative' }}>
-          <ActionBar addNewItem={createNewElement} />
+          <ActionBar
+            addNewItem={createNewElement}
+            deleteItem={deleteSelectedElement}
+            selectedItem={itemToUpdate}
+          />
           <ResultDesign
             state={state}
             setItemToUpdate={setItemToUpdate}
@@ -116,7 +129,7 @@ export const BuilderPage = ({
             </div>
           </div>
         </div>
-        {itemToUpdate && (
+        {itemToUpdate && state.elements[itemToUpdate] && (
           <div
             style={{
               ...containerStyle,
