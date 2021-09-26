@@ -17,6 +17,8 @@ import {
 } from '@tabler/icons';
 import { ObjectId } from 'bson';
 import { CSSProperties, useContext } from 'react';
+import { BasicFontPicker } from '../../../../form/FontSelector';
+import { Input } from '../../../../form/Input';
 import { IconButton } from '../../../../shared/IconsSelector/IconButton';
 import { IconButtonSelect } from '../../../../shared/IconsSelector/IconButtonSelect';
 import { TextItemProps } from '../../../models/template.model';
@@ -36,7 +38,14 @@ export const ActionBar = ({
 }) => {
   const { sheetPosition } = useContext(PageContext);
   return (
-    <div style={{ height: 30, marginBottom: 10, display: 'flex' }}>
+    <div
+      style={{
+        height: 30,
+        marginBottom: 10,
+        display: 'flex',
+        alignItems: 'center',
+      }}
+    >
       <IconButton
         name='IconWriting'
         title='New text'
@@ -130,6 +139,24 @@ export const ActionBar = ({
               updateElementStyle({ textDecoration: value } as CSSProperties);
             }}
           />
+
+          <Input
+            name='color'
+            type='color'
+            style={{ marginRight: 10 }}
+            value={selectedItemStyle.color}
+            register={() => null}
+            onChange={(e) => updateElementStyle({ color: e.target.value })}
+          />
+
+          <div style={{ marginRight: 10 }}>
+            <BasicFontPicker
+              activeFontFamily={selectedItemStyle.fontFamily}
+              onChange={(newFontFamily) =>
+                updateElementStyle({ fontFamily: newFontFamily })
+              }
+            />
+          </div>
         </>
       )}
     </div>

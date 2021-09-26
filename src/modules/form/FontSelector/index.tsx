@@ -14,7 +14,7 @@ const FontPicker = dynamic(
   { ssr: false },
 );
 
-const BasicFontPicker = ({
+export const BasicFontPicker = ({
   activeFontFamily,
   onChange,
 }: {
