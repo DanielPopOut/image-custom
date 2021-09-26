@@ -55,6 +55,7 @@ export const ResultDesign = ({
                 setItemToUpdate(item.id);
                 e.stopPropagation();
               }}
+              onChange={(data) => updateElement(item.id, { value: data })}
             />
           );
         })}
