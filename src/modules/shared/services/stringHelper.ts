@@ -12,7 +12,7 @@ class StringHelper {
 
   getValueToInterpolateInString = (stringItem: string) => {
     const allValues = new Set<string>();
-    const results = stringItem.matchAll(/\{(.*?)\}/gi);
+    const results = stringItem.matchAll(/\{([^{]*?)\}/gi);
     for (const resultItem of results) {
       allValues.add(resultItem[1]);
     }
