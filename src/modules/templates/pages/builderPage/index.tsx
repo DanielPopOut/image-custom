@@ -1,6 +1,7 @@
 import { CSSProperties, useState } from 'react';
 import { BackgroundInput } from '../../../form/BackgroundInput';
 import { DimensionInput } from '../../../form/DimensionInput';
+import { FontSelect } from '../../../form/FontSelector';
 import Form from '../../../form/Form';
 import { Input } from '../../../form/Input';
 import { Select } from '../../../form/Select';
@@ -235,6 +236,7 @@ const TextInputFormFields = ({
       }}
       style={{ display: 'flex', flexDirection: 'column', maxWidth: 200 }}
     >
+      <FontSelect name='font-family' label='font' />
       <DimensionInput name='width' label='width' />
       <DimensionInput name='height' label='height' />
       <Select
@@ -263,7 +265,6 @@ const TextInputFormFields = ({
         options={['normal', 'bolder', 'bold', 'lighter']}
       />
       <DimensionInput label='Font size' name='fontSize' />
-      {/* <Input name='height' label='height'></Input> */}
     </Form>
   );
 };
