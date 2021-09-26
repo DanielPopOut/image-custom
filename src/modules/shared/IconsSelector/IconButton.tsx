@@ -3,7 +3,16 @@ import type * as AllIcons from '@tabler/icons';
 import { HTMLAttributes } from 'react';
 import { Icon } from './Icon';
 
-const IconButtonContainer = styled.div`
+export const IconButtonContainer = styled.div`
+  margin: 0 10px;
+  border: 1px solid transparent;
+  border-radius: 3px;
+  padding: 5px;
+  display: flex;
+  align-items: center;
+  &:hover {
+    border: 1px solid #eee;
+  }
   &.disabled {
     color: #aaa;
     opacity: 0.5;
