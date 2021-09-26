@@ -114,7 +114,7 @@ export const BuilderPage = ({
           <ActionBar
             addNewItem={createNewElement}
             deleteItem={deleteSelectedElement}
-            selectedItem={itemToUpdate}
+            selectedItemStyle={state.elements[itemToUpdate]?.style}
             updateElementStyle={(data) =>
               updateElement(itemToUpdate, { style: data })
             }

@@ -3,6 +3,12 @@ import {
   IconAlignJustified,
   IconAlignLeft,
   IconAlignRight,
+  IconLayoutAlignBottom,
+  IconLayoutAlignCenter,
+  IconLayoutAlignLeft,
+  IconLayoutAlignMiddle,
+  IconLayoutAlignRight,
+  IconLayoutAlignTop,
 } from '@tabler/icons';
 import { ObjectId } from 'bson';
 import { CSSProperties, useContext } from 'react';
@@ -15,12 +21,12 @@ import { PageContext } from '../PageContext';
 export const ActionBar = ({
   addNewItem,
   deleteItem,
-  selectedItem,
+  selectedItemStyle,
   updateElementStyle,
 }: {
   addNewItem: (textItemProps: TextItemProps) => void;
   deleteItem: () => void;
-  selectedItem: string;
+  selectedItemStyle: CSSProperties;
   updateElementStyle: (data: Partial<CSSProperties>) => void;
 }) => {
   const { sheetPosition } = useContext(PageContext);
@@ -41,7 +47,7 @@ export const ActionBar = ({
         }}
       />
 
-      {selectedItem && (
+      {selectedItemStyle && (
         <>
           <IconButton
             name='IconTrash'
@@ -50,7 +56,7 @@ export const ActionBar = ({
           />
 
           <IconButtonSelect
-            value='center'
+            value={selectedItemStyle.textAlign || 'start'}
             items={[
               { Icon: <IconAlignLeft />, value: 'start' },
               { Icon: <IconAlignCenter />, value: 'center' },
@@ -59,6 +65,30 @@ export const ActionBar = ({
             ]}
             onChange={(value) => {
               updateElementStyle({ textAlign: value } as CSSProperties);
+            }}
+          />
+
+          <IconButtonSelect
+            value={selectedItemStyle.justifyContent || 'start'}
+            items={[
+              { Icon: <IconLayoutAlignLeft />, value: 'start' },
+              { Icon: <IconLayoutAlignCenter />, value: 'center' },
+              { Icon: <IconLayoutAlignRight />, value: 'end' },
+            ]}
+            onChange={(value) => {
+              updateElementStyle({ justifyContent: value } as CSSProperties);
+            }}
+          />
+
+          <IconButtonSelect
+            value={selectedItemStyle.alignItems || 'start'}
+            items={[
+              { Icon: <IconLayoutAlignTop />, value: 'start' },
+              { Icon: <IconLayoutAlignMiddle />, value: 'center' },
+              { Icon: <IconLayoutAlignBottom />, value: 'end' },
+            ]}
+            onChange={(value) => {
+              updateElementStyle({ alignItems: value } as CSSProperties);
             }}
           />
         </>
