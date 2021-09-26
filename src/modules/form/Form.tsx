@@ -1,42 +1,36 @@
 import React, { useEffect } from 'react';
 import { useForm } from 'react-hook-form';
 
-// export const Form = () => {
-//   const methods = useForm();
-//   const onSubmit = (data) => console.log(data);
-
-//   return (
-//     <FormProvider {...methods}>
-//       // pass all methods into the context
-//       <form onSubmit={methods.handleSubmit(onSubmit)}>
-//         <input type='submit' />
-//       </form>
-//     </FormProvider>
-//   );
-// };
-
-export default function Form({
+const Form = <FormData extends unknown>({
   defaultValues,
   children,
   onSubmit,
   onChange,
   ...formProps
-}) {
-  const methods = useForm({ defaultValues });
+}: Omit<
+  React.FormHTMLAttributes<HTMLFormElement>,
+  'defaultValues' | 'onSubmit' | 'onChange'
+> & {
+  defaultValues: FormData;
+  onSubmit: (data: FormData) => void;
+  onChange?: (data: FormData) => void;
+  children;
+}) => {
+  const methods = useForm<FormData>({ defaultValues: defaultValues as any });
   const { handleSubmit, register } = methods;
 
   useEffect(() => {
-    methods.reset(defaultValues);
+    methods.reset(defaultValues as any);
   }, [defaultValues]);
 
   return (
     <form
-      onSubmit={handleSubmit(onSubmit)}
+      onSubmit={handleSubmit((data) => onSubmit(data as FormData))}
       onChange={() => {
         if (!onChange) {
           return;
         }
-        handleSubmit(onChange)();
+        handleSubmit((data) => onChange(data as FormData))();
       }}
       {...formProps}
     >
@@ -55,4 +49,6 @@ export default function Form({
       <input type='submit' />
     </form>
   );
-}
+};
+
+export default Form;

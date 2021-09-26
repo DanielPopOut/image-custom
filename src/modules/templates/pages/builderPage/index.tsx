@@ -187,7 +187,7 @@ const ParametersForm = ({
   onSubmit: (data) => void;
 }) => {
   return (
-    <Form
+    <Form<Template['page']>
       defaultValues={defaultValues}
       onSubmit={(data) => {
         onSubmit(data);
