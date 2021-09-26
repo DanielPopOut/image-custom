@@ -160,8 +160,8 @@ export const BuilderPage = ({
                 ...state.elements[itemToUpdate].style,
                 value: state.elements[itemToUpdate].value,
               }}
-              onSubmit={({ value, ...style }) => {
-                updateElement(itemToUpdate, { value, style });
+              onSubmit={(style) => {
+                updateElement(itemToUpdate, { style });
               }}
             />
           </div>
@@ -235,7 +235,6 @@ const TextInputFormFields = ({
       }}
       style={{ display: 'flex', flexDirection: 'column', maxWidth: 200 }}
     >
-      <Input name='value' label='value' />
       <DimensionInput name='width' label='width' />
       <DimensionInput name='height' label='height' />
       <Select
