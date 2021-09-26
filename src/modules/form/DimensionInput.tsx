@@ -1,4 +1,4 @@
-import React, { HTMLAttributes, useEffect, useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import {
   Control,
   Controller,
@@ -12,12 +12,13 @@ export const DimensionInput = ({
   control,
   name,
   label,
-  ...rest
-}: HTMLAttributes<HTMLInputElement> & {
+  defaultValue,
+}: {
   name: string;
   label?: string;
   register?: UseFormRegister<FieldValues>;
   control?: Control<FieldValues>;
+  defaultValue?: string;
 }) => {
   return (
     <>
@@ -26,9 +27,8 @@ export const DimensionInput = ({
         render={({ field }) => <DimensionInputBase {...field} />}
         control={control}
         name={name}
-        defaultValue={10}
+        defaultValue={defaultValue}
       />
-      {/* <input {...register(name)} {...rest} /> */}
     </>
   );
 };
@@ -48,9 +48,11 @@ const DimensionInputBase = ({
   useEffect(() => {
     const matchedValues = ('' + value).match(/([\d.]+)(.*)/);
     if (matchedValues) {
-      const value = +matchedValues[1];
+      const valueNumber = +matchedValues[1];
       const dimension = matchedValues[2] || DEFAULT_DIMENSION;
-      setState({ value, dimension });
+      setState({ value: valueNumber, dimension });
+    } else {
+      setState({ value: 0, dimension: 'px' });
     }
   }, [value]);
 
