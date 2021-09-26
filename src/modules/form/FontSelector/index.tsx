@@ -6,13 +6,31 @@ import {
   FieldValues,
   UseFormRegister,
 } from 'react-hook-form';
-import { Label } from './Label';
+import { Label } from '../Label';
 
 const FontPicker = dynamic(
   //@ts-ignore
   () => import('font-picker-react'),
   { ssr: false },
 );
+
+const BasicFontPicker = ({
+  activeFontFamily,
+  onChange,
+}: {
+  activeFontFamily;
+  onChange: (nextFont: string) => void;
+}) => {
+  return (
+    //@ts-ignore
+    <FontPicker
+      apiKey={process.env.NEXT_PUBLIC_WEB_FONT_API_KEY}
+      activeFontFamily={activeFontFamily}
+      onChange={(data) => onChange(data.family)}
+      variants={['regular', 'italic', '300', '300italic', '700', '700italic']}
+    />
+  );
+};
 
 export const FontSelect = ({
   register,
@@ -36,18 +54,9 @@ export const FontSelect = ({
         control={control}
         render={({ field }) => (
           //@ts-ignore
-          <FontPicker
-            apiKey={process.env.NEXT_PUBLIC_WEB_FONT_API_KEY}
+          <BasicFontPicker
             activeFontFamily={field.value}
-            onChange={(nextFont) => field.onChange(nextFont.family)}
-            variants={[
-              'regular',
-              'italic',
-              '300',
-              '300italic',
-              '700',
-              '700italic',
-            ]}
+            onChange={(nextFontFamily) => field.onChange(nextFontFamily)}
           />
         )}
       />
