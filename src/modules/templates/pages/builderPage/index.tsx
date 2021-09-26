@@ -156,6 +156,8 @@ export const BuilderPage = ({
             </div>
           </div>
         </div>
+        {/*
+        //HIDE THIS PART BECAUSE NOT USED FOR THE MOMENT...
         {itemToUpdate && state.elements[itemToUpdate] && (
           <div
             style={{
@@ -178,7 +180,7 @@ export const BuilderPage = ({
               }}
             />
           </div>
-        )}
+        )} */}
       </div>
     </PageContextProvider>
   );
