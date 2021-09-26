@@ -1,6 +1,13 @@
+import {
+  IconAlignCenter,
+  IconAlignJustified,
+  IconAlignLeft,
+  IconAlignRight,
+} from '@tabler/icons';
 import { ObjectId } from 'bson';
-import { useContext } from 'react';
+import { CSSProperties, useContext } from 'react';
 import { IconButton } from '../../../../shared/IconsSelector/IconButton';
+import { IconButtonSelect } from '../../../../shared/IconsSelector/IconButtonSelect';
 import { TextItemProps } from '../../../models/template.model';
 import { getDefaultText } from '../defaultInitialData';
 import { PageContext } from '../PageContext';
@@ -9,10 +16,12 @@ export const ActionBar = ({
   addNewItem,
   deleteItem,
   selectedItem,
+  updateElementStyle,
 }: {
   addNewItem: (textItemProps: TextItemProps) => void;
   deleteItem: () => void;
   selectedItem: string;
+  updateElementStyle: (data: Partial<CSSProperties>) => void;
 }) => {
   const { sheetPosition } = useContext(PageContext);
   return (
@@ -33,11 +42,26 @@ export const ActionBar = ({
       />
 
       {selectedItem && (
-        <IconButton
-          name='IconTrash'
-          title='Delete element'
-          onClick={deleteItem}
-        />
+        <>
+          <IconButton
+            name='IconTrash'
+            title='Delete element'
+            onClick={deleteItem}
+          />
+
+          <IconButtonSelect
+            value='center'
+            items={[
+              { Icon: <IconAlignLeft />, value: 'start' },
+              { Icon: <IconAlignCenter />, value: 'center' },
+              { Icon: <IconAlignJustified />, value: 'justify' },
+              { Icon: <IconAlignRight />, value: 'end' },
+            ]}
+            onChange={(value) => {
+              updateElementStyle({ textAlign: value } as CSSProperties);
+            }}
+          />
+        </>
       )}
     </div>
   );

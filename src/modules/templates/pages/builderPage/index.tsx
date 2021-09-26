@@ -115,6 +115,9 @@ export const BuilderPage = ({
             addNewItem={createNewElement}
             deleteItem={deleteSelectedElement}
             selectedItem={itemToUpdate}
+            updateElementStyle={(data) =>
+              updateElement(itemToUpdate, { style: data })
+            }
           />
           <ResultDesign
             state={state}
