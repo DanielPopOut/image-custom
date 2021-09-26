@@ -64,12 +64,17 @@ export const BuilderPage = ({
   };
 
   const deleteSelectedElement = () => {
+    if (!itemToUpdate || !state.elements[itemToUpdate]) {
+      return;
+    }
     const allElements = { ...state.elements };
+
     delete allElements[itemToUpdate];
     updateState({
       ...state,
       elements: allElements,
     });
+    setItemToUpdate(null);
   };
 
   const allVariables = stringHelper.getValueToInterpolateInStringArray(
@@ -82,7 +87,16 @@ export const BuilderPage = ({
 
   return (
     <PageContextProvider>
-      <div style={{ display: 'flex' }}>
+      <div
+        style={{ display: 'flex', outline: 'none' }}
+        onKeyDown={(e) => {
+          const key = e.key;
+          if (key === 'Backspace' || key === 'Delete') {
+            deleteSelectedElement();
+          }
+        }}
+        tabIndex={-1}
+      >
         {/* <style>
               @import
               url('https://fonts.googleapis.com/css2?family=Roboto:ital,wght@0,300;1,400&display=swap');
