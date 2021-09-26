@@ -12,6 +12,7 @@
     "@emotion/styled": "^11.3.0",
     "@tabler/icons": "^1.41.2",
     "cloudinary": "^1.27.0",
+    "font-picker-react": "^3.5.2",
     "mongodb": "^4.1.2",
     "multer": "^1.4.3",
     "next": "^10.2.3",
