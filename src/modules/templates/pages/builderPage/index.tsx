@@ -1,4 +1,4 @@
-import { CSSProperties, DragEvent, useCallback, useState } from 'react';
+import { CSSProperties, useState } from 'react';
 import { BackgroundInput } from '../../../form/BackgroundInput';
 import { DimensionInput } from '../../../form/DimensionInput';
 import Form from '../../../form/Form';
@@ -17,21 +17,8 @@ export const BuilderPage = ({
   onChange?: (newState: Template) => void;
 }) => {
   const [state, setState] = useState<Template>(initialData);
-  const [pageElementProps, setNodeElementProps] = useState<HTMLDivElement>();
-  const [dragStartOffSet, setDragStartOffSet] =
-    useState<{ x: number; y: number }>(null);
-  const [itemToUpdate, setItemToUpdate] = useState<string>(null);
 
-  const onRefChange = useCallback(
-    (node: HTMLDivElement) => {
-      if (node === null) {
-        // DOM node referenced by ref has been unmounted
-      } else {
-        setNodeElementProps(node);
-      }
-    },
-    [state],
-  ); // adjust deps
+  const [itemToUpdate, setItemToUpdate] = useState<string>(null);
 
   const updateState = (newState: Template) => {
     setState(newState);
@@ -64,19 +51,6 @@ export const BuilderPage = ({
     });
   };
 
-  const updateItemPositionOnDragEnd = (
-    itemId: string,
-    dragEvent: DragEvent<HTMLDivElement>,
-  ) => {
-    const mainPageRect = pageElementProps.getBoundingClientRect();
-    updateElement(itemId, {
-      style: {
-        top: dragEvent.clientY - mainPageRect.top - dragStartOffSet.y,
-        left: dragEvent.clientX - mainPageRect.left - dragStartOffSet.x,
-      },
-    });
-  };
-
   const allVariables = stringHelper.getValueToInterpolateInStringArray(
     Object.values(state.elements).map((element) => element.value.toLowerCase()),
   );
@@ -101,12 +75,10 @@ export const BuilderPage = ({
 
       <div style={{ padding: 20 }}>
         <ResultDesign
-          onRefChange={onRefChange}
           state={state}
           setItemToUpdate={setItemToUpdate}
           itemToUpdate={itemToUpdate}
-          setDragStartOffSet={setDragStartOffSet}
-          updateItemPositionOnDragEnd={updateItemPositionOnDragEnd}
+          updateElement={updateElement}
         />
         <div>
           <div>

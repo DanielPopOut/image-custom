@@ -1,24 +1,54 @@
-import { DragEvent } from 'react';
+import React, {
+  CSSProperties,
+  DragEvent,
+  useCallback,
+  useEffect,
+  useState,
+} from 'react';
 import { Template, TextItemProps } from '../../models/template.model';
 
 export const ResultDesign = ({
-  onRefChange,
   state,
   setItemToUpdate,
   itemToUpdate,
-  setDragStartOffSet,
-  updateItemPositionOnDragEnd,
+  updateElement,
 }: {
   state: Template;
-  onRefChange: any;
   itemToUpdate: string;
   setItemToUpdate: (data: string) => void;
-  setDragStartOffSet: (data: { x: number; y: number }) => void;
-  updateItemPositionOnDragEnd: (
+  updateElement: (
     itemId: string,
-    dragEvent: DragEvent<HTMLDivElement>,
+    update: Partial<{ value: string; style: CSSProperties }>,
   ) => void;
 }) => {
+  const [pageElementProps, setNodeElementProps] = useState<HTMLDivElement>();
+  const [dragStartOffSet, setDragStartOffSet] =
+    useState<{ x: number; y: number }>(null);
+
+  const onRefChange = useCallback(
+    (node: HTMLDivElement) => {
+      if (node === null) {
+        // DOM node referenced by ref has been unmounted
+      } else {
+        setNodeElementProps(node);
+      }
+    },
+    [state],
+  ); // adjust deps
+
+  const updateItemPositionOnDragEnd = (
+    itemId: string,
+    dragEvent: DragEvent<HTMLDivElement>,
+  ) => {
+    const mainPageRect = pageElementProps.getBoundingClientRect();
+    updateElement(itemId, {
+      style: {
+        top: dragEvent.clientY - mainPageRect.top - dragStartOffSet.y,
+        left: dragEvent.clientX - mainPageRect.left - dragStartOffSet.x,
+      },
+    });
+  };
+
   return (
     <div style={{ border: '1px solid black', width: 'fit-content' }}>
       <div

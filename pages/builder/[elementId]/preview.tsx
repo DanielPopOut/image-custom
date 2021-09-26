@@ -46,12 +46,10 @@ const ElementComponent = () => {
   return (
     <ResultDesign
       {...{
-        onRefChange: () => null,
         state: templateDataToUse as Template,
         setItemToUpdate: () => null,
         itemToUpdate: '',
-        setDragStartOffSet: () => null,
-        updateItemPositionOnDragEnd: () => null,
+        updateElement: () => null,
       }}
     />
   );
