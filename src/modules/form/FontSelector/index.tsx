@@ -26,6 +26,7 @@ export const BasicFontPicker = ({
     <FontPicker
       apiKey={process.env.NEXT_PUBLIC_WEB_FONT_API_KEY}
       activeFontFamily={activeFontFamily}
+      limit={100}
       onChange={(data) => onChange(data.family)}
       variants={['regular', 'italic', '300', '300italic', '700', '700italic']}
     />
