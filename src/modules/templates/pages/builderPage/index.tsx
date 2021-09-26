@@ -7,6 +7,7 @@ import { Select } from '../../../form/Select';
 import { API_ROUTES, ROUTES } from '../../../shared/routes/ROUTES';
 import { stringHelper } from '../../../shared/services/stringHelper';
 import { Template, TextItemProps } from '../../models/template.model';
+import { ActionBar } from './components/ActionBar';
 import { PageContextProvider } from './PageContext';
 import { ResultDesign } from './ResultDesign';
 
@@ -52,6 +53,16 @@ export const BuilderPage = ({
     });
   };
 
+  const createNewElement = (newElement: TextItemProps) => {
+    updateState({
+      ...state,
+      elements: {
+        ...state.elements,
+        [newElement.id]: newElement,
+      },
+    });
+  };
+
   const allVariables = stringHelper.getValueToInterpolateInStringArray(
     Object.values(state.elements).map((element) => element.value.toLowerCase()),
   );
@@ -76,6 +87,7 @@ export const BuilderPage = ({
         </div>
 
         <div style={{ padding: 20, position: 'relative' }}>
+          <ActionBar addNewItem={createNewElement} />
           <ResultDesign
             state={state}
             setItemToUpdate={setItemToUpdate}
