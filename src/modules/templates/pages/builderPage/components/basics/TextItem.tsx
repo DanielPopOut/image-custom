@@ -1,6 +1,6 @@
 import React from 'react';
 import { TextItemProps } from '../../../../models/template.model';
-import { WithLiveDraggable } from '../../ResultDesign';
+import { WithLiveDraggable } from '../WithLiveDraggable';
 
 const TextItem = ({ value, style, isSelected, ...rest }: TextItemProps) => {
   return (
