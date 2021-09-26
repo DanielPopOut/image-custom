@@ -82,6 +82,7 @@ export const ResultDesign = ({
                 isSelected={itemToUpdate === item.id}
                 key={item.id}
                 {...item}
+                onDragStart={() => setItemToUpdate(item.id)}
                 onDragEnd={(data) => updateItemPositionOnDragEnd(item.id, data)}
                 onClick={(e) => {
                   setItemToUpdate(item.id);
