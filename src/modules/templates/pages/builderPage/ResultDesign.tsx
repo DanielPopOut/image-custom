@@ -22,8 +22,6 @@ export const ResultDesign = ({
   ) => void;
 }) => {
   const [pageElementProps, setNodeElementProps] = useState<HTMLDivElement>();
-  const [dragStartOffSet, setDragStartOffSet] =
-    useState<{ x: number; y: number }>(null);
 
   const onRefChange = useCallback(
     (node: HTMLDivElement) => {
@@ -43,8 +41,8 @@ export const ResultDesign = ({
     const mainPageRect = pageElementProps.getBoundingClientRect();
     updateElement(itemId, {
       style: {
-        top: dragEvent.clientY - mainPageRect.top - dragStartOffSet.y,
-        left: dragEvent.clientX - mainPageRect.left - dragStartOffSet.x,
+        top: dragEvent.clientY - mainPageRect.top,
+        left: dragEvent.clientX - mainPageRect.left,
       },
     });
   };
@@ -65,19 +63,10 @@ export const ResultDesign = ({
       >
         {Object.values(state.elements).map((item) => {
           return (
-            <TextItem
+            <DraggableTextItem
               isSelected={itemToUpdate === item.id}
               key={item.id}
               {...item}
-              draggable
-              onDragStart={(data) => {
-                console.log('here drag start', data);
-                const clientRect = data.currentTarget.getBoundingClientRect();
-                setDragStartOffSet({
-                  x: data.clientX - clientRect.left,
-                  y: data.clientY - clientRect.y,
-                });
-              }}
               onDragEnd={(data) => updateItemPositionOnDragEnd(item.id, data)}
               onClick={(e) => {
                 setItemToUpdate(item.id);
@@ -90,6 +79,43 @@ export const ResultDesign = ({
     </div>
   );
 };
+
+const WithLiveDraggable =
+  <P extends React.HTMLAttributes<HTMLDivElement>>(Component: React.FC<P>) =>
+  ({ style, onDragStart, onDragEnd, ...props }: P) => {
+    // dragOffset is the difference between the top left position of the element and my mouse click
+    const [dragStartOffSet, setDragStartOffSet] =
+      useState<{ x: number; y: number }>(null);
+    const [position, setPosition] = useState<CSSProperties>({
+      left: style?.left,
+      top: style?.top,
+    });
+    useEffect(() => {
+      setPosition({ left: style?.left, top: style?.top });
+    }, [style]);
+    const componentProps = { ...props, style: { ...style, ...position } } as P;
+    return (
+      <Component
+        {...componentProps}
+        draggable
+        onDragStart={(data) => {
+          const clientRect = data.currentTarget.getBoundingClientRect();
+          setDragStartOffSet({
+            x: data.clientX - clientRect.left,
+            y: data.clientY - clientRect.y,
+          });
+          onDragStart?.(data);
+        }}
+        onDragEnd={(dragEvent) => {
+          onDragEnd?.({
+            ...dragEvent,
+            clientY: dragEvent.clientY - dragStartOffSet.y, // I substract the dragOffset to have a good positionning
+            clientX: dragEvent.clientX - dragStartOffSet.x,
+          });
+        }}
+      />
+    );
+  };
 
 export const TextItem = ({
   value,
@@ -110,3 +136,5 @@ export const TextItem = ({
     </div>
   );
 };
+
+const DraggableTextItem = WithLiveDraggable(TextItem);
