@@ -20,7 +20,6 @@ const TextItem = ({
       if (debouncedValue === value) {
         return;
       }
-      console.log('here update');
       onChange({ value: debouncedValue });
     },
     1000,

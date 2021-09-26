@@ -176,7 +176,6 @@ const FontSizeInput = ({ onChange, value }) => {
     const matchedValues = ('' + value).match(/([\d.]+)/);
     if (matchedValues) {
       const valueNumber = matchedValues[1];
-      console.log({ valueNumber, value });
       setInputValue(valueNumber);
     }
   }, [value]);
@@ -200,7 +199,6 @@ const FontSizeInput = ({ onChange, value }) => {
         register={() => null}
         onChange={(event) => {
           const newValue = event.target.value;
-          console.log({ newValue, match: newValue.match(/^[\d.]+$/) });
           if (newValue.match(/^[\d.]+$/) || !newValue) {
             setInputValue(+newValue);
             onChange(newValue + 'px');
