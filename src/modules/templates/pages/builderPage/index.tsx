@@ -249,6 +249,12 @@ const TextInputFormFields = ({
         defaultValue='start'
         options={['center', 'start', 'end']}
       />
+      <Select
+        name='textAlign'
+        label='Text alignment'
+        defaultValue='initial'
+        options={['initial', 'center', 'justify', 'start', 'end']}
+      />
       <Input label='Color' name='color' type='color' />
       <Select
         label='Font weight'
