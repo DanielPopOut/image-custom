@@ -3,12 +3,17 @@ import {
   IconAlignJustified,
   IconAlignLeft,
   IconAlignRight,
+  IconBold,
+  IconItalic,
   IconLayoutAlignBottom,
   IconLayoutAlignCenter,
   IconLayoutAlignLeft,
   IconLayoutAlignMiddle,
   IconLayoutAlignRight,
   IconLayoutAlignTop,
+  IconOverline,
+  IconStrikethrough,
+  IconUnderline,
 } from '@tabler/icons';
 import { ObjectId } from 'bson';
 import { CSSProperties, useContext } from 'react';
@@ -89,6 +94,40 @@ export const ActionBar = ({
             ]}
             onChange={(value) => {
               updateElementStyle({ alignItems: value } as CSSProperties);
+            }}
+          />
+          <IconButtonSelect
+            value={selectedItemStyle.fontWeight || 400}
+            items={[
+              { Icon: <IconBold stroke={1.5} />, value: 400, title: 'normal' },
+              { Icon: <IconBold stroke={3} />, value: 700, title: 'bold' },
+              { Icon: <IconBold stroke={0.5} />, value: 300, title: 'light' },
+            ]}
+            onChange={(value) => {
+              updateElementStyle({ fontWeight: value } as CSSProperties);
+            }}
+          />
+          <IconButtonSelect
+            value={selectedItemStyle.fontStyle || ''}
+            items={[
+              { Icon: <IconItalic stroke={0.5} />, value: '' },
+              { Icon: <IconItalic stroke={2} />, value: 'italic' },
+            ]}
+            onChange={(value) => {
+              updateElementStyle({ fontStyle: value } as CSSProperties);
+            }}
+          />
+
+          <IconButtonSelect
+            value={(selectedItemStyle.textDecoration as string) || ''}
+            items={[
+              { Icon: <IconUnderline stroke={0.5} />, value: '' },
+              { Icon: <IconUnderline stroke={2} />, value: 'underline' },
+              { Icon: <IconOverline stroke={2} />, value: 'overline' },
+              { Icon: <IconStrikethrough stroke={2} />, value: 'line-through' },
+            ]}
+            onChange={(value) => {
+              updateElementStyle({ textDecoration: value } as CSSProperties);
             }}
           />
         </>
