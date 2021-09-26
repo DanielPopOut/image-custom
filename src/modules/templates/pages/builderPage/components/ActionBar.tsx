@@ -16,7 +16,7 @@ import {
   IconUnderline,
 } from '@tabler/icons';
 import { ObjectId } from 'bson';
-import { CSSProperties, useContext } from 'react';
+import { CSSProperties, useContext, useEffect, useState } from 'react';
 import { BasicFontPicker } from '../../../../form/FontSelector';
 import { Input } from '../../../../form/Input';
 import { IconButton } from '../../../../shared/IconsSelector/IconButton';
@@ -80,6 +80,13 @@ export const ActionBar = ({
               }
             />
           </div>
+
+          <FontSizeInput
+            value={selectedItemStyle.fontSize}
+            onChange={(value) => {
+              updateElementStyle({ fontSize: value } as CSSProperties);
+            }}
+          />
 
           <IconButtonSelect
             value={selectedItemStyle.textAlign || 'start'}
@@ -159,6 +166,48 @@ export const ActionBar = ({
           />
         </>
       )}
+    </div>
+  );
+};
+
+const FontSizeInput = ({ onChange, value }) => {
+  const [inputValue, setInputValue] = useState(null);
+  useEffect(() => {
+    const matchedValues = ('' + value).match(/([\d.]+)/);
+    if (matchedValues) {
+      const valueNumber = matchedValues[1];
+      console.log({ valueNumber, value });
+      setInputValue(valueNumber);
+    }
+  }, [value]);
+  return (
+    <div style={{ marginRight: 10, display: 'flex', alignItems: 'center' }}>
+      <Input
+        id='fontSize'
+        style={{
+          width: 30,
+          border: 'none',
+          outline: 'none',
+          textAlign: 'end',
+        }}
+        value={inputValue}
+        onKeyDown={(e) => {
+          e.stopPropagation();
+        }}
+        name='fontSize'
+        step='0.1'
+        min={8}
+        register={() => null}
+        onChange={(event) => {
+          const newValue = event.target.value;
+          console.log({ newValue, match: newValue.match(/^[\d.]+$/) });
+          if (newValue.match(/^[\d.]+$/) || !newValue) {
+            setInputValue(+newValue);
+            onChange(newValue + 'px');
+          }
+        }}
+      />
+      <label htmlFor='fontSize'>px</label>
     </div>
   );
 };
