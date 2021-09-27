@@ -1,3 +1,4 @@
+import { IconMinus, IconPlus } from '@tabler/icons';
 import { useEffect, useState } from 'react';
 import { Input } from '../../../../form/Input';
 
@@ -25,6 +26,9 @@ export const SizeInput = ({
       onChange(newValue + 'px');
     }
   };
+  const updateBy = (value: number) => {
+    onChangeFn((+inputValue + value).toString());
+  };
   return (
     <div
       style={{
@@ -34,37 +38,48 @@ export const SizeInput = ({
         fontSize: 14,
       }}
     >
-      <label>
+      <label style={{ display: 'flex', alignItems: 'center' }}>
         {label && (
           <span style={{ marginRight: 2, fontWeight: 'bold' }}>{label}:</span>
         )}
-        <Input
-          size={3}
+        <span
           style={{
-            minWidth: 30,
-            border: 'none',
-            outline: 'none',
-            textAlign: 'end',
+            border: '1px solid #aaa',
+            borderRadius: 3,
+            display: 'inline-flex',
+            alignItems: 'center',
             fontSize: 16,
           }}
-          value={inputValue}
-          onKeyDown={(e) => {
-            console.log(e);
-            if (e.key === 'ArrowDown') {
-              onChangeFn((+inputValue - 1).toString());
-            } else if (e.key === 'ArrowUp') {
-              onChangeFn((+inputValue + 1).toString());
-            }
-            e.stopPropagation();
-          }}
-          name='fontSize'
-          step='0.1'
-          min={8}
-          register={() => null}
-          onChange={(event) => {
-            onChangeFn(event.target.value);
-          }}
-        />
+        >
+          <IconMinus size='1em' onClick={() => updateBy(-1)} />
+          <Input
+            size={3}
+            style={{
+              minWidth: 30,
+              border: 'none',
+              outline: 'none',
+              textAlign: 'end',
+              fontSize: 16,
+            }}
+            value={inputValue}
+            onKeyDown={(e) => {
+              if (e.key === 'ArrowDown') {
+                updateBy(-1);
+              } else if (e.key === 'ArrowUp') {
+                updateBy(1);
+              }
+              e.stopPropagation();
+            }}
+            name='fontSize'
+            step='0.1'
+            min={8}
+            register={() => null}
+            onChange={(event) => {
+              onChangeFn(event.target.value);
+            }}
+          />
+          <IconPlus size='1em' onClick={() => updateBy(1)} />
+        </span>
       </label>
     </div>
   );
