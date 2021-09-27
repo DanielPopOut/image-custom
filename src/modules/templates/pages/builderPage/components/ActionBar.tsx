@@ -81,8 +81,8 @@ export const ActionBar = ({
             />
           </div>
 
-          <FontSizeInput
-            value={selectedItemStyle.fontSize}
+          <SizeInput
+            value={selectedItemStyle.fontSize as string}
             onChange={(value) => {
               updateElementStyle({ fontSize: value } as CSSProperties);
             }}
@@ -192,8 +192,16 @@ const ColorInput = ({
   );
 };
 
-const FontSizeInput = ({ onChange, value }) => {
-  const [inputValue, setInputValue] = useState(null);
+const SizeInput = ({
+  onChange,
+  value,
+  label,
+}: {
+  onChange: (data: string) => void;
+  value: string;
+  label?: string;
+}) => {
+  const [inputValue, setInputValue] = useState<string>(null);
   useEffect(() => {
     const matchedValues = ('' + value).match(/([\d.]+)/);
     if (matchedValues) {
@@ -203,31 +211,32 @@ const FontSizeInput = ({ onChange, value }) => {
   }, [value]);
   return (
     <div style={{ marginRight: 10, display: 'flex', alignItems: 'center' }}>
-      <Input
-        id='fontSize'
-        style={{
-          width: 30,
-          border: 'none',
-          outline: 'none',
-          textAlign: 'end',
-        }}
-        value={inputValue}
-        onKeyDown={(e) => {
-          e.stopPropagation();
-        }}
-        name='fontSize'
-        step='0.1'
-        min={8}
-        register={() => null}
-        onChange={(event) => {
-          const newValue = event.target.value;
-          if (newValue.match(/^[\d.]+$/) || !newValue) {
-            setInputValue(+newValue);
-            onChange(newValue + 'px');
-          }
-        }}
-      />
-      <label htmlFor='fontSize'>px</label>
+      <label>
+        <Input
+          style={{
+            width: 30,
+            border: 'none',
+            outline: 'none',
+            textAlign: 'end',
+          }}
+          value={inputValue}
+          onKeyDown={(e) => {
+            e.stopPropagation();
+          }}
+          name='fontSize'
+          step='0.1'
+          min={8}
+          register={() => null}
+          onChange={(event) => {
+            const newValue = event.target.value;
+            if (newValue.match(/^[\d.]+$/) || !newValue) {
+              setInputValue(newValue);
+              onChange(newValue + 'px');
+            }
+          }}
+        />
+        {label}
+      </label>
     </div>
   );
 };
