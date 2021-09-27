@@ -11,6 +11,10 @@ import {
   IconLayoutAlignMiddle,
   IconLayoutAlignRight,
   IconLayoutAlignTop,
+  IconLetterCaseLower,
+  IconLetterCaseToggle,
+  IconLetterCaseUpper,
+  IconLettersCase,
   IconOverline,
   IconSquarePlus,
   IconStrikethrough,
@@ -157,6 +161,19 @@ export const ActionBar = ({
             ]}
             onChange={(value) => {
               updateElementStyle({ textDecoration: value } as CSSProperties);
+            }}
+          />
+
+          <IconButtonSelect
+            value={(selectedItemStyle.textTransform as string) || ''}
+            items={[
+              { Icon: <IconLetterCaseToggle stroke={0.5} />, value: '' },
+              { Icon: <IconLetterCaseLower stroke={2} />, value: 'lowercase' },
+              { Icon: <IconLetterCaseUpper stroke={2} />, value: 'uppercase' },
+              { Icon: <IconLettersCase stroke={2} />, value: 'capitalize' },
+            ]}
+            onChange={(value) => {
+              updateElementStyle({ textTransform: value } as CSSProperties);
             }}
           />
 
