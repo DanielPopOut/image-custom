@@ -1,4 +1,10 @@
-import { CSSProperties, useEffect, useState } from 'react';
+import {
+  createContext,
+  CSSProperties,
+  useContext,
+  useEffect,
+  useState,
+} from 'react';
 import { Template, TextItemProps } from '../../models/template.model';
 import { DownloadFonts } from '../../shared/DonwloadFonts';
 import { ActionBar } from './components/ActionBar';
@@ -14,18 +20,96 @@ export const BuilderPage = ({
   initialData: Template;
   onChange?: (newState: Template) => void;
 }) => {
-  const [state, setState] = useState<Template>(initialData);
+  return (
+    <TemplateContextProvider initialTemplate={initialData} onChange={onChange}>
+      <PageContextProvider>
+        <BuilderPageContent />
+      </PageContextProvider>
+    </TemplateContextProvider>
+  );
+};
 
+const BuilderPageContent = () => {
+  const {
+    deleteElement,
+    updatePageData,
+    updateElement,
+    createNewElement,
+    itemToUpdate,
+    setItemToUpdate,
+    state,
+  } = useContext(TemplateContext);
+  return (
+    <div
+      style={{ display: 'flex', outline: 'none', overflow: 'hidden' }}
+      onKeyDown={(e) => {
+        const key = e.key;
+        if (key === 'Backspace' || key === 'Delete') {
+          deleteElement();
+        }
+      }}
+      tabIndex={-1}
+    >
+      <ParametersForm
+        defaultValues={state.page}
+        onSubmit={(data) => updatePageData(data)}
+      />
+
+      <div style={{ padding: 20, position: 'relative' }}>
+        <ActionBar
+          addNewItem={createNewElement}
+          deleteItem={deleteElement}
+          selectedItemStyle={state.elements[itemToUpdate]?.style}
+          updateElementStyle={(data) =>
+            updateElement(itemToUpdate, { style: data })
+          }
+        />
+        <ResultDesign
+          state={state}
+          setItemToUpdate={setItemToUpdate}
+          itemToUpdate={itemToUpdate}
+          updateElement={updateElement}
+        />
+        <QueryAndDownloadUrls state={state} />
+      </div>
+    </div>
+  );
+};
+
+type TemplateContextData = { state: Template; itemToUpdate: string };
+type TemplateContextAction = {
+  updatePageData: (pageData: Partial<Template['page']>) => void;
+  updateElement: (
+    elementId: string,
+    update: Partial<{ value: string; style: CSSProperties }>,
+  ) => void;
+  createNewElement: (elementProps: unknown) => void;
+  deleteElement: (elementId?: string) => void;
+  setItemToUpdate: (elementId?: string) => void;
+};
+const TemplateContext = createContext<
+  TemplateContextData & TemplateContextAction
+>(null);
+
+const TemplateContextProvider = ({
+  children,
+  initialTemplate,
+  onChange,
+}: {
+  initialTemplate: Template;
+  children: React.ReactNode;
+  onChange?: (newState: Template) => void;
+}) => {
+  const [state, setTemplate] = useState<Template>(initialTemplate);
   const [itemToUpdate, setItemToUpdate] = useState<string>(null);
-
   const [fontFamilyRequest, setFontFamilyRequest] = useState(null);
   useEffect(() => {
-    const template = new Template(initialData);
+    const template = new Template(initialTemplate);
     setFontFamilyRequest(template.getGoogleRequestForFonts());
-  }, [initialData]);
+  }, [initialTemplate]);
 
   const updateState = (newState: Template) => {
-    setState(newState);
+    setTemplate({ ...state, ...newState });
     onChange?.(newState);
   };
 
@@ -65,13 +149,13 @@ export const BuilderPage = ({
     });
   };
 
-  const deleteSelectedElement = () => {
-    if (!itemToUpdate || !state.elements[itemToUpdate]) {
+  const deleteElement = (elementId = itemToUpdate) => {
+    if (!elementId || !state.elements[elementId]) {
       return;
     }
     const allElements = { ...state.elements };
 
-    delete allElements[itemToUpdate];
+    delete allElements[elementId];
     updateState({
       ...state,
       elements: allElements,
@@ -80,42 +164,19 @@ export const BuilderPage = ({
   };
 
   return (
-    <PageContextProvider>
+    <TemplateContext.Provider
+      value={{
+        state: state,
+        itemToUpdate,
+        updatePageData,
+        updateElement,
+        createNewElement,
+        deleteElement,
+        setItemToUpdate,
+      }}
+    >
       <DownloadFonts fontFamilyRequest={fontFamilyRequest} />
-
-      <div
-        style={{ display: 'flex', outline: 'none', overflow: 'hidden' }}
-        onKeyDown={(e) => {
-          const key = e.key;
-          if (key === 'Backspace' || key === 'Delete') {
-            deleteSelectedElement();
-          }
-        }}
-        tabIndex={-1}
-      >
-        <ParametersForm
-          defaultValues={state.page}
-          onSubmit={(data) => updatePageData(data)}
-        />
-
-        <div style={{ padding: 20, position: 'relative' }}>
-          <ActionBar
-            addNewItem={createNewElement}
-            deleteItem={deleteSelectedElement}
-            selectedItemStyle={state.elements[itemToUpdate]?.style}
-            updateElementStyle={(data) =>
-              updateElement(itemToUpdate, { style: data })
-            }
-          />
-          <ResultDesign
-            state={state}
-            setItemToUpdate={setItemToUpdate}
-            itemToUpdate={itemToUpdate}
-            updateElement={updateElement}
-          />
-          <QueryAndDownloadUrls state={state} />
-        </div>
-      </div>
-    </PageContextProvider>
+      {children}
+    </TemplateContext.Provider>
   );
 };
