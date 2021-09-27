@@ -53,9 +53,8 @@ export const SizeInput = ({
         >
           <IconMinus size='1em' onClick={() => updateBy(-1)} />
           <Input
-            size={3}
+            size={(+inputValue).toString().length}
             style={{
-              minWidth: 30,
               border: 'none',
               outline: 'none',
               textAlign: 'end',
