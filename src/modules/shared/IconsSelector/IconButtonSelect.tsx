@@ -1,10 +1,10 @@
-import { HTMLAttributes, ReactNode, useEffect, useState } from 'react';
+import { ButtonHTMLAttributes, ReactNode, useEffect, useState } from 'react';
 import { IconButtonContainer } from './IconButton';
 
 type IconData = { Icon: ReactNode; value: string | number; title?: string };
 
 export const IconButtonSelect: React.FC<
-  Omit<HTMLAttributes<HTMLDivElement>, 'onChange'> & {
+  Omit<ButtonHTMLAttributes<HTMLButtonElement>, 'onChange'> & {
     value?: string | number;
     items: Array<IconData>;
     onChange: (data: string | number) => void;

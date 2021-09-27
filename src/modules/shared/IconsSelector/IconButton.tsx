@@ -1,9 +1,10 @@
 import styled from '@emotion/styled';
 import type * as AllIcons from '@tabler/icons';
-import { HTMLAttributes } from 'react';
+import { ButtonHTMLAttributes } from 'react';
 import { Icon } from './Icon';
 
-export const IconButtonContainer = styled.div`
+export const IconButtonContainer = styled.button`
+  background-color: transparent;
   border: 1px solid transparent;
   border-radius: 3px;
   padding: 5px;
@@ -23,7 +24,7 @@ export const IconButtonContainer = styled.div`
 `;
 
 export const IconButton: React.FC<
-  HTMLAttributes<HTMLDivElement> & {
+  ButtonHTMLAttributes<HTMLButtonElement> & {
     disabled?: boolean;
     name: keyof typeof AllIcons;
   }
@@ -31,6 +32,7 @@ export const IconButton: React.FC<
   return (
     <IconButtonContainer
       className={`${className} ${disabled ? 'disabled' : ''}`}
+      disabled={disabled}
       {...props}
     >
       <Icon name={name}></Icon>
