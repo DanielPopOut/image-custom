@@ -35,10 +35,13 @@ export const TemplateContextProvider = ({
   children: React.ReactNode;
   onChange?: (newState: Template) => void;
 }) => {
-  const [state, setTemplate, timeTravelProps] = useStateWithHistory<
+  const [historyState, setHistoryState, timeTravelProps] = useStateWithHistory<
     Template,
     Template
   >(initialTemplate, 20);
+
+  const [state, setTemplate] = useState(initialTemplate);
+
   const [itemToUpdate, setItemToUpdate] = useState<string>(null);
   const [fontFamilyRequest, setFontFamilyRequest] = useState(null);
   useEffect(() => {
@@ -48,13 +51,25 @@ export const TemplateContextProvider = ({
 
   const [, cancel] = useDebounce(
     () => {
-      onChange?.(state);
+      if (historyState !== state) {
+        debugLog('2. go update diff');
+        setHistoryState?.(state);
+      } else {
+        debugLog('4. states are the same');
+      }
     },
     1000,
     [state],
   );
 
+  useEffect(() => {
+    debugLog('3. go update server');
+    onChange?.(historyState);
+    setTemplate(historyState);
+  }, [historyState]);
+
   const updateState = (newState: Template) => {
+    debugLog('1. update template');
     setTemplate({ ...state, ...newState });
   };
 
@@ -131,4 +146,10 @@ export const TemplateContextProvider = ({
       {children}
     </TemplateContext.Provider>
   );
+};
+
+const debugLog = (...data) => {
+  if (process.env.DEBUG_MODE === 'true') {
+    console.log(...data);
+  }
 };
