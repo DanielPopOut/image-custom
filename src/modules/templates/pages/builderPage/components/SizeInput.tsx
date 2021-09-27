@@ -18,18 +18,43 @@ export const SizeInput = ({
       setInputValue(valueNumber);
     }
   }, [value]);
+
+  const onChangeFn = (newValue: string) => {
+    if (newValue.match(/^[\d.]+$/) || !newValue) {
+      setInputValue(newValue);
+      onChange(newValue + 'px');
+    }
+  };
   return (
-    <div style={{ marginRight: 10, display: 'flex', alignItems: 'center' }}>
+    <div
+      style={{
+        marginRight: 10,
+        display: 'flex',
+        alignItems: 'center',
+        fontSize: 14,
+      }}
+    >
       <label>
+        {label && (
+          <span style={{ marginRight: 2, fontWeight: 'bold' }}>{label}:</span>
+        )}
         <Input
+          size={3}
           style={{
-            width: 30,
+            minWidth: 30,
             border: 'none',
             outline: 'none',
             textAlign: 'end',
+            fontSize: 16,
           }}
           value={inputValue}
           onKeyDown={(e) => {
+            console.log(e);
+            if (e.key === 'ArrowDown') {
+              onChangeFn((+inputValue - 1).toString());
+            } else if (e.key === 'ArrowUp') {
+              onChangeFn((+inputValue + 1).toString());
+            }
             e.stopPropagation();
           }}
           name='fontSize'
@@ -37,14 +62,9 @@ export const SizeInput = ({
           min={8}
           register={() => null}
           onChange={(event) => {
-            const newValue = event.target.value;
-            if (newValue.match(/^[\d.]+$/) || !newValue) {
-              setInputValue(newValue);
-              onChange(newValue + 'px');
-            }
+            onChangeFn(event.target.value);
           }}
         />
-        {label}
       </label>
     </div>
   );
