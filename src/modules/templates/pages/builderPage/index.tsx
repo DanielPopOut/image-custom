@@ -2,12 +2,12 @@ import { useContext } from 'react';
 import { Template } from '../../models/template.model';
 import { ActionBar } from './components/ActionBar';
 import { BuilderNavBar } from './components/BuilderNavBar';
-import { ParametersForm } from './components/ParametersForm';
+import { PageParameters } from './components/ParametersForm';
 import { QueryAndDownloadUrls } from './components/QueryAndDownloadUrls';
 import { PageContextProvider } from './contexts/PageContext';
 import {
   TemplateContext,
-  TemplateContextProvider
+  TemplateContextProvider,
 } from './contexts/TemplateContext';
 import { ResultDesign } from './ResultDesign';
 
@@ -56,9 +56,9 @@ const BuilderPageContent = () => {
         tabIndex={-1}
       >
         <div style={{ width: 250, borderRight: '1px solid #aaa' }}>
-          <ParametersForm
+          <PageParameters
             defaultValues={state.page}
-            onSubmit={(data) => updatePageData(data)}
+            onChange={(data) => updatePageData(data)}
           />
         </div>
 

@@ -7,6 +7,30 @@ import { Input } from '../../../../form/Input';
 import { Select } from '../../../../form/Select';
 import { Template } from '../../../models/template.model';
 
+export const PageParameters = ({
+  defaultValues,
+  onChange,
+}: {
+  defaultValues?;
+  onChange: (data) => void;
+}) => {
+  return (
+    <Form<Template['page']>
+      defaultValues={defaultValues}
+      onChange={(data) => {
+        onChange(data);
+      }}
+      onSubmit={() => null}
+      style={containerStyle}
+    >
+      <h4 style={{ marginTop: 0 }}>Page parameters</h4>
+      <DimensionInput name='width' label='width' />
+      <DimensionInput name='height' label='height' />
+      <Input label='Background color' name='backgroundColor' type='color' />
+    </Form>
+  );
+};
+
 export const ParametersForm = ({
   defaultValues,
   onSubmit,
