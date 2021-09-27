@@ -86,7 +86,7 @@ const BuilderNavBarWithTemplateContext = () => {
     <BuilderNavBar
       onExport={() => {
         navigator.clipboard.writeText(JSON.stringify(state, null, 3));
-        alert('Copied in clipboard');
+        setTimeout(() => alert('Copied in clipboard'), 1000);
       }}
       timeTravelProps={{
         hasPrevious,
