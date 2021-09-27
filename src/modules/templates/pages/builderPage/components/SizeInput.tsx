@@ -28,7 +28,7 @@ export const SizeInput = ({
   };
   const updateBy = (value: number) => {
     //This logic is to be able to update by 0.1 or by 1
-    const updateProportion = inputValue.match(/\./) ? 0.1 : 1;
+    const updateProportion = !inputValue?.match(/\./) ? 1 : 0.1;
     onChangeFn(
       (+inputValue + value * updateProportion).toFixed(
         updateProportion === 1 ? 0 : 1,
@@ -36,56 +36,47 @@ export const SizeInput = ({
     );
   };
   return (
-    <div
-      style={{
-        marginRight: 10,
-        display: 'flex',
-        alignItems: 'center',
-        fontSize: 14,
-      }}
-    >
-      <label style={{ display: 'flex', alignItems: 'center' }}>
-        {label && (
-          <span style={{ marginRight: 2, fontWeight: 'bold' }}>{label}:</span>
-        )}
-        <span
+    <label style={{ display: 'flex', alignItems: 'center', fontSize: 14 }}>
+      {label && (
+        <span style={{ marginRight: 2, fontWeight: 'bold' }}>{label}:</span>
+      )}
+      <span
+        style={{
+          border: '1px solid #aaa',
+          borderRadius: 3,
+          display: 'inline-flex',
+          alignItems: 'center',
+          fontSize: 16,
+        }}
+      >
+        <IconMinus size='1em' onClick={() => updateBy(-1)} />
+        <Input
+          size={(+inputValue).toString().length}
           style={{
-            border: '1px solid #aaa',
-            borderRadius: 3,
-            display: 'inline-flex',
-            alignItems: 'center',
+            border: 'none',
+            outline: 'none',
+            textAlign: 'center',
             fontSize: 16,
           }}
-        >
-          <IconMinus size='1em' onClick={() => updateBy(-1)} />
-          <Input
-            size={(+inputValue).toString().length}
-            style={{
-              border: 'none',
-              outline: 'none',
-              textAlign: 'end',
-              fontSize: 16,
-            }}
-            value={inputValue}
-            onKeyDown={(e) => {
-              if (e.key === 'ArrowDown') {
-                updateBy(-1);
-              } else if (e.key === 'ArrowUp') {
-                updateBy(1);
-              }
-              e.stopPropagation();
-            }}
-            name='fontSize'
-            step='0.1'
-            min={8}
-            register={() => null}
-            onChange={(event) => {
-              onChangeFn(event.target.value);
-            }}
-          />
-          <IconPlus size='1em' onClick={() => updateBy(1)} />
-        </span>
-      </label>
-    </div>
+          value={inputValue}
+          onKeyDown={(e) => {
+            if (e.key === 'ArrowDown') {
+              updateBy(-1);
+            } else if (e.key === 'ArrowUp') {
+              updateBy(1);
+            }
+            e.stopPropagation();
+          }}
+          name='fontSize'
+          step='0.1'
+          min={8}
+          register={() => null}
+          onChange={(event) => {
+            onChangeFn(event.target.value);
+          }}
+        />
+        <IconPlus size='1em' onClick={() => updateBy(1)} />
+      </span>
+    </label>
   );
 };
