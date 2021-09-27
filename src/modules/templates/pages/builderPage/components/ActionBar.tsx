@@ -12,14 +12,16 @@ import {
   IconLayoutAlignRight,
   IconLayoutAlignTop,
   IconOverline,
+  IconSquarePlus,
   IconStrikethrough,
+  IconTrash,
   IconUnderline,
 } from '@tabler/icons';
 import { ObjectId } from 'bson';
 import { CSSProperties, useContext, useEffect, useState } from 'react';
 import { BasicFontPicker } from '../../../../form/FontSelector';
 import { Input } from '../../../../form/Input';
-import { IconButton } from '../../../../shared/IconsSelector/IconButton';
+import { IconButtonContainer } from '../../../../shared/IconsSelector/IconButton';
 import { IconButtonSelect } from '../../../../shared/IconsSelector/IconButtonSelect';
 import { TextItemProps } from '../../../models/template.model';
 import { getDefaultText } from '../defaultInitialData';
@@ -46,20 +48,20 @@ export const ActionBar = ({
         alignItems: 'center',
       }}
     >
-      <IconButton
-        name='IconWriting'
-        title='New text'
-        onClick={() => {
-          addNewItem({
-            id: new ObjectId().toHexString(),
-            ...getDefaultText({
-              text: 'New text',
-              left: sheetPosition.width / 2,
-              top: sheetPosition.height / 2,
-            }),
-          });
-        }}
-      />
+      <IconButtonContainer title='New text'>
+        <IconSquarePlus
+          onClick={() => {
+            addNewItem({
+              id: new ObjectId().toHexString(),
+              ...getDefaultText({
+                text: 'New text',
+                left: sheetPosition.width / 2,
+                top: sheetPosition.height / 2,
+              }),
+            });
+          }}
+        />
+      </IconButtonContainer>
 
       {selectedItemStyle && (
         <>
@@ -157,11 +159,9 @@ export const ActionBar = ({
             }}
           />
 
-          <IconButton
-            name='IconTrash'
-            title='Delete element'
-            onClick={deleteItem}
-          />
+          <IconButtonContainer title='Delete element'>
+            <IconTrash onClick={deleteItem} />
+          </IconButtonContainer>
         </>
       )}
     </div>
