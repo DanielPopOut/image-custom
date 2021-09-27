@@ -3,6 +3,7 @@ import {
   Control,
   Controller,
   FieldValues,
+  RefCallBack,
   UseFormRegister,
 } from 'react-hook-form';
 import { UploadFileComponent } from '../components/uploadFileComponent';
@@ -34,33 +35,34 @@ export const BackgroundInput = ({
   );
 };
 type BackgroundInputState = { backgroundUrl: string };
-const BackgroundInputBase = ({
-  value,
-  onChange,
-}: {
-  value: string;
-  onChange: (data) => void;
-}) => {
-  const [state, setState] = useState<BackgroundInputState>({
-    backgroundUrl: '',
-  });
-  useEffect(() => {
-    const matchedValues = ('' + value).match(/url\((.*)\)/);
-    if (matchedValues) {
-      const backgroundUrl = matchedValues[1];
-      setState({ backgroundUrl });
-    }
-  }, [value]);
+const BackgroundInputBase = React.forwardRef(
+  (
+    { value, onChange }: { value: string; onChange: (data) => void },
+    ref: RefCallBack,
+  ) => {
+    const [state, setState] = useState<BackgroundInputState>({
+      backgroundUrl: '',
+    });
+    useEffect(() => {
+      const matchedValues = ('' + value).match(/url\((.*)\)/);
+      if (matchedValues) {
+        const backgroundUrl = matchedValues[1];
+        setState({ backgroundUrl });
+      }
+    }, [value]);
 
-  const onChangeFn = (newState: BackgroundInputState) => {
-    setState(newState);
-    onChange(`url(${newState.backgroundUrl})`);
-  };
+    const onChangeFn = (newState: BackgroundInputState) => {
+      setState(newState);
+      onChange(`url(${newState.backgroundUrl})`);
+    };
 
-  return (
-    <UploadFileComponent
-      url={state.backgroundUrl}
-      onChange={(data) => onChangeFn({ backgroundUrl: data })}
-    />
-  );
-};
+    return (
+      <div ref={ref}>
+        <UploadFileComponent
+          url={state.backgroundUrl}
+          onChange={(data) => onChangeFn({ backgroundUrl: data })}
+        />
+      </div>
+    );
+  },
+);
