@@ -6,28 +6,35 @@ import Form from '../../../../form/Form';
 import { Input } from '../../../../form/Input';
 import { Select } from '../../../../form/Select';
 import { Template } from '../../../models/template.model';
+import { ColorInput } from './ColorInput';
+import { SizeInput } from './SizeInput';
 
 export const PageParameters = ({
   defaultValues,
   onChange,
 }: {
-  defaultValues?;
+  defaultValues?: CSSProperties;
   onChange: (data) => void;
 }) => {
   return (
-    <Form<Template['page']>
-      defaultValues={defaultValues}
-      onChange={(data) => {
-        onChange(data);
-      }}
-      onSubmit={() => null}
-      style={containerStyle}
-    >
+    <div style={{ padding: 10 }}>
       <h4 style={{ marginTop: 0 }}>Page parameters</h4>
-      <DimensionInput name='width' label='width' />
-      <DimensionInput name='height' label='height' />
-      <Input label='Background color' name='backgroundColor' type='color' />
-    </Form>
+
+      <SizeInput
+        value={defaultValues.width as string}
+        onChange={(data) => onChange({ width: data })}
+        label='Width'
+      />
+      <SizeInput
+        value={defaultValues.height as string}
+        onChange={(data) => onChange({ height: data })}
+        label='Height'
+      />
+      <ColorInput
+        value={defaultValues.backgroundColor}
+        onChange={(newColor) => onChange({ backgroundColor: newColor })}
+      />
+    </div>
   );
 };
 
