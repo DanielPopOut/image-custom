@@ -27,7 +27,13 @@ export const SizeInput = ({
     }
   };
   const updateBy = (value: number) => {
-    onChangeFn((+inputValue + value).toString());
+    //This logic is to be able to update by 0.1 or by 1
+    const updateProportion = inputValue.match(/\./) ? 0.1 : 1;
+    onChangeFn(
+      (+inputValue + value * updateProportion).toFixed(
+        updateProportion === 1 ? 0 : 1,
+      ),
+    );
   };
   return (
     <div
