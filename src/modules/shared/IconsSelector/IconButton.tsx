@@ -4,7 +4,6 @@ import { HTMLAttributes } from 'react';
 import { Icon } from './Icon';
 
 export const IconButtonContainer = styled.div`
-  margin: 0 10px;
   border: 1px solid transparent;
   border-radius: 3px;
   padding: 5px;
