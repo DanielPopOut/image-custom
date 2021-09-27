@@ -11,7 +11,7 @@ export const QueryAndDownloadUrls = ({ state }: { state: Template }) => {
     .map((variable) => `${variable}=VALUE_${variable.toUpperCase()}`)
     .join('&');
   return (
-    <div>
+    <div style={{ padding: 20 }}>
       <div>
         <a
           style={{ color: 'blue', textDecoration: 'underline' }}

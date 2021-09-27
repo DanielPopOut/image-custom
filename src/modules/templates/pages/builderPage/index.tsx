@@ -113,8 +113,8 @@ export const BuilderPage = ({
             itemToUpdate={itemToUpdate}
             updateElement={updateElement}
           />
+          <QueryAndDownloadUrls state={state} />
         </div>
-        <QueryAndDownloadUrls state={state} />
       </div>
     </PageContextProvider>
   );
