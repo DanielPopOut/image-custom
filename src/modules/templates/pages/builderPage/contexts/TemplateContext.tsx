@@ -14,6 +14,7 @@ type TemplateContextData = {
     hasNext: boolean;
     back: () => void;
     forward: () => void;
+    isSaving: boolean;
   };
 };
 type TemplateContextAction = {
@@ -29,10 +30,12 @@ type TemplateContextAction = {
 export const TemplateContextProvider = ({
   children,
   initialTemplate,
+  isSaving,
   onChange,
 }: {
   initialTemplate: Template;
   children: React.ReactNode;
+  isSaving;
   onChange?: (newState: Template) => void;
 }) => {
   const [historyState, setHistoryState, timeTravelProps] = useStateWithHistory<
@@ -139,6 +142,7 @@ export const TemplateContextProvider = ({
             timeTravelProps.position < timeTravelProps.history.length - 1,
           back: timeTravelProps.back,
           forward: timeTravelProps.forward,
+          isSaving,
         },
       }}
     >

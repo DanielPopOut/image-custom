@@ -5,12 +5,14 @@ import { IconButtonContainer } from '../../../../../shared/IconsSelector/IconBut
 type BuilderNavBarType = {
   timeTravelProps: TimeTravelProps;
   onExport: () => void;
+  isSaving: boolean;
 };
 
 export const BuilderNavBar: React.FC<BuilderNavBarType> = ({
   children,
   timeTravelProps,
   onExport,
+  isSaving,
 }) => {
   return (
     <>
@@ -19,6 +21,12 @@ export const BuilderNavBar: React.FC<BuilderNavBarType> = ({
         <div className='inner'>
           <div className='buttons_container'>
             <BuilderButtons {...timeTravelProps} />
+            {isSaving && (
+              <>
+                <span className='loader' style={{ fontSize: 16 }} />
+                <span>Saving...</span>
+              </>
+            )}
           </div>
           <button onClick={onExport}>Export</button>
         </div>

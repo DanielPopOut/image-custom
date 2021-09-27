@@ -22,6 +22,7 @@ export const BuilderPage = ({
   return (
     <TemplateContextProvider
       initialTemplate={initialData}
+      isSaving={templateDataUpdated.loading}
       onChange={(newTemplateData) => {
         updateTemplateData(newTemplateData._id, newTemplateData);
       }}
@@ -92,7 +93,7 @@ const BuilderPageContent = () => {
 
 const BuilderNavBarWithTemplateContext = () => {
   const {
-    builderNavBarProps: { hasPrevious, hasNext, back, forward },
+    builderNavBarProps: { hasPrevious, hasNext, back, forward, isSaving },
     state,
   } = useContext(TemplateContext);
   return (
@@ -107,6 +108,7 @@ const BuilderNavBarWithTemplateContext = () => {
         undo: () => back(),
         redo: () => forward(),
       }}
+      isSaving={isSaving}
     />
   );
 };
