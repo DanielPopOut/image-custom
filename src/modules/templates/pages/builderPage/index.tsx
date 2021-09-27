@@ -102,17 +102,10 @@ export const BuilderPage = ({
         }}
         tabIndex={-1}
       >
-        {/* <style>
-              @import
-              url('https://fonts.googleapis.com/css2?family=Roboto:ital,wght@0,300;1,400&display=swap');
-            </style> */}
-        <div style={{ display: 'flex', flexDirection: 'column', width: 350 }}>
-          <ParametersForm
-            defaultValues={state.page}
-            onSubmit={(data) => updatePageData(data)}
-          />
-          <div style={{ padding: 20 }}></div>
-        </div>
+        <ParametersForm
+          defaultValues={state.page}
+          onSubmit={(data) => updatePageData(data)}
+        />
 
         <div style={{ padding: 20, position: 'relative' }}>
           <ActionBar
@@ -151,31 +144,6 @@ export const BuilderPage = ({
             </div>
           </div>
         </div>
-        {/*
-        //HIDE THIS PART BECAUSE NOT USED FOR THE MOMENT...
-        {itemToUpdate && state.elements[itemToUpdate] && (
-          <div
-            style={{
-              ...containerStyle,
-              height: 'fit-content',
-              backgroundColor: 'white',
-              color: 'black',
-              width: 'fit-content',
-              padding: 10,
-            }}
-          >
-            <h4 style={{ marginTop: 0 }}>Update element</h4>
-            <TextInputFormFields
-              defaultValues={{
-                ...state.elements[itemToUpdate].style,
-                value: state.elements[itemToUpdate].value,
-              }}
-              onSubmit={(style) => {
-                updateElement(itemToUpdate, { style });
-              }}
-            />
-          </div>
-        )} */}
       </div>
     </PageContextProvider>
   );
