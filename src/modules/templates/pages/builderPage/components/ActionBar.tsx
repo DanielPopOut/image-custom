@@ -15,6 +15,8 @@ import {
   IconLetterCaseToggle,
   IconLetterCaseUpper,
   IconLettersCase,
+  IconLetterSpacing,
+  IconLineHeight,
   IconOverline,
   IconSquarePlus,
   IconStrikethrough,
@@ -25,6 +27,7 @@ import { ObjectId } from 'bson';
 import { CSSProperties, useContext } from 'react';
 import { BasicFontPicker } from '../../../../form/FontSelector';
 import { IconButtonContainer } from '../../../../shared/IconsSelector/IconButton';
+import { IconButtonMenu } from '../../../../shared/IconsSelector/IconButtonMenu';
 import { IconButtonSelect } from '../../../../shared/IconsSelector/IconButtonSelect';
 import { TextItemProps } from '../../../models/template.model';
 import { PageContext } from '../contexts/PageContext';
@@ -176,6 +179,23 @@ export const ActionBar = ({
               updateElementStyle({ textTransform: value } as CSSProperties);
             }}
           />
+
+          <IconButtonMenu Icon={<IconLineHeight />}>
+            <div style={{ display: 'flex', alignItems: 'center' }}>
+              <IconLetterSpacing />{' '}
+              <SizeInput
+                value={selectedItemStyle.letterSpacing as string}
+                onChange={(data) => updateElementStyle({ letterSpacing: data })}
+              />
+            </div>
+            <div style={{ display: 'flex', alignItems: 'center' }}>
+              <IconLineHeight />{' '}
+              <SizeInput
+                value={selectedItemStyle.lineHeight as string}
+                onChange={(data) => updateElementStyle({ lineHeight: data })}
+              />
+            </div>
+          </IconButtonMenu>
 
           <IconButtonContainer title='Delete element' className='danger'>
             <IconTrash onClick={deleteItem} />
