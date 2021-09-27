@@ -1,4 +1,4 @@
-import React, { CSSProperties } from 'react';
+import React, { CSSProperties, useEffect } from 'react';
 import ContentEditable from 'react-contenteditable';
 import { useDebounce } from 'react-use';
 import { TextItemProps } from '../../../../models/template.model';
@@ -25,6 +25,9 @@ const TextItem = ({
     1000,
     [debouncedValue],
   );
+  useEffect(() => {
+    setDebouncedValue(value);
+  }, [value]);
   return (
     <div
       style={{
