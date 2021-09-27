@@ -24,8 +24,8 @@ import { Input } from '../../../../form/Input';
 import { IconButtonContainer } from '../../../../shared/IconsSelector/IconButton';
 import { IconButtonSelect } from '../../../../shared/IconsSelector/IconButtonSelect';
 import { TextItemProps } from '../../../models/template.model';
+import { PageContext } from '../contexts/PageContext';
 import { getDefaultText } from '../defaultInitialData';
-import { PageContext } from '../PageContext';
 
 export const ActionBar = ({
   addNewItem,

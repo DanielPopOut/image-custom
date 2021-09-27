@@ -3,11 +3,11 @@ import { Template } from '../../models/template.model';
 import { ActionBar } from './components/ActionBar';
 import { ParametersForm } from './components/ParametersForm';
 import { QueryAndDownloadUrls } from './components/QueryAndDownloadUrls';
+import { PageContextProvider } from './contexts/PageContext';
 import {
   TemplateContext,
   TemplateContextProvider,
 } from './contexts/TemplateContext';
-import { PageContextProvider } from './PageContext';
 import { ResultDesign } from './ResultDesign';
 
 export const BuilderPage = ({

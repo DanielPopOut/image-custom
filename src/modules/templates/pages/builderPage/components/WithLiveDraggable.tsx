@@ -5,7 +5,7 @@ import React, {
   useEffect,
   useState,
 } from 'react';
-import { PageContext } from '../PageContext';
+import { PageContext } from '../contexts/PageContext';
 
 export const WithLiveDraggable =
   <P extends React.HTMLAttributes<HTMLDivElement>>(Component: React.FC<P>) =>

@@ -7,7 +7,7 @@ import React, {
 } from 'react';
 import { Template } from '../../models/template.model';
 import { DraggableTextItem } from './components/basics/TextItem';
-import { PageContext } from './PageContext';
+import { PageContext } from './contexts/PageContext';
 
 export const ResultDesign = ({
   state,
