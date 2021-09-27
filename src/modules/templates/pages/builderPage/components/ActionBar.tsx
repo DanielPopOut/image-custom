@@ -20,12 +20,12 @@ import {
 import { ObjectId } from 'bson';
 import { CSSProperties, useContext } from 'react';
 import { BasicFontPicker } from '../../../../form/FontSelector';
-import { Input } from '../../../../form/Input';
 import { IconButtonContainer } from '../../../../shared/IconsSelector/IconButton';
 import { IconButtonSelect } from '../../../../shared/IconsSelector/IconButtonSelect';
 import { TextItemProps } from '../../../models/template.model';
 import { PageContext } from '../contexts/PageContext';
 import { getDefaultText } from '../defaultInitialData';
+import { ColorInput } from './ColorInput';
 import { SizeInput } from './SizeInput';
 
 export const ActionBar = ({
@@ -166,29 +166,5 @@ export const ActionBar = ({
         </>
       )}
     </div>
-  );
-};
-
-const ColorInput = ({
-  value,
-  onChange,
-}: {
-  value: string;
-  onChange: (newColor: string) => void;
-}) => {
-  return (
-    <Input
-      name='color'
-      type='color'
-      style={{
-        border: 'none',
-        backgroundColor: 'transparent',
-        width: 30,
-        height: 30,
-      }}
-      value={value}
-      register={() => null}
-      onChange={(e) => onChange(e.target.value)}
-    />
   );
 };
