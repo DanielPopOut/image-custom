@@ -1,11 +1,21 @@
 import { createContext, CSSProperties, useEffect, useState } from 'react';
+import { useStateWithHistory } from 'react-use';
 import { Template, TextItemProps } from '../../../models/template.model';
 import { DownloadFonts } from '../../../shared/DonwloadFonts';
 
 export const TemplateContext = createContext<
   TemplateContextData & TemplateContextAction
 >(null);
-type TemplateContextData = { state: Template; itemToUpdate: string };
+type TemplateContextData = {
+  state: Template;
+  itemToUpdate: string;
+  builderNavBarProps: {
+    hasPrevious: boolean;
+    hasNext: boolean;
+    back: () => void;
+    forward: () => void;
+  };
+};
 type TemplateContextAction = {
   updatePageData: (pageData: Partial<Template['page']>) => void;
   updateElement: (
@@ -25,7 +35,10 @@ export const TemplateContextProvider = ({
   children: React.ReactNode;
   onChange?: (newState: Template) => void;
 }) => {
-  const [state, setTemplate] = useState<Template>(initialTemplate);
+  const [state, setTemplate, timeTravelProps] = useStateWithHistory<
+    Template,
+    Template
+  >(initialTemplate, 20);
   const [itemToUpdate, setItemToUpdate] = useState<string>(null);
   const [fontFamilyRequest, setFontFamilyRequest] = useState(null);
   useEffect(() => {
@@ -34,6 +47,7 @@ export const TemplateContextProvider = ({
   }, [initialTemplate]);
 
   const updateState = (newState: Template) => {
+    console.log('update state called', { newState });
     setTemplate({ ...state, ...newState });
     onChange?.(newState);
   };
@@ -98,6 +112,13 @@ export const TemplateContextProvider = ({
         createNewElement,
         deleteElement,
         setItemToUpdate,
+        builderNavBarProps: {
+          hasPrevious: timeTravelProps.position > 0,
+          hasNext:
+            timeTravelProps.position < timeTravelProps.history.length - 1,
+          back: timeTravelProps.back,
+          forward: timeTravelProps.forward,
+        },
       }}
     >
       <DownloadFonts fontFamilyRequest={fontFamilyRequest} />

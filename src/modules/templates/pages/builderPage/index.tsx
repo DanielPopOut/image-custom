@@ -1,6 +1,7 @@
 import { useContext } from 'react';
 import { Template } from '../../models/template.model';
 import { ActionBar } from './components/ActionBar';
+import { BuilderNavBar } from './components/BuilderNavBar';
 import { ParametersForm } from './components/ParametersForm';
 import { QueryAndDownloadUrls } from './components/QueryAndDownloadUrls';
 import { PageContextProvider } from './contexts/PageContext';
@@ -37,38 +38,62 @@ const BuilderPageContent = () => {
     state,
   } = useContext(TemplateContext);
   return (
-    <div
-      style={{ display: 'flex', outline: 'none', overflow: 'hidden' }}
-      onKeyDown={(e) => {
-        const key = e.key;
-        if (key === 'Backspace' || key === 'Delete') {
-          deleteElement();
-        }
-      }}
-      tabIndex={-1}
-    >
-      <ParametersForm
-        defaultValues={state.page}
-        onSubmit={(data) => updatePageData(data)}
-      />
-
-      <div style={{ padding: 20, position: 'relative' }}>
-        <ActionBar
-          addNewItem={createNewElement}
-          deleteItem={deleteElement}
-          selectedItemStyle={state.elements[itemToUpdate]?.style}
-          updateElementStyle={(data) =>
-            updateElement(itemToUpdate, { style: data })
+    <div>
+      <BuilderNavBarWithTemplateContext />
+      <div
+        style={{ display: 'flex', outline: 'none', overflow: 'hidden' }}
+        onKeyDown={(e) => {
+          const key = e.key;
+          if (key === 'Backspace' || key === 'Delete') {
+            deleteElement();
           }
+        }}
+        tabIndex={-1}
+      >
+        <ParametersForm
+          defaultValues={state.page}
+          onSubmit={(data) => updatePageData(data)}
         />
-        <ResultDesign
-          state={state}
-          setItemToUpdate={setItemToUpdate}
-          itemToUpdate={itemToUpdate}
-          updateElement={updateElement}
-        />
-        <QueryAndDownloadUrls state={state} />
+
+        <div style={{ padding: 20, position: 'relative' }}>
+          <ActionBar
+            addNewItem={createNewElement}
+            deleteItem={deleteElement}
+            selectedItemStyle={state.elements[itemToUpdate]?.style}
+            updateElementStyle={(data) =>
+              updateElement(itemToUpdate, { style: data })
+            }
+          />
+          <ResultDesign
+            state={state}
+            setItemToUpdate={setItemToUpdate}
+            itemToUpdate={itemToUpdate}
+            updateElement={updateElement}
+          />
+          <QueryAndDownloadUrls state={state} />
+        </div>
       </div>
     </div>
+  );
+};
+
+const BuilderNavBarWithTemplateContext = () => {
+  const {
+    builderNavBarProps: { hasPrevious, hasNext, back, forward },
+    state,
+  } = useContext(TemplateContext);
+  return (
+    <BuilderNavBar
+      onExport={() => {
+        navigator.clipboard.writeText(JSON.stringify(state, null, 3));
+        alert('Copied in clipboard');
+      }}
+      timeTravelProps={{
+        hasPrevious,
+        hasNext,
+        undo: () => back(),
+        redo: () => forward(),
+      }}
+    />
   );
 };
