@@ -1,4 +1,5 @@
 import { useContext } from 'react';
+import { useUpdateTemplate } from '../../hooks/hooks';
 import { Template } from '../../models/template.model';
 import { ActionBar } from './components/ActionBar';
 import { BuilderNavBar } from './components/BuilderNavBar';
@@ -13,13 +14,18 @@ import { ResultDesign } from './ResultDesign';
 
 export const BuilderPage = ({
   initialData,
-  onChange,
 }: {
   initialData: Template;
   onChange?: (newState: Template) => void;
 }) => {
+  const [templateDataUpdated, updateTemplateData] = useUpdateTemplate();
   return (
-    <TemplateContextProvider initialTemplate={initialData} onChange={onChange}>
+    <TemplateContextProvider
+      initialTemplate={initialData}
+      onChange={(newTemplateData) => {
+        updateTemplateData(newTemplateData._id, newTemplateData);
+      }}
+    >
       <PageContextProvider>
         <BuilderPageContent />
       </PageContextProvider>

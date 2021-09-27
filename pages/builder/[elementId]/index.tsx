@@ -1,9 +1,6 @@
 import { useRouter } from 'next/dist/client/router';
 import { useEffect } from 'react';
-import {
-  useGetTemplate,
-  useUpdateTemplate,
-} from '../../../src/modules/templates/hooks/hooks';
+import { useGetTemplate } from '../../../src/modules/templates/hooks/hooks';
 import { Template } from '../../../src/modules/templates/models/template.model';
 import { BuilderPage } from '../../../src/modules/templates/pages/builderPage';
 import { CreateNewTemplateButton } from '../../../src/modules/templates/pages/builderPage/components/CreateNewTemplateButton';
@@ -12,7 +9,6 @@ const ElementComponent = () => {
   const router = useRouter();
   const elementId = router.query.elementId as string;
   const [templateData, getTemplateData] = useGetTemplate();
-  const [templateDataUpdated, updateTemplateData] = useUpdateTemplate();
 
   useEffect(() => {
     if (elementId) {
@@ -32,14 +28,7 @@ const ElementComponent = () => {
     );
   }
 
-  return (
-    <BuilderPage
-      initialData={templateData.value as Template}
-      onChange={(newTemplateData) =>
-        updateTemplateData(elementId, newTemplateData)
-      }
-    />
-  );
+  return <BuilderPage initialData={templateData.value as Template} />;
 };
 
 export default ElementComponent;
