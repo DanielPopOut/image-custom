@@ -47,7 +47,6 @@ export const TemplateContextProvider = ({
   }, [initialTemplate]);
 
   const updateState = (newState: Template) => {
-    console.log('update state called', { newState });
     setTemplate({ ...state, ...newState });
     onChange?.(newState);
   };
