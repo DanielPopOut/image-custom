@@ -1,5 +1,5 @@
 import { createContext, CSSProperties, useEffect, useState } from 'react';
-import { useStateWithHistory } from 'react-use';
+import { useDebounce, useStateWithHistory } from 'react-use';
 import { Template, TextItemProps } from '../../../models/template.model';
 import { DownloadFonts } from '../../../shared/DonwloadFonts';
 
@@ -46,9 +46,16 @@ export const TemplateContextProvider = ({
     setFontFamilyRequest(template.getGoogleRequestForFonts());
   }, [initialTemplate]);
 
+  const [, cancel] = useDebounce(
+    () => {
+      onChange?.(state);
+    },
+    1000,
+    [state],
+  );
+
   const updateState = (newState: Template) => {
     setTemplate({ ...state, ...newState });
-    onChange?.(newState);
   };
 
   const updatePageData = (newPageProps) => {
