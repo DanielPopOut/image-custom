@@ -1,10 +1,9 @@
 import { CSSProperties, useEffect, useState } from 'react';
-import { API_ROUTES, ROUTES } from '../../../shared/routes/ROUTES';
-import { stringHelper } from '../../../shared/services/stringHelper';
 import { Template, TextItemProps } from '../../models/template.model';
 import { DownloadFonts } from '../../shared/DonwloadFonts';
 import { ActionBar } from './components/ActionBar';
 import { ParametersForm } from './components/ParametersForm';
+import { QueryAndDownloadUrls } from './components/QueryAndDownloadUrls';
 import { PageContextProvider } from './PageContext';
 import { ResultDesign } from './ResultDesign';
 
@@ -80,14 +79,6 @@ export const BuilderPage = ({
     setItemToUpdate(null);
   };
 
-  const allVariables = stringHelper.getValueToInterpolateInStringArray(
-    Object.values(state.elements).map((element) => element.value.toLowerCase()),
-  );
-
-  const queryString = [...allVariables]
-    .map((variable) => `${variable}=VALUE_${variable.toUpperCase()}`)
-    .join('&');
-
   return (
     <PageContextProvider>
       <DownloadFonts fontFamilyRequest={fontFamilyRequest} />
@@ -122,28 +113,8 @@ export const BuilderPage = ({
             itemToUpdate={itemToUpdate}
             updateElement={updateElement}
           />
-          <div>
-            <div>
-              <a
-                style={{ color: 'blue', textDecoration: 'underline' }}
-                href={`${ROUTES.PREVIEW_TEMPLATE_ID(state._id)}?${queryString}`}
-              >
-                Preview page
-              </a>
-              <br />
-              <div>
-                Api url :
-                <div>
-                  {`https://${
-                    process.env.NEXT_PUBLIC_VERCEL_URL
-                  }${API_ROUTES.DOWNLOAD_TEMPLATE_ID(
-                    state._id,
-                  )}?${queryString}`}
-                </div>
-              </div>
-            </div>
-          </div>
         </div>
+        <QueryAndDownloadUrls state={state} />
       </div>
     </PageContextProvider>
   );
