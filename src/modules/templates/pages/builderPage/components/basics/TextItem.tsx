@@ -17,6 +17,9 @@ const TextItem = ({
   const [debouncedValue, setDebouncedValue] = React.useState(value);
   const [, cancel] = useDebounce(
     () => {
+      if (debouncedValue === value) {
+        return;
+      }
       onChange({ value: debouncedValue });
     },
     1000,
