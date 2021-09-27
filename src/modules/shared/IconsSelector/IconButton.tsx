@@ -10,7 +10,11 @@ export const IconButtonContainer = styled.div`
   display: flex;
   align-items: center;
   &:hover {
-    border: 1px solid #eee;
+    border: 1px solid #555;
+    &.danger {
+      color: red;
+      border-color: red;
+    }
   }
   &.disabled {
     color: #aaa;

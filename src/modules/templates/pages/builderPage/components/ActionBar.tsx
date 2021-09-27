@@ -159,7 +159,7 @@ export const ActionBar = ({
             }}
           />
 
-          <IconButtonContainer title='Delete element'>
+          <IconButtonContainer title='Delete element' className='danger'>
             <IconTrash onClick={deleteItem} />
           </IconButtonContainer>
         </>
