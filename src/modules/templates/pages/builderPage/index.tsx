@@ -7,7 +7,7 @@ import { QueryAndDownloadUrls } from './components/QueryAndDownloadUrls';
 import { PageContextProvider } from './contexts/PageContext';
 import {
   TemplateContext,
-  TemplateContextProvider,
+  TemplateContextProvider
 } from './contexts/TemplateContext';
 import { ResultDesign } from './ResultDesign';
 
@@ -38,10 +38,15 @@ const BuilderPageContent = () => {
     state,
   } = useContext(TemplateContext);
   return (
-    <div>
+    <div style={{ display: 'flex', flexDirection: 'column', height: '100vh' }}>
       <BuilderNavBarWithTemplateContext />
       <div
-        style={{ display: 'flex', outline: 'none', overflow: 'hidden' }}
+        style={{
+          display: 'flex',
+          outline: 'none',
+          overflow: 'hidden',
+          flex: 1,
+        }}
         onKeyDown={(e) => {
           const key = e.key;
           if (key === 'Backspace' || key === 'Delete') {
@@ -50,10 +55,12 @@ const BuilderPageContent = () => {
         }}
         tabIndex={-1}
       >
-        <ParametersForm
-          defaultValues={state.page}
-          onSubmit={(data) => updatePageData(data)}
-        />
+        <div style={{ width: 250, borderRight: '1px solid #aaa' }}>
+          <ParametersForm
+            defaultValues={state.page}
+            onSubmit={(data) => updatePageData(data)}
+          />
+        </div>
 
         <div style={{ padding: 20, position: 'relative' }}>
           <ActionBar

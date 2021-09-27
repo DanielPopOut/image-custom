@@ -54,7 +54,6 @@ const containerStyle: CSSProperties = {
   flexDirection: 'column',
   maxWidth: 250,
   padding: 20,
-  border: '1px solid grey',
 };
 const TextInputFormFields = ({
   defaultValues,

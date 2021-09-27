@@ -39,6 +39,7 @@ const BuilderNavBarContainer = styled.div`
     position: fixed;
     background: white;
     z-index: 100;
+    height: 40px;
 
     .buttons_container {
       display: flex;
