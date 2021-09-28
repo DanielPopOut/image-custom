@@ -73,6 +73,12 @@ const TextItem = forwardRef(
           onChange={(data) => {
             setDebouncedValue(data.target.value);
           }} // handle innerHTML change
+          onPaste={(e) => {
+            const data = e.clipboardData.getData('text');
+            if (!data) {
+              e.preventDefault();
+            }
+          }}
           tagName='article' // Use a custom HTML tag (uses a div by default)
         />
       </TextItemContainer>

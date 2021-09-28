@@ -1,6 +1,7 @@
 import React, {
   CSSProperties,
   DragEvent,
+  forwardRef,
   HTMLAttributes,
   useCallback,
   useContext,
@@ -8,6 +9,7 @@ import React, {
 import { clipBoardService } from '../../../shared/services/clipBoardService';
 import { Template } from '../../models/template.model';
 import { DraggableTextItem } from './components/basics/TextItem';
+import { WithCopyPaste } from './components/WithCopyPaste';
 import { PageContext } from './contexts/PageContext';
 
 export const ResultDesign = ({
@@ -91,7 +93,7 @@ const DrawingPage: React.FC<HTMLAttributes<HTMLDivElement>> = ({
     [style],
   ); // adjust deps
   return (
-    <div
+    <MainDiv
       ref={onRefChange}
       className='to_download'
       style={{
@@ -100,8 +102,22 @@ const DrawingPage: React.FC<HTMLAttributes<HTMLDivElement>> = ({
         ...style,
       }}
       onClick={onClick}
+      onPaste={(event) => {
+        event.preventDefault();
+        console.log({ data: event, text: 'data to paste' });
+      }}
     >
       {children}
-    </div>
+    </MainDiv>
   );
 };
+
+const MainDiv = WithCopyPaste(
+  forwardRef(({ children, ...props }, ref) => {
+    return (
+      <div {...props} ref={ref as any}>
+        {children}
+      </div>
+    );
+  }),
+);

@@ -26,6 +26,7 @@ export const WithCopyPaste = <P extends React.HTMLAttributes<HTMLDivElement>>(
             onCopy?.(e);
           }}
           onPaste={(e) => {
+            e.preventDefault();
             onPaste?.(e);
           }}
           contentEditable
