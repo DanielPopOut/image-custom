@@ -5,6 +5,7 @@ import React, {
   useCallback,
   useContext,
 } from 'react';
+import { clipBoardService } from '../../../shared/services/clipBoardService';
 import { Template } from '../../models/template.model';
 import { DraggableTextItem } from './components/basics/TextItem';
 import { PageContext } from './contexts/PageContext';
@@ -49,6 +50,9 @@ export const ResultDesign = ({
               isSelected={itemToUpdate === item.id}
               key={item.id}
               {...item}
+              onCopy={() => {
+                clipBoardService.copy(item);
+              }}
               onDragStart={() => setItemToUpdate(item.id)}
               onDragEnd={(data) => updateItemPositionOnDragEnd(item.id, data)}
               onClick={(e) => {
