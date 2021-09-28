@@ -7,7 +7,7 @@ import React, {
 export const WithCopyPaste = <P extends React.HTMLAttributes<HTMLDivElement>>(
   Component: ForwardRefExoticComponent<P & { ref: ForwardedRef<unknown> }>,
 ) =>
-  forwardRef(({ onCopy, style, children, ...props }: P, ref) => {
+  forwardRef(({ onCopy, onPaste, style, children, ...props }: P, ref) => {
     const componentProps = { ...props, style } as P;
 
     return (
@@ -24,6 +24,9 @@ export const WithCopyPaste = <P extends React.HTMLAttributes<HTMLDivElement>>(
           onKeyPress={(e) => e.preventDefault()}
           onCopy={(e) => {
             onCopy?.(e);
+          }}
+          onPaste={(e) => {
+            onPaste?.(e);
           }}
           contentEditable
         />
