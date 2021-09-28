@@ -3,7 +3,7 @@ import React, { CSSProperties, forwardRef, useEffect } from 'react';
 import ContentEditable from 'react-contenteditable';
 import { useDebounce } from 'react-use';
 import { TextItemProps } from '../../../../models/template.model';
-import { WithCopy } from '../WithCopy';
+import { WithCopyPaste } from '../WithCopyPaste';
 import { WithLiveDraggable } from '../WithLiveDraggable';
 import { WithResize } from '../WithResize';
 
@@ -81,5 +81,5 @@ const TextItem = forwardRef(
 );
 
 export const DraggableTextItem = WithLiveDraggable(
-  WithResize(WithCopy(TextItem)),
+  WithResize(WithCopyPaste(TextItem)),
 );

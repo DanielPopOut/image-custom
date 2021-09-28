@@ -4,7 +4,7 @@ import React, {
   ForwardRefExoticComponent,
 } from 'react';
 
-export const WithCopy = <P extends React.HTMLAttributes<HTMLDivElement>>(
+export const WithCopyPaste = <P extends React.HTMLAttributes<HTMLDivElement>>(
   Component: ForwardRefExoticComponent<P & { ref: ForwardedRef<unknown> }>,
 ) =>
   forwardRef(({ onCopy, style, children, ...props }: P, ref) => {
