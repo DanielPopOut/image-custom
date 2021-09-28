@@ -1,4 +1,5 @@
 import { useContext } from 'react';
+import { clipBoardService } from '../../../shared/services/clipBoardService';
 import { useUpdateTemplate } from '../../hooks/hooks';
 import { Template } from '../../models/template.model';
 import { ActionBar } from './components/ActionBar';
@@ -83,6 +84,7 @@ const BuilderPageContent = () => {
             setItemToUpdate={setItemToUpdate}
             itemToUpdate={itemToUpdate}
             updateElement={updateElement}
+            createNewElement={createNewElement}
           />
           <QueryAndDownloadUrls state={state} />
         </div>
@@ -99,7 +101,7 @@ const BuilderNavBarWithTemplateContext = () => {
   return (
     <BuilderNavBar
       onExport={() => {
-        navigator.clipboard.writeText(JSON.stringify(state, null, 3));
+        clipBoardService.copy(state);
         setTimeout(() => alert('Copied in clipboard'), 1000);
       }}
       timeTravelProps={{

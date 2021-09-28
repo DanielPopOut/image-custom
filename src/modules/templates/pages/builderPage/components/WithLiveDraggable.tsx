@@ -1,15 +1,19 @@
 import React, {
   CSSProperties,
   DragEvent,
+  forwardRef,
   useContext,
   useEffect,
   useState,
 } from 'react';
 import { PageContext } from '../contexts/PageContext';
 
-export const WithLiveDraggable =
-  <P extends React.HTMLAttributes<HTMLDivElement>>(Component: React.FC<P>) =>
-  ({ style, onDragStart, onDragEnd, ...props }: P) => {
+export const WithLiveDraggable = <
+  P extends React.HTMLAttributes<HTMLDivElement>,
+>(
+  Component: React.ForwardRefExoticComponent<P>,
+) =>
+  forwardRef(({ style, onDragStart, onDragEnd, ...props }: P, ref) => {
     // dragOffset is the difference between the top left position of the element and my mouse click
     const [dragStartOffSet, setDragStartOffSet] =
       useState<{ x: number; y: number }>(null);
@@ -25,6 +29,7 @@ export const WithLiveDraggable =
     return (
       <Component
         {...componentProps}
+        ref={ref}
         draggable
         onDragStart={(dragEvent) => {
           setDragImageToTransparentImage(dragEvent);
@@ -50,7 +55,7 @@ export const WithLiveDraggable =
         }}
       />
     );
-  };
+  });
 const setDragImageToTransparentImage = (dragStartEvent: DragEvent) => {
   {
     var img = new Image();

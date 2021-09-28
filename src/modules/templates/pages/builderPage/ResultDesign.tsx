@@ -1,12 +1,16 @@
+import { ObjectId } from 'bson';
 import React, {
   CSSProperties,
   DragEvent,
+  forwardRef,
   HTMLAttributes,
   useCallback,
   useContext,
 } from 'react';
-import { Template } from '../../models/template.model';
+import { clipBoardService } from '../../../shared/services/clipBoardService';
+import { Template, TextItemProps } from '../../models/template.model';
 import { DraggableTextItem } from './components/basics/TextItem';
+import { WithCopyPaste } from './components/WithCopyPaste';
 import { PageContext } from './contexts/PageContext';
 
 export const ResultDesign = ({
@@ -14,6 +18,7 @@ export const ResultDesign = ({
   setItemToUpdate,
   itemToUpdate,
   updateElement,
+  createNewElement,
 }: {
   state: Template;
   itemToUpdate: string;
@@ -22,6 +27,7 @@ export const ResultDesign = ({
     itemId: string,
     update: Partial<{ value: string; style: CSSProperties }>,
   ) => void;
+  createNewElement?: (elementProps: unknown) => void;
 }) => {
   const updateItemPositionOnDragEnd = (
     itemId: string,
@@ -42,6 +48,9 @@ export const ResultDesign = ({
         onClick={() => {
           setItemToUpdate(null);
         }}
+        onCreateNewElement={(element) => {
+          createNewElement?.(element);
+        }}
       >
         {Object.values(state.elements).map((item) => {
           return (
@@ -49,6 +58,10 @@ export const ResultDesign = ({
               isSelected={itemToUpdate === item.id}
               key={item.id}
               {...item}
+              onCopy={(e) => {
+                clipBoardService.copy(item);
+                e.stopPropagation();
+              }}
               onDragStart={() => setItemToUpdate(item.id)}
               onDragEnd={(data) => updateItemPositionOnDragEnd(item.id, data)}
               onClick={(e) => {
@@ -64,11 +77,11 @@ export const ResultDesign = ({
   );
 };
 
-const DrawingPage: React.FC<HTMLAttributes<HTMLDivElement>> = ({
-  children,
-  style,
-  onClick,
-}) => {
+const DrawingPage: React.FC<
+  HTMLAttributes<HTMLDivElement> & {
+    onCreateNewElement: (data: TextItemProps) => void;
+  }
+> = ({ children, style, onClick, onCreateNewElement }) => {
   const { updateSheetData } = useContext(PageContext);
   const onRefChange = useCallback(
     (node: HTMLDivElement) => {
@@ -87,7 +100,7 @@ const DrawingPage: React.FC<HTMLAttributes<HTMLDivElement>> = ({
     [style],
   ); // adjust deps
   return (
-    <div
+    <MainDiv
       ref={onRefChange}
       className='to_download'
       style={{
@@ -95,9 +108,50 @@ const DrawingPage: React.FC<HTMLAttributes<HTMLDivElement>> = ({
         position: 'relative',
         ...style,
       }}
+      shouldCatchPasteBubbling
       onClick={onClick}
+      onPaste={(event) => {
+        const dataTextFormat = event.clipboardData.getData('text/plain');
+        if (!dataTextFormat) {
+          event.preventDefault();
+          return;
+        }
+        try {
+          const dataParsed = JSON.parse(
+            JSON.parse(dataTextFormat),
+          ) as TextItemProps;
+          if (dataParsed.type === 'text') {
+            event.preventDefault();
+            const id = new ObjectId().toHexString();
+            const newElement = {
+              ...dataParsed,
+              id,
+              style: {
+                ...dataParsed.style,
+                top: dataParsed.style.top + 20, // we slightly shift the element
+                left: dataParsed.style.left + 20, // we slightly shift the element
+              },
+            };
+            onCreateNewElement(newElement);
+            clipBoardService.copy(newElement); // we update the value in the keyboard
+          }
+          return;
+        } catch (e) {
+          console.error(e);
+        }
+      }}
     >
       {children}
-    </div>
+    </MainDiv>
   );
 };
+
+const MainDiv = WithCopyPaste(
+  forwardRef(({ children, ...props }, ref) => {
+    return (
+      <div {...props} ref={ref as any}>
+        {children}
+      </div>
+    );
+  }),
+);
