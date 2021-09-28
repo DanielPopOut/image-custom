@@ -110,6 +110,11 @@ export const TemplateContextProvider = ({
         [newElement.id]: newElement,
       },
     });
+    setTimeout(() => {
+      window
+        .getSelection()
+        .selectAllChildren(document.getElementById(newElement.id));
+    }, 100);
   };
 
   const deleteElement = (elementId = itemToUpdate) => {

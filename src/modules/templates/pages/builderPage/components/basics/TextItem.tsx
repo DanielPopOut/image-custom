@@ -1,3 +1,4 @@
+import styled from '@emotion/styled';
 import React, { CSSProperties, useEffect } from 'react';
 import ContentEditable from 'react-contenteditable';
 import { useDebounce } from 'react-use';
@@ -5,11 +6,18 @@ import { TextItemProps } from '../../../../models/template.model';
 import { WithLiveDraggable } from '../WithLiveDraggable';
 import { WithResize } from '../WithResize';
 
+const TextItemContainer = styled.div`
+  &:focus-within {
+    border: 1px dashed red;
+  }
+`;
+
 const TextItem = ({
   value,
   style,
   isSelected,
   onChange,
+  id,
   ...rest
 }: TextItemProps & {
   onChange: (data: Partial<{ value: string; style: CSSProperties }>) => void;
@@ -29,14 +37,16 @@ const TextItem = ({
     setDebouncedValue(value);
   }, [value]);
   return (
-    <div
+    <TextItemContainer
       style={{
-        border: isSelected ? '1px dashed red' : null,
+        // border: isSelected ? '1px dashed red' : null,
         ...style,
       }}
+      tabIndex={-1}
       {...rest}
     >
       <ContentEditable
+        id={id}
         style={{ outline: 'none' }}
         onKeyDown={(e) => {
           e.stopPropagation();
@@ -47,7 +57,7 @@ const TextItem = ({
         }} // handle innerHTML change
         tagName='article' // Use a custom HTML tag (uses a div by default)
       />
-    </div>
+    </TextItemContainer>
   );
 };
 
