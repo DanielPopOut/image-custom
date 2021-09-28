@@ -65,6 +65,8 @@ const TextItem = forwardRef(
             height: 'fit-content',
             cursor: 'text',
             position: 'relative',
+            minWidth: 30,
+            minHeight: 30,
           }}
           onKeyDown={(e) => {
             e.stopPropagation();
