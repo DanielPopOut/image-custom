@@ -84,6 +84,7 @@ const BuilderPageContent = () => {
             setItemToUpdate={setItemToUpdate}
             itemToUpdate={itemToUpdate}
             updateElement={updateElement}
+            createNewElement={createNewElement}
           />
           <QueryAndDownloadUrls state={state} />
         </div>

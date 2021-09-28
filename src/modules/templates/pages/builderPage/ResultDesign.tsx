@@ -1,3 +1,4 @@
+import { ObjectId } from 'bson';
 import React, {
   CSSProperties,
   DragEvent,
@@ -7,7 +8,7 @@ import React, {
   useContext,
 } from 'react';
 import { clipBoardService } from '../../../shared/services/clipBoardService';
-import { Template } from '../../models/template.model';
+import { Template, TextItemProps } from '../../models/template.model';
 import { DraggableTextItem } from './components/basics/TextItem';
 import { WithCopyPaste } from './components/WithCopyPaste';
 import { PageContext } from './contexts/PageContext';
@@ -17,6 +18,7 @@ export const ResultDesign = ({
   setItemToUpdate,
   itemToUpdate,
   updateElement,
+  createNewElement,
 }: {
   state: Template;
   itemToUpdate: string;
@@ -25,6 +27,7 @@ export const ResultDesign = ({
     itemId: string,
     update: Partial<{ value: string; style: CSSProperties }>,
   ) => void;
+  createNewElement?: (elementProps: unknown) => void;
 }) => {
   const updateItemPositionOnDragEnd = (
     itemId: string,
@@ -44,6 +47,9 @@ export const ResultDesign = ({
         style={state.page}
         onClick={() => {
           setItemToUpdate(null);
+        }}
+        onCreateNewElement={(element) => {
+          createNewElement?.(element);
         }}
       >
         {Object.values(state.elements).map((item) => {
@@ -71,11 +77,11 @@ export const ResultDesign = ({
   );
 };
 
-const DrawingPage: React.FC<HTMLAttributes<HTMLDivElement>> = ({
-  children,
-  style,
-  onClick,
-}) => {
+const DrawingPage: React.FC<
+  HTMLAttributes<HTMLDivElement> & {
+    onCreateNewElement: (data: TextItemProps) => void;
+  }
+> = ({ children, style, onClick, onCreateNewElement }) => {
   const { updateSheetData } = useContext(PageContext);
   const onRefChange = useCallback(
     (node: HTMLDivElement) => {
@@ -102,10 +108,37 @@ const DrawingPage: React.FC<HTMLAttributes<HTMLDivElement>> = ({
         position: 'relative',
         ...style,
       }}
+      shouldCatchPasteBubbling
       onClick={onClick}
       onPaste={(event) => {
-        event.preventDefault();
-        console.log({ data: event, text: 'data to paste' });
+        const dataTextFormat = event.clipboardData.getData('text/plain');
+        if (!dataTextFormat) {
+          event.preventDefault();
+          return;
+        }
+        try {
+          const dataParsed = JSON.parse(
+            JSON.parse(dataTextFormat),
+          ) as TextItemProps;
+          if (dataParsed.type === 'text') {
+            event.preventDefault();
+            const id = new ObjectId().toHexString();
+            const newElement = {
+              ...dataParsed,
+              id,
+              style: {
+                ...dataParsed.style,
+                top: dataParsed.style.top + 20, // we slightly shift the element
+                left: dataParsed.style.left + 20, // we slightly shift the element
+              },
+            };
+            onCreateNewElement(newElement);
+            clipBoardService.copy(newElement); // we update the value in the keyboard
+          }
+          return;
+        } catch (e) {
+          console.error(e);
+        }
       }}
     >
       {children}
