@@ -52,8 +52,9 @@ export const ResultDesign = ({
               isSelected={itemToUpdate === item.id}
               key={item.id}
               {...item}
-              onCopy={() => {
+              onCopy={(e) => {
                 clipBoardService.copy(item);
+                e.stopPropagation();
               }}
               onDragStart={() => setItemToUpdate(item.id)}
               onDragEnd={(data) => updateItemPositionOnDragEnd(item.id, data)}
