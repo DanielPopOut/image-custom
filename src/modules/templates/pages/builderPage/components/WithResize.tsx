@@ -1,9 +1,10 @@
 import { Resizable } from 're-resizable';
-import React, { useEffect } from 'react';
+import React, { forwardRef, useEffect } from 'react';
 
-export const WithResize =
-  <P extends React.HTMLAttributes<HTMLDivElement>>(Component: React.FC<P>) =>
-  ({ style, onChange, ...rest }: P) => {
+export const WithResize = <P extends React.HTMLAttributes<HTMLDivElement>>(
+  Component: React.ForwardRefExoticComponent<P>,
+) =>
+  forwardRef(({ style, onChange, ...rest }: P, ref) => {
     const [debouncedStyle, setDebouncedValue] = React.useState(style);
     const [initialWidthAndHeight, setInitialWidthAndHeight] =
       React.useState<{ width: number; height: number }>(null);
@@ -57,7 +58,7 @@ export const WithResize =
           });
         }}
       >
-        <Component {...componentProps} />
+        <Component ref={ref} {...componentProps} />
       </Resizable>
     );
-  };
+  });
