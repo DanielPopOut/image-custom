@@ -11,6 +11,7 @@ import {
   IconLayoutAlignMiddle,
   IconLayoutAlignRight,
   IconLayoutAlignTop,
+  IconLayoutGridAdd,
   IconLetterCaseLower,
   IconLetterCaseToggle,
   IconLetterCaseUpper,
@@ -18,7 +19,6 @@ import {
   IconLetterSpacing,
   IconLineHeight,
   IconOverline,
-  IconSquarePlus,
   IconStrikethrough,
   IconTrash,
   IconUnderline,
@@ -56,8 +56,16 @@ export const ActionBar = ({
         alignItems: 'center',
       }}
     >
-      <IconButtonContainer title='New text'>
-        <IconSquarePlus
+      <IconButtonMenu
+        Icon={
+          <div>
+            <IconLayoutGridAdd />
+          </div>
+        }
+        title='New text'
+      >
+        <div
+          style={{ cursor: 'pointer' }}
           onClick={() => {
             addNewItem({
               id: new ObjectId().toHexString(),
@@ -68,8 +76,10 @@ export const ActionBar = ({
               }),
             });
           }}
-        />
-      </IconButtonContainer>
+        >
+          Text
+        </div>
+      </IconButtonMenu>
 
       {selectedItemStyle && (
         <>
