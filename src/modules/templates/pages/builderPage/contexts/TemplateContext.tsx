@@ -1,6 +1,6 @@
 import { createContext, CSSProperties, useEffect, useState } from 'react';
 import { useDebounce, useStateWithHistory } from 'react-use';
-import { Template, TextItemProps } from '../../../models/template.model';
+import { ItemProps, Template } from '../../../models/template.model';
 import { DownloadFonts } from '../../../shared/DonwloadFonts';
 
 export const TemplateContext = createContext<
@@ -86,23 +86,28 @@ export const TemplateContextProvider = ({
     update: Partial<{ value: string; style: CSSProperties }>,
   ) => {
     const elementToUpdate = state.elements[itemId];
+    let newValue = update.value;
+    if (!newValue && elementToUpdate.type === 'text') {
+      newValue = elementToUpdate.value;
+    }
+    const newElement = {
+      ...elementToUpdate,
+      value: newValue,
+      style: {
+        ...elementToUpdate.style,
+        ...update.style,
+      },
+    } as ItemProps;
     updateState({
       ...state,
       elements: {
         ...state.elements,
-        [itemId]: {
-          ...elementToUpdate,
-          value: update.value || elementToUpdate.value,
-          style: {
-            ...elementToUpdate.style,
-            ...update.style,
-          },
-        } as TextItemProps,
+        [itemId]: newElement,
       },
     });
   };
 
-  const createNewElement = (newElement: TextItemProps) => {
+  const createNewElement = (newElement: ItemProps) => {
     updateState({
       ...state,
       elements: {

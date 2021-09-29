@@ -35,7 +35,7 @@ export const BackgroundInput = ({
   );
 };
 type BackgroundInputState = { backgroundUrl: string };
-const BackgroundInputBase = React.forwardRef(
+export const BackgroundInputBase = React.forwardRef(
   (
     { value, onChange }: { value: string; onChange: (data) => void },
     ref: RefCallBack,
@@ -60,7 +60,7 @@ const BackgroundInputBase = React.forwardRef(
       <div ref={ref}>
         <UploadFileComponent
           url={state.backgroundUrl}
-          onChange={(data) => onChangeFn({ backgroundUrl: data })}
+          onChange={(data) => onChangeFn({ backgroundUrl: data || '' })}
         />
       </div>
     );

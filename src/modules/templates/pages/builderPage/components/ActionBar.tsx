@@ -19,34 +19,38 @@ import {
   IconLetterSpacing,
   IconLineHeight,
   IconOverline,
+  IconPhoto,
   IconStrikethrough,
   IconTrash,
   IconUnderline,
 } from '@tabler/icons';
 import { ObjectId } from 'bson';
 import { CSSProperties, useContext } from 'react';
+import { BackgroundInputBase } from '../../../../form/BackgroundInput';
 import { BasicFontPicker } from '../../../../form/FontSelector';
 import { IconButtonContainer } from '../../../../shared/IconsSelector/IconButton';
 import { IconButtonMenu } from '../../../../shared/IconsSelector/IconButtonMenu';
 import { IconButtonSelect } from '../../../../shared/IconsSelector/IconButtonSelect';
-import { TextItemProps } from '../../../models/template.model';
+import { ItemProps } from '../../../models/template.model';
 import { PageContext } from '../contexts/PageContext';
-import { getDefaultText } from '../defaultInitialData';
+import { getDefaultImage, getDefaultText } from '../defaultInitialData';
 import { ColorInput } from './ColorInput';
 import { SizeInput } from './SizeInput';
 
 export const ActionBar = ({
   addNewItem,
   deleteItem,
-  selectedItemStyle,
+  selectedItem,
   updateElementStyle,
 }: {
-  addNewItem: (textItemProps: TextItemProps) => void;
+  addNewItem: (textItemProps: ItemProps) => void;
   deleteItem: () => void;
-  selectedItemStyle: CSSProperties;
+  selectedItem: ItemProps;
   updateElementStyle: (data: Partial<CSSProperties>) => void;
 }) => {
   const { sheetPosition } = useContext(PageContext);
+  const selectedItemStyle = selectedItem?.style;
+
   return (
     <div
       style={{
@@ -79,9 +83,23 @@ export const ActionBar = ({
         >
           Text
         </div>
+        <div
+          style={{ cursor: 'pointer' }}
+          onClick={() => {
+            addNewItem({
+              id: new ObjectId().toHexString(),
+              ...getDefaultImage({
+                left: sheetPosition.width / 2,
+                top: sheetPosition.height / 2,
+              }),
+            });
+          }}
+        >
+          Image
+        </div>
       </IconButtonMenu>
 
-      {selectedItemStyle && (
+      {selectedItem?.type === 'text' && (
         <>
           <div style={{ marginRight: 5 }}>
             <ColorInput
@@ -206,11 +224,28 @@ export const ActionBar = ({
               />
             </div>
           </IconButtonMenu>
-
-          <IconButtonContainer title='Delete element' className='danger'>
-            <IconTrash onClick={deleteItem} />
-          </IconButtonContainer>
         </>
+      )}
+
+      {selectedItem?.type === 'image' && (
+        <>
+          <IconButtonMenu Icon={<IconPhoto />}>
+            <div style={{ minWidth: 200, minHeight: 200 }}>
+              <BackgroundInputBase
+                value={selectedItemStyle.backgroundImage}
+                onChange={(data) =>
+                  updateElementStyle({ backgroundImage: data })
+                }
+              />
+            </div>
+          </IconButtonMenu>{' '}
+        </>
+      )}
+
+      {selectedItemStyle && (
+        <IconButtonContainer title='Delete element' className='danger'>
+          <IconTrash onClick={deleteItem} />
+        </IconButtonContainer>
       )}
     </div>
   );

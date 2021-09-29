@@ -1,4 +1,4 @@
-import { TextItemProps } from '../../models/template.model';
+import { ImageItemProps, TextItemProps } from '../../models/template.model';
 
 const initialPageWidth = 400;
 
@@ -20,6 +20,29 @@ export const getDefaultText = (data: {
       fontSize: '16px',
     },
   } as Omit<TextItemProps, '_id'>;
+};
+
+export const getDefaultImage = (data: {
+  imagePath?: string;
+  top: number;
+  left: number;
+}) => {
+  return {
+    type: 'image',
+    style: {
+      backgroundImage: `url(${data.imagePath || '/default_image.png'})`,
+      backgroundSize: 'contain',
+      backgroundPosition: 'center center',
+      backgroundRepeat: 'no-repeat',
+      display: 'flex',
+      top: data.top,
+      left: data.left,
+      width: 300,
+      height: 100,
+      color: '#333333',
+      fontSize: '16px',
+    },
+  } as Omit<ImageItemProps, '_id'>;
 };
 
 export const defaultInitialData = {

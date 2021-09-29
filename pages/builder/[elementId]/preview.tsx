@@ -37,10 +37,12 @@ const ElementComponent = () => {
     elements: { ...templateDataValue.elements },
   };
   for (const [key, value] of Object.entries(templateDataToUse.elements)) {
-    value.value = stringHelper.replaceValueInString(
-      value.value,
-      queryElement as Record<string, string>,
-    );
+    if (value.type === 'text') {
+      value.value = stringHelper.replaceValueInString(
+        value.value,
+        queryElement as Record<string, string>,
+      );
+    }
   }
 
   const template = new Template(templateData.value);

@@ -3,7 +3,7 @@ import { CSSProperties, HTMLAttributes } from 'react';
 export class Template {
   _id: string;
   page: CSSProperties;
-  elements: Record<string, TextItemProps>;
+  elements: Record<string, ItemProps>;
 
   constructor({
     _id,
@@ -12,7 +12,7 @@ export class Template {
   }: {
     _id: string;
     page: CSSProperties;
-    elements: Record<string, TextItemProps>;
+    elements: Record<string, ItemProps>;
   }) {
     this._id = _id;
     this.page = page;
@@ -48,10 +48,19 @@ export class Template {
   };
 }
 
+export type ItemProps = TextItemProps | ImageItemProps;
+
+export type ImageItemProps = {
+  type: 'image';
+} & DefaultItemProps;
+
 export type TextItemProps = {
-  id: string;
   type: 'text';
   value: string;
+} & DefaultItemProps;
+
+type DefaultItemProps = {
+  id: string;
   style: TextItemStyleProps;
   isSelected?: boolean;
 } & HTMLAttributes<HTMLDivElement>;

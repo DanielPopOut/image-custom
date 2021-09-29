@@ -4,7 +4,12 @@ import { Template } from '../../../models/template.model';
 
 export const QueryAndDownloadUrls = ({ state }: { state: Template }) => {
   const allVariables = stringHelper.getValueToInterpolateInStringArray(
-    Object.values(state.elements).map((element) => element.value.toLowerCase()),
+    Object.values(state.elements).map((element) => {
+      if (element.type === 'text') {
+        return element.value;
+      }
+      return '';
+    }),
   );
 
   const queryString = [...allVariables]
