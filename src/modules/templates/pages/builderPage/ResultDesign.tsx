@@ -5,10 +5,11 @@ import React, {
   forwardRef,
   HTMLAttributes,
   useCallback,
-  useContext,
+  useContext
 } from 'react';
 import { clipBoardService } from '../../../shared/services/clipBoardService';
 import { Template, TextItemProps } from '../../models/template.model';
+import { DraggableImageItem } from './components/basics/ImageItem';
 import { DraggableTextItem } from './components/basics/TextItem';
 import { WithCopyPaste } from './components/WithCopyPaste';
 import { PageContext } from './contexts/PageContext';
@@ -53,24 +54,45 @@ export const ResultDesign = ({
         }}
       >
         {Object.values(state.elements).map((item) => {
-          return (
-            <DraggableTextItem
-              isSelected={itemToUpdate === item.id}
-              key={item.id}
-              {...item}
-              onCopy={(e) => {
-                clipBoardService.copy(item);
-                e.stopPropagation();
-              }}
-              onDragStart={() => setItemToUpdate(item.id)}
-              onDragEnd={(data) => updateItemPositionOnDragEnd(item.id, data)}
-              onClick={(e) => {
-                setItemToUpdate(item.id);
-                e.stopPropagation();
-              }}
-              onChange={(data) => updateElement(item.id, data)}
-            />
-          );
+          if (item.type === 'text') {
+            return (
+              <DraggableTextItem
+                isSelected={itemToUpdate === item.id}
+                key={item.id}
+                {...item}
+                onCopy={(e) => {
+                  clipBoardService.copy(item);
+                  e.stopPropagation();
+                }}
+                onDragStart={() => setItemToUpdate(item.id)}
+                onDragEnd={(data) => updateItemPositionOnDragEnd(item.id, data)}
+                onClick={(e) => {
+                  setItemToUpdate(item.id);
+                  e.stopPropagation();
+                }}
+                onChange={(data) => updateElement(item.id, data)}
+              />
+            );
+          } else if (item.type === 'image') {
+            return (
+              <DraggableImageItem
+                isSelected={itemToUpdate === item.id}
+                key={item.id}
+                {...item}
+                onCopy={(e) => {
+                  clipBoardService.copy(item);
+                  e.stopPropagation();
+                }}
+                onDragStart={() => setItemToUpdate(item.id)}
+                onDragEnd={(data) => updateItemPositionOnDragEnd(item.id, data)}
+                onClick={(e) => {
+                  setItemToUpdate(item.id);
+                  e.stopPropagation();
+                }}
+                onChange={(data) => updateElement(item.id, data)}
+              />
+            );
+          }
         })}
       </DrawingPage>
     </div>

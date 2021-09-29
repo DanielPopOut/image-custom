@@ -29,9 +29,9 @@ import { BasicFontPicker } from '../../../../form/FontSelector';
 import { IconButtonContainer } from '../../../../shared/IconsSelector/IconButton';
 import { IconButtonMenu } from '../../../../shared/IconsSelector/IconButtonMenu';
 import { IconButtonSelect } from '../../../../shared/IconsSelector/IconButtonSelect';
-import { TextItemProps } from '../../../models/template.model';
+import { ItemProps } from '../../../models/template.model';
 import { PageContext } from '../contexts/PageContext';
-import { getDefaultText } from '../defaultInitialData';
+import { getDefaultImage, getDefaultText } from '../defaultInitialData';
 import { ColorInput } from './ColorInput';
 import { SizeInput } from './SizeInput';
 
@@ -41,7 +41,7 @@ export const ActionBar = ({
   selectedItemStyle,
   updateElementStyle,
 }: {
-  addNewItem: (textItemProps: TextItemProps) => void;
+  addNewItem: (textItemProps: ItemProps) => void;
   deleteItem: () => void;
   selectedItemStyle: CSSProperties;
   updateElementStyle: (data: Partial<CSSProperties>) => void;
@@ -78,6 +78,20 @@ export const ActionBar = ({
           }}
         >
           Text
+        </div>
+        <div
+          style={{ cursor: 'pointer' }}
+          onClick={() => {
+            addNewItem({
+              id: new ObjectId().toHexString(),
+              ...getDefaultImage({
+                left: sheetPosition.width / 2,
+                top: sheetPosition.height / 2,
+              }),
+            });
+          }}
+        >
+          Image
         </div>
       </IconButtonMenu>
 
