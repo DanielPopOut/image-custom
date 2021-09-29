@@ -74,7 +74,7 @@ const BuilderPageContent = () => {
           <ActionBar
             addNewItem={createNewElement}
             deleteItem={deleteElement}
-            selectedItemStyle={state.elements[itemToUpdate]?.style}
+            selectedItem={state.elements[itemToUpdate]}
             updateElementStyle={(data) =>
               updateElement(itemToUpdate, { style: data })
             }

@@ -19,12 +19,14 @@ import {
   IconLetterSpacing,
   IconLineHeight,
   IconOverline,
+  IconPhoto,
   IconStrikethrough,
   IconTrash,
   IconUnderline,
 } from '@tabler/icons';
 import { ObjectId } from 'bson';
 import { CSSProperties, useContext } from 'react';
+import { BackgroundInputBase } from '../../../../form/BackgroundInput';
 import { BasicFontPicker } from '../../../../form/FontSelector';
 import { IconButtonContainer } from '../../../../shared/IconsSelector/IconButton';
 import { IconButtonMenu } from '../../../../shared/IconsSelector/IconButtonMenu';
@@ -38,15 +40,17 @@ import { SizeInput } from './SizeInput';
 export const ActionBar = ({
   addNewItem,
   deleteItem,
-  selectedItemStyle,
+  selectedItem,
   updateElementStyle,
 }: {
   addNewItem: (textItemProps: ItemProps) => void;
   deleteItem: () => void;
-  selectedItemStyle: CSSProperties;
+  selectedItem: ItemProps;
   updateElementStyle: (data: Partial<CSSProperties>) => void;
 }) => {
   const { sheetPosition } = useContext(PageContext);
+  const selectedItemStyle = selectedItem?.style;
+
   return (
     <div
       style={{
@@ -95,7 +99,7 @@ export const ActionBar = ({
         </div>
       </IconButtonMenu>
 
-      {selectedItemStyle && (
+      {selectedItem?.type === 'text' && (
         <>
           <div style={{ marginRight: 5 }}>
             <ColorInput
@@ -220,11 +224,28 @@ export const ActionBar = ({
               />
             </div>
           </IconButtonMenu>
-
-          <IconButtonContainer title='Delete element' className='danger'>
-            <IconTrash onClick={deleteItem} />
-          </IconButtonContainer>
         </>
+      )}
+
+      {selectedItem?.type === 'image' && (
+        <>
+          <IconButtonMenu Icon={<IconPhoto />}>
+            <div style={{ minWidth: 200, minHeight: 200 }}>
+              <BackgroundInputBase
+                value={selectedItemStyle.backgroundImage}
+                onChange={(data) =>
+                  updateElementStyle({ backgroundImage: data })
+                }
+              />
+            </div>
+          </IconButtonMenu>{' '}
+        </>
+      )}
+
+      {selectedItemStyle && (
+        <IconButtonContainer title='Delete element' className='danger'>
+          <IconTrash onClick={deleteItem} />
+        </IconButtonContainer>
       )}
     </div>
   );
