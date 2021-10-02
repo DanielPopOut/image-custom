@@ -1,0 +1,26 @@
+@import './variables.scss';
+
+.button {
+  background-color: transparent;
+  border: 1px solid $border-color;
+  padding: $spacing_s $spacing_l;
+  border-radius: 2px;
+  color: $text-color;
+  cursor: pointer;
+
+  &:hover {
+    color: $primary;
+    border-color: $primary;
+  }
+
+  &.primary {
+    background-color: $primary;
+    color: white;
+    border-color: $primary;
+    &:hover {
+      background-color: transparent;
+      border-color: $primary;
+      color: $primary;
+    }
+  }
+}
