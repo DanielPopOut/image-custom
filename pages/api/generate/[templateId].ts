@@ -1,9 +1,11 @@
 import { NextApiRequest, NextApiResponse } from 'next';
 import nextConnect from 'next-connect';
 import { screenShotService } from 'server/modules/screenshot/screenshotService';
+import { authenticationHandler } from 'server/shared/isAuthenticated';
 
 const apiRoute = nextConnect();
 
+apiRoute.use(authenticationHandler);
 apiRoute.use(async (req: NextApiRequest, res: NextApiResponse) => {
   if (req.method === 'GET') {
     const templateId = req.query.templateId as string;
