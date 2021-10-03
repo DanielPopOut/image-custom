@@ -12,6 +12,7 @@ export class Template extends BasicTemplateData {
   creatorId?: string;
   version?: number;
   publishedVersion?: BasicTemplateData;
+  publicationDate?: string;
   history?: Array<{ version: number; data: BasicTemplateData }>;
 
   constructor({

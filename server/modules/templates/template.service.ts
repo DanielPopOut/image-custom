@@ -8,22 +8,22 @@ class TemplateService {
     return template;
   };
 
-  publishTemplate = async (template: Template) => {
+  publishTemplate = async (template: Template, host?: string) => {
+    const publicationDate = new Date().toISOString();
     const publishedTemplateData = {
       elements: template.elements,
       page: template.page,
     };
     await this.templateDbService.updateOneFullAction(
+      template._id,
       {
-        _id: template._id,
-      },
-      {
-        $set: { publishedVersion: publishedTemplateData },
+        $set: { publishedVersion: publishedTemplateData, publicationDate },
         $inc: { version: 1 },
         $push: {
           history: {
             version: (template.version || 0) + 1,
             data: publishedTemplateData,
+            publicationDate,
           },
         },
       },
