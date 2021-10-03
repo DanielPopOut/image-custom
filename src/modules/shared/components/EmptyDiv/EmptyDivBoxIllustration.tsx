@@ -11,12 +11,18 @@ export const EmptyDivBoxIllustration = ({
         flexDirection: 'column',
         justifyContent: 'center',
         alignItems: 'center',
+        position: 'relative',
         ...style,
       }}
       {...props}
     >
       <img src='/emptyBox.svg' style={{ width: '100%', height: '100%' }} />
-      <a href='https://storyset.com/work'>Work illustrations by Storyset</a>
+      <a
+        href='https://storyset.com/work'
+        style={{ fontSize: 10, position: 'absolute', bottom: 10, right: 0 }}
+      >
+        Work illustrations by Storyset
+      </a>
     </div>
   );
 };
