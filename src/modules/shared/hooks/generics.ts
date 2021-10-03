@@ -72,7 +72,7 @@ export const useGenericGetAll = <T>(collection: string) => {
   );
 };
 
-const basicResultHandler = async <T>(res: Response): Promise<T> => {
+export const basicResultHandler = async <T>(res: Response): Promise<T> => {
   if (res.status >= 400) {
     let resData = 'unknown error';
     try {

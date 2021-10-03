@@ -1,4 +1,7 @@
+import { useAsyncFn } from 'react-use';
+import { API_ROUTES } from 'src/modules/shared/routes/ROUTES';
 import {
+  basicResultHandler,
   useGenericCreate,
   useGenericGetAll,
   useGenericRead,
@@ -10,3 +13,10 @@ export const useCreateTemplate = () => useGenericCreate<Template>('templates');
 export const useGetTemplate = () => useGenericRead<Template>('templates');
 export const useUpdateTemplate = () => useGenericUpdate<Template>('templates');
 export const useGetAllTemplates = () => useGenericGetAll<Template>('templates');
+export const usePublishTemplate = () => {
+  return useAsyncFn((elementId: string) => {
+    return fetch(API_ROUTES.PUBLISH_TEMPLATE(elementId)).then((data) =>
+      basicResultHandler(data),
+    );
+  });
+};

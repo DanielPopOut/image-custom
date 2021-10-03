@@ -5,4 +5,5 @@ export const ROUTES = {
 
 export const API_ROUTES = {
   DOWNLOAD_TEMPLATE_ID: (templateId: string) => `/api/generate/${templateId}`,
+  PUBLISH_TEMPLATE: (templateId: string) => `/api/publish/${templateId}`,
 };
