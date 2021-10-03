@@ -11,7 +11,7 @@ export const apiRoutesConfig: Partial<
   >
 > = {
   templates: {
-    default: { shouldBeConnected: false },
+    default: { shouldBeConnected: true },
     getMany: {
       shouldBeCreator: true,
     },
