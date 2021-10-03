@@ -1,10 +1,17 @@
 import { CSSProperties, HTMLAttributes } from 'react';
 
-export class Template {
-  _id: string;
+class BasicTemplateData {
   page: CSSProperties;
   elements: Record<string, ItemProps>;
+}
+
+export class Template extends BasicTemplateData {
+  _id: string;
   dateCreation?: string;
+  creatorId?: string;
+  version?: number;
+  publishedVersion?: BasicTemplateData;
+  history?: Array<{ version: number; data: BasicTemplateData }>;
 
   constructor({
     _id,
@@ -15,6 +22,7 @@ export class Template {
     page: CSSProperties;
     elements: Record<string, ItemProps>;
   }) {
+    super();
     this._id = _id;
     this.page = page;
     this.elements = elements;

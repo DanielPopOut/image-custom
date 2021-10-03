@@ -1,4 +1,5 @@
 import { ObjectId } from 'bson';
+import { UpdateFilter } from 'mongodb';
 import { getDb } from './database';
 
 export class DataBaseCrudService<T> {
@@ -35,6 +36,20 @@ export class DataBaseCrudService<T> {
         _id: new ObjectId(_id),
       },
       { $set: data },
+      { upsert: upsert },
+    );
+  };
+
+  updateOneFullAction = async (
+    _id,
+    updateData: UpdateFilter<T>,
+    upsert?: boolean,
+  ) => {
+    return (await this.getCollection()).updateOne(
+      {
+        _id: new ObjectId(_id),
+      },
+      updateData,
       { upsert: upsert },
     );
   };
