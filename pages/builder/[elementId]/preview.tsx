@@ -45,7 +45,14 @@ const ElementComponent = () => {
     }
   }
 
-  const template = new Template(templateData.value);
+  if (!templateData.value.publishedVersion) {
+    return <div className='to_download'>No version published</div>;
+  }
+
+  const template = new Template({
+    _id: templateData.value._id,
+    ...templateData.value.publishedVersion,
+  });
   const fontFamilyRequest = template.getGoogleRequestForFonts();
 
   return (
