@@ -1,7 +1,7 @@
 import { MongoClient } from 'mongodb';
 
 let client: MongoClient;
-let clientPromise;
+let clientPromise: Promise<MongoClient>;
 
 if (!process.env.DB_URL) {
   throw new Error('Please add your Mongo URI to .env.local');
