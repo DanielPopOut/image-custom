@@ -1,20 +1,19 @@
 import styled from '@emotion/styled';
 import { IconArrowBackUp, IconArrowForwardUp } from '@tabler/icons';
+import { ReactNode } from 'react';
 import { IconButtonContainer } from '../../../../../shared/IconsSelector/IconButton';
 
 type BuilderNavBarType = {
   timeTravelProps: TimeTravelProps;
-  onExport: () => void;
-  onPublish: () => void;
+  ActionButtons: ReactNode;
   isSaving: boolean;
 };
 
 export const BuilderNavBar: React.FC<BuilderNavBarType> = ({
   children,
   timeTravelProps,
-  onExport,
+  ActionButtons,
   isSaving,
-  onPublish,
 }) => {
   return (
     <>
@@ -33,14 +32,7 @@ export const BuilderNavBar: React.FC<BuilderNavBarType> = ({
               </>
             )}
           </div>
-          <div className='buttons_container'>
-            <button className='button primary' onClick={onPublish}>
-              Publish
-            </button>
-            <button className='button' onClick={onExport}>
-              Export
-            </button>
-          </div>
+          <div className='buttons_container'>{ActionButtons}</div>
         </div>
       </BuilderNavBarContainer>
     </>

@@ -1,6 +1,6 @@
 import { useContext } from 'react';
 import { clipBoardService } from '../../../shared/services/clipBoardService';
-import { useUpdateTemplate } from '../../hooks/hooks';
+import { usePublishTemplate, useUpdateTemplate } from '../../hooks/hooks';
 import { Template } from '../../models/template.model';
 import { ActionBar } from './components/ActionBar';
 import { BuilderNavBar } from './components/BuilderNavBar';
@@ -100,20 +100,55 @@ const BuilderNavBarWithTemplateContext = () => {
   } = useContext(TemplateContext);
   return (
     <BuilderNavBar
-      onExport={() => {
-        clipBoardService.copy(state);
-        setTimeout(() => alert('Copied in clipboard'), 1000);
-      }}
-      onPublish={() => {
-        console.log(state);
-      }}
       timeTravelProps={{
         hasPrevious,
         hasNext,
         undo: () => back(),
         redo: () => forward(),
       }}
+      ActionButtons={
+        <>
+          <PublishButton templateId={state._id} />
+          <ExportButton
+            onExport={() => {
+              clipBoardService.copy(state);
+              setTimeout(() => alert('Copied in clipboard'), 1000);
+            }}
+          />
+        </>
+      }
       isSaving={isSaving}
     />
+  );
+};
+
+const PublishButton = ({ templateId }: { templateId: string }) => {
+  const [publishTemplateState, publishTemplate] = usePublishTemplate();
+  return (
+    <button
+      className='button primary'
+      onClick={() => publishTemplate(templateId)}
+    >
+      {publishTemplateState.loading && (
+        <span
+          className='loader'
+          style={{
+            fontSize: 10,
+            margin: 0,
+            marginRight: 10,
+            display: 'inline-block',
+          }}
+        />
+      )}
+      Publish
+    </button>
+  );
+};
+
+const ExportButton = ({ onExport }) => {
+  return (
+    <button className='button' onClick={onExport}>
+      Export
+    </button>
   );
 };
