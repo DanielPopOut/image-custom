@@ -1,5 +1,6 @@
 import { NextApiRequest, NextApiResponse } from 'next';
 import nextConnect from 'next-connect';
+import { basicConnexionHandler } from 'server/shared/config/apiRoutesConfig';
 import { DataBaseCrudService } from '../../../../server/modules/database/databaseCRUDService';
 import {
   ApiResponseError,
@@ -7,6 +8,8 @@ import {
 } from '../../../../server/shared/ApiResponseFormat';
 
 const apiRoute = nextConnect();
+
+apiRoute.use(basicConnexionHandler);
 
 apiRoute.get(async (req: NextApiRequest, res: NextApiResponse) => {
   const collection = req.query.collection as string;

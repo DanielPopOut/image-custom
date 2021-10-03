@@ -1,5 +1,10 @@
+import { NextApiResponse } from 'next';
 import { COLLECTIONS_TYPE } from 'server/modules/database/COLLECTIONS';
 import { User } from 'server/modules/users/user.model';
+import {
+  authenticationHandler,
+  NextApiRequestWithUserInfo,
+} from '../isAuthenticated';
 import { ACTION_TYPES } from './ACTION_TYPES';
 
 export const apiRoutesConfig: Partial<
@@ -42,4 +47,18 @@ export const computeDefaultFilter = ({
     filter.creatorId = connectedUser?.id; //fake default value for security
   }
   return filter;
+};
+
+export const basicConnexionHandler = async (
+  req: NextApiRequestWithUserInfo,
+  res: NextApiResponse,
+  next,
+) => {
+  const collection = req.query.collection as string;
+  const defaultConfig = apiRoutesConfig[collection]?.default;
+  if (defaultConfig?.shouldBeConnected) {
+    authenticationHandler(req, res, next);
+    return;
+  }
+  next();
 };

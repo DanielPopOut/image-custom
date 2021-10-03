@@ -4,27 +4,14 @@ import { COLLECTIONS_TYPE } from 'server/modules/database/COLLECTIONS';
 import { DataBaseCrudService } from 'server/modules/database/databaseCRUDService';
 import { ApiResponseSuccess } from 'server/shared/ApiResponseFormat';
 import {
-  apiRoutesConfig,
+  basicConnexionHandler,
   computeDefaultFilter,
 } from 'server/shared/config/apiRoutesConfig';
-import {
-  authenticationHandler,
-  NextApiRequestWithUserInfo,
-} from 'server/shared/isAuthenticated';
+import { NextApiRequestWithUserInfo } from 'server/shared/isAuthenticated';
 
 const apiRoute = nextConnect();
 
-apiRoute.use(
-  async (req: NextApiRequestWithUserInfo, res: NextApiResponse, next) => {
-    const collection = req.query.collection as string;
-    const defaultConfig = apiRoutesConfig[collection]?.default;
-    if (defaultConfig?.shouldBeConnected) {
-      authenticationHandler(req, res, next);
-      return;
-    }
-    next();
-  },
-);
+apiRoute.use(basicConnexionHandler);
 
 apiRoute.post(async (req: NextApiRequestWithUserInfo, res: NextApiResponse) => {
   const collection = req.query.collection as string;
