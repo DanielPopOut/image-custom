@@ -27,7 +27,7 @@ export class DataBaseCrudService<T> {
   };
 
   updateOne = async (
-    _id,
+    _id: string | ObjectId,
     { _id: _removed, ...data }: Partial<T> & { _id: string },
     upsert?: boolean,
   ) => {
@@ -41,7 +41,7 @@ export class DataBaseCrudService<T> {
   };
 
   updateOneFullAction = async (
-    _id,
+    _id: string | ObjectId,
     updateData: UpdateFilter<T>,
     upsert?: boolean,
   ) => {
