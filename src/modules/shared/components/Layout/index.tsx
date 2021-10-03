@@ -11,6 +11,7 @@ const PageLayoutDiv = styled.div`
   .content {
     flex: 1;
     flex-direction: column;
+    padding: 20px;
   }
 `;
 

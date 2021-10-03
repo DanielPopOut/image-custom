@@ -18,7 +18,7 @@ export const NavBar = () => {
   return (
     <StyledNavBar>
       <Container>
-        Gogo billy
+        Custom images maker
         <div className='flex-separator'></div>
         <SignOutButton />
       </Container>
