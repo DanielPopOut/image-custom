@@ -49,6 +49,24 @@ export const computeDefaultFilter = ({
   return filter;
 };
 
+export const computeDefaultInsertFields = ({
+  connectedUser,
+  collection,
+  action,
+}: {
+  connectedUser?: User;
+  collection?: COLLECTIONS_TYPE;
+  action?: ACTION_TYPES;
+}) => {
+  let defaultInsertFields: { dateCreation: string; creatorId?: string } = {
+    dateCreation: new Date().toISOString(),
+  };
+  if (connectedUser) {
+    defaultInsertFields.creatorId = connectedUser.id;
+  }
+  return defaultInsertFields;
+};
+
 export const basicConnexionHandler = async (
   req: NextApiRequestWithUserInfo,
   res: NextApiResponse,

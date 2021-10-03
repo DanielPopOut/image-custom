@@ -6,6 +6,7 @@ import { ApiResponseSuccess } from 'server/shared/ApiResponseFormat';
 import {
   basicConnexionHandler,
   computeDefaultFilter,
+  computeDefaultInsertFields,
 } from 'server/shared/config/apiRoutesConfig';
 import { NextApiRequestWithUserInfo } from 'server/shared/isAuthenticated';
 
@@ -17,10 +18,17 @@ apiRoute.post(async (req: NextApiRequestWithUserInfo, res: NextApiResponse) => {
   const collection = req.query.collection as string;
   const data = req.body;
 
+  const defaultFields = computeDefaultInsertFields({
+    connectedUser: req.connectedUser,
+  });
+
+  const itemToInsert = { ...data, ...defaultFields };
   const insertedValue = await new DataBaseCrudService(collection).insertOne(
-    data,
+    itemToInsert,
   );
-  res.json(ApiResponseSuccess({ ...data, _id: insertedValue.insertedId }));
+  res.json(
+    ApiResponseSuccess({ ...itemToInsert, _id: insertedValue.insertedId }),
+  );
 });
 
 apiRoute.get(async (req: NextApiRequestWithUserInfo, res: NextApiResponse) => {
