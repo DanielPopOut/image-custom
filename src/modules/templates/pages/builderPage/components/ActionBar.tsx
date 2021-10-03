@@ -138,11 +138,11 @@ export const ActionBar = ({
           />
 
           <IconButtonSelect
-            value={selectedItemStyle.justifyContent || 'start'}
+            value={selectedItemStyle.justifyContent || 'flex-start'}
             items={[
-              { Icon: <IconLayoutAlignLeft />, value: 'start' },
+              { Icon: <IconLayoutAlignLeft />, value: 'flex-start' },
               { Icon: <IconLayoutAlignCenter />, value: 'center' },
-              { Icon: <IconLayoutAlignRight />, value: 'end' },
+              { Icon: <IconLayoutAlignRight />, value: 'flex-end' },
             ]}
             onChange={(value) => {
               updateElementStyle({ justifyContent: value } as CSSProperties);
@@ -150,11 +150,11 @@ export const ActionBar = ({
           />
 
           <IconButtonSelect
-            value={selectedItemStyle.alignItems || 'start'}
+            value={selectedItemStyle.alignItems || 'flex-start'}
             items={[
-              { Icon: <IconLayoutAlignTop />, value: 'start' },
+              { Icon: <IconLayoutAlignTop />, value: 'flex-start' },
               { Icon: <IconLayoutAlignMiddle />, value: 'center' },
-              { Icon: <IconLayoutAlignBottom />, value: 'end' },
+              { Icon: <IconLayoutAlignBottom />, value: 'flex-end' },
             ]}
             onChange={(value) => {
               updateElementStyle({ alignItems: value } as CSSProperties);
