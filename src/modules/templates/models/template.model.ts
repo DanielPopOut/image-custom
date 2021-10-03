@@ -1,4 +1,5 @@
 import { CSSProperties, HTMLAttributes } from 'react';
+import { stringHelper } from 'src/modules/shared/services/stringHelper';
 
 class BasicTemplateData {
   page: CSSProperties;
@@ -54,6 +55,24 @@ export class Template extends BasicTemplateData {
       .join('&');
 
     return `https://fonts.googleapis.com/css2?${fontsParams}&display=swap`;
+  };
+
+  static generateDefaultQueryVariables = (template: Template) => {
+    const allVariables = stringHelper.getValueToInterpolateInStringArray(
+      Object.values(template.elements).map((element) => {
+        if (element.type === 'text') {
+          return element.value;
+        }
+        return '';
+      }),
+    );
+
+    const queryObject = [...allVariables].reduce((finalObj, variable) => {
+      finalObj[variable] = `VALUE_${variable.toUpperCase()}`;
+      return finalObj;
+    }, {} as Record<string, string>);
+
+    return queryObject;
   };
 }
 
