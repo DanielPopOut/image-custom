@@ -25,7 +25,10 @@ export const BuilderNavBar: React.FC<BuilderNavBarType> = ({
             <BuilderButtons {...timeTravelProps} />
             {isSaving && (
               <>
-                <span className='loader' style={{ fontSize: 16 }} />
+                <span
+                  className='loader'
+                  style={{ fontSize: 16, margin: 0, marginRight: 10 }}
+                />
                 <span>Saving...</span>
               </>
             )}
