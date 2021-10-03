@@ -4,6 +4,7 @@ export class Template {
   _id: string;
   page: CSSProperties;
   elements: Record<string, ItemProps>;
+  dateCreation?: string;
 
   constructor({
     _id,
