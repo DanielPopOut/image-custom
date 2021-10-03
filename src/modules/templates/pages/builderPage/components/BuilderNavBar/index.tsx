@@ -5,6 +5,7 @@ import { IconButtonContainer } from '../../../../../shared/IconsSelector/IconBut
 type BuilderNavBarType = {
   timeTravelProps: TimeTravelProps;
   onExport: () => void;
+  onPublish: () => void;
   isSaving: boolean;
 };
 
@@ -13,6 +14,7 @@ export const BuilderNavBar: React.FC<BuilderNavBarType> = ({
   timeTravelProps,
   onExport,
   isSaving,
+  onPublish,
 }) => {
   return (
     <>
@@ -28,7 +30,14 @@ export const BuilderNavBar: React.FC<BuilderNavBarType> = ({
               </>
             )}
           </div>
-          <button onClick={onExport}>Export</button>
+          <div className='buttons_container'>
+            <button className='button primary' onClick={onPublish}>
+              Publish
+            </button>
+            <button className='button' onClick={onExport}>
+              Export
+            </button>
+          </div>
         </div>
       </BuilderNavBarContainer>
     </>
@@ -37,8 +46,9 @@ export const BuilderNavBar: React.FC<BuilderNavBarType> = ({
 
 const BuilderNavBarContainer = styled.div`
   min-height: 40px;
+  border-bottom: 1px solid #aaa;
+  overflow: hidden;
   .inner {
-    border-bottom: 1px solid #aaa;
     display: flex;
     justify-content: space-between;
     align-items: center;
@@ -47,7 +57,8 @@ const BuilderNavBarContainer = styled.div`
     position: fixed;
     background: white;
     z-index: 100;
-    height: 40px;
+    height: '100%';
+    max-width: 800px;
 
     .buttons_container {
       display: flex;

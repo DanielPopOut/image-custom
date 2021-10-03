@@ -104,6 +104,9 @@ const BuilderNavBarWithTemplateContext = () => {
         clipBoardService.copy(state);
         setTimeout(() => alert('Copied in clipboard'), 1000);
       }}
+      onPublish={() => {
+        console.log(state);
+      }}
       timeTravelProps={{
         hasPrevious,
         hasNext,
