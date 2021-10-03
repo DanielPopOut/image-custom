@@ -20,7 +20,9 @@ export class DataBaseCrudService<T> {
   };
 
   getOneById = async (itemId: string) => {
-    return (await this.getCollection()).findOne({ _id: new ObjectId(itemId) });
+    return (await this.getCollection()).findOne<T>({
+      _id: new ObjectId(itemId),
+    });
   };
 
   updateOne = async (
