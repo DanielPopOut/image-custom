@@ -3,6 +3,7 @@ import { ApiResponseFormat } from '../../../../server/shared/ApiResponseFormat';
 
 const BASIC_ROUTES = {
   CREATE: (collection: string) => `/api/data/${collection}`,
+  GET_MANY: (collection: string) => `/api/data/${collection}`,
   READ: (collection: string, elementId: string) =>
     `/api/data/${collection}/${elementId}`,
   UPDATE: (collection: string, elementId: string) =>
@@ -57,6 +58,18 @@ export const useGenericDelete = <T>(collection: string) => {
       method: 'DELETE',
     }).then((data) => basicResultHandler<T>(data)) as Promise<T>;
   }, null);
+};
+
+export const useGenericGetAll = <T>(collection: string) => {
+  return useAsyncFn(
+    () => {
+      return fetch(BASIC_ROUTES.GET_MANY(collection)).then((data) =>
+        basicResultHandler<T[]>(data),
+      ) as Promise<T[]>;
+    },
+    null,
+    { value: [], loading: false },
+  );
 };
 
 const basicResultHandler = async <T>(res: Response): Promise<T> => {

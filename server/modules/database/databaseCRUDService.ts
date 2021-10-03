@@ -11,6 +11,10 @@ export class DataBaseCrudService<T> {
     return (await getDb()).collection(this.collection);
   };
 
+  getAll = async (filter: Partial<T>) => {
+    return (await this.getCollection()).find(filter).toArray();
+  };
+
   insertOne = async (data: T) => {
     return (await this.getCollection()).insertOne(data);
   };

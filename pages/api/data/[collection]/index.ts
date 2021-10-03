@@ -15,4 +15,11 @@ apiRoute.post(async (req: NextApiRequest, res: NextApiResponse) => {
   res.json(ApiResponseSuccess({ ...data, _id: insertedValue.insertedId }));
 });
 
+apiRoute.get(async (req: NextApiRequest, res: NextApiResponse) => {
+  const collection = req.query.collection as string;
+
+  const arrayResult = await new DataBaseCrudService(collection).getAll({});
+  res.json(ApiResponseSuccess(arrayResult));
+});
+
 export default apiRoute;
