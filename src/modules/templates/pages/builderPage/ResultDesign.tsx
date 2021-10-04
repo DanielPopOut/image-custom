@@ -5,7 +5,7 @@ import React, {
   forwardRef,
   HTMLAttributes,
   useCallback,
-  useContext
+  useContext,
 } from 'react';
 import { clipBoardService } from '../../../shared/services/clipBoardService';
 import { Template, TextItemProps } from '../../models/template.model';

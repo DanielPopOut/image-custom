@@ -107,4 +107,5 @@ type TextItemStyleProps = {
   height?: number;
   color?: CSSProperties['color'];
   textAlign?: CSSProperties['textAlign'];
+  zIndex?: number;
 };

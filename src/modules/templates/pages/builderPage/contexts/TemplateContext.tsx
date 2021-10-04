@@ -109,6 +109,13 @@ export const TemplateContextProvider = ({
   };
 
   const createNewElement = (newElement: ItemProps) => {
+    newElement.style.zIndex =
+      Math.max(
+        ...Object.values(state.elements)?.map(
+          (element) => +element.style?.zIndex || 0,
+        ),
+      ) + 1;
+
     updateState({
       ...state,
       elements: {
