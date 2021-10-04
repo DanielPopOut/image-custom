@@ -11,7 +11,6 @@ apiRoute.use(async (req: NextApiRequest, res: NextApiResponse) => {
     const templateId = req.query.templateId as string;
     const fileName = (req.query.fileName as string) || req.query.templateId;
     const result = await screenShotService.computeUrlAndFetch(
-      req.headers.host,
       templateId,
       req.query as Record<string, string>,
     );

@@ -1,3 +1,4 @@
+import { PROTOCOL_AND_HOST } from 'server/shared/config/constants';
 import { ROUTES } from 'src/modules/shared/routes/ROUTES';
 
 const SCREENSHOT_REMOTE_URL = 'https://screenshot-web-page.vercel.app';
@@ -6,7 +7,6 @@ const DOWNLOAD_SELECTOR = '.to_download';
 
 class ScreenShotService {
   computeUrlToScreen = (
-    host: string,
     templateId: string,
     requestQuery: Record<string, string>,
   ) => {
@@ -16,7 +16,7 @@ class ScreenShotService {
     });
     const previewUrlToFetch =
       //   'https://google.com' ||
-      `https://${host}${ROUTES.PREVIEW_TEMPLATE_ID(
+      `${PROTOCOL_AND_HOST}${ROUTES.PREVIEW_TEMPLATE_ID(
         templateId,
       )}?${encodeURIComponent(urlSearchParams.toString())}`;
     return previewUrlToFetch;
@@ -30,11 +30,10 @@ class ScreenShotService {
   };
 
   computeUrlAndFetch = async (
-    host: string,
     templateId: string,
     requestQuery: Record<string, string>,
   ) => {
-    const urlToFetch = this.computeUrlToScreen(host, templateId, requestQuery);
+    const urlToFetch = this.computeUrlToScreen(templateId, requestQuery);
     return await this.screenElementToImage(urlToFetch);
   };
 }
