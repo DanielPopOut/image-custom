@@ -20,11 +20,15 @@ export const apiRoutesConfig: Partial<
     getMany: {
       shouldBeCreator: true,
     },
+    updateOne: {
+      fieldsToUpdate: ['page', 'elements'],
+    },
   },
 };
 
 type Filters = {
   shouldBeCreator?: boolean;
+  fieldsToUpdate?: string[];
 };
 
 export const computeDefaultFilter = ({
@@ -65,6 +69,24 @@ export const computeDefaultInsertFields = ({
     defaultInsertFields.creatorId = connectedUser.id;
   }
   return defaultInsertFields;
+};
+
+export const computeDefaultUpdateFields = ({
+  connectedUser,
+  collection,
+  elementToUpdate,
+}: {
+  connectedUser?: User;
+  collection?: COLLECTIONS_TYPE;
+  elementToUpdate?: Record<string, string>;
+}) => {
+  const updateFilters = apiRoutesConfig[collection]?.updateOne;
+  if (updateFilters.fieldsToUpdate) {
+    return updateFilters.fieldsToUpdate.reduce((finalObj, field) => {
+      finalObj[field] = elementToUpdate[field];
+      return finalObj;
+    }, {});
+  }
 };
 
 export const basicConnexionHandler = async (

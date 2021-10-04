@@ -1,6 +1,11 @@
 import { NextApiRequest, NextApiResponse } from 'next';
 import nextConnect from 'next-connect';
-import { basicConnexionHandler } from 'server/shared/config/apiRoutesConfig';
+import { COLLECTIONS_TYPE } from 'server/modules/database/COLLECTIONS';
+import {
+  basicConnexionHandler,
+  computeDefaultUpdateFields,
+} from 'server/shared/config/apiRoutesConfig';
+import { NextApiRequestWithUserInfo } from 'server/shared/isAuthenticated';
 import { DataBaseCrudService } from '../../../../server/modules/database/databaseCRUDService';
 import {
   ApiResponseError,
@@ -25,13 +30,19 @@ apiRoute.get(async (req: NextApiRequest, res: NextApiResponse) => {
   }
 });
 
-apiRoute.put(async (req: NextApiRequest, res: NextApiResponse) => {
-  const collection = req.query.collection as string;
+apiRoute.put(async (req: NextApiRequestWithUserInfo, res: NextApiResponse) => {
+  const collection = req.query.collection as COLLECTIONS_TYPE;
   const elementId = req.query.elementId as string;
   const data = req.body;
+
+  const dataUpdate = computeDefaultUpdateFields({
+    connectedUser: req.connectedUser,
+    collection,
+    elementToUpdate: data,
+  });
   await new DataBaseCrudService(collection).updateOne(
     elementId,
-    data,
+    dataUpdate,
     !!(req.query.upsert as string),
   );
   const updatedObject = await new DataBaseCrudService(collection).getOneById(
