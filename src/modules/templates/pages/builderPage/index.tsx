@@ -4,6 +4,7 @@ import { usePublishTemplate, useUpdateTemplate } from '../../hooks/hooks';
 import { Template } from '../../models/template.model';
 import { ActionBar } from './components/ActionBar';
 import { BuilderNavBar } from './components/BuilderNavBar';
+import { LayerLevels } from './components/LayerLevels';
 import { PageParameters } from './components/ParametersForm';
 import { QueryAndDownloadUrls } from './components/QueryAndDownloadUrls';
 import { PageContextProvider } from './contexts/PageContext';
@@ -68,6 +69,7 @@ const BuilderPageContent = () => {
             defaultValues={state.page}
             onChange={(data) => updatePageData(data)}
           />
+          <LayerLevels elements={state.elements} />
         </div>
 
         <div style={{ padding: 20, position: 'relative' }}>

@@ -18,6 +18,7 @@ export const WithResize = <P extends React.HTMLAttributes<HTMLDivElement>>(
           position: 'absolute',
           top: debouncedStyle.top,
           left: debouncedStyle.left,
+          zIndex: debouncedStyle.zIndex,
         }}
         size={{
           width: debouncedStyle.width,
