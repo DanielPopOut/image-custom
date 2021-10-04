@@ -1,19 +1,11 @@
 import { API_ROUTES, ROUTES } from '../../../../shared/routes/ROUTES';
-import { stringHelper } from '../../../../shared/services/stringHelper';
 import { Template } from '../../../models/template.model';
 
 export const QueryAndDownloadUrls = ({ state }: { state: Template }) => {
-  const allVariables = stringHelper.getValueToInterpolateInStringArray(
-    Object.values(state.elements).map((element) => {
-      if (element.type === 'text') {
-        return element.value;
-      }
-      return '';
-    }),
-  );
+  const queryObject = Template.generateDefaultQueryVariables(state);
 
-  const queryString = [...allVariables]
-    .map((variable) => `${variable}=VALUE_${variable.toUpperCase()}`)
+  const queryString = Object.entries(queryObject)
+    .map(([key, value]) => [key, value].join('='))
     .join('&');
   return (
     <div style={{ padding: 20 }}>

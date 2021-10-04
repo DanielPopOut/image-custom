@@ -8,6 +8,7 @@ export const CreateNewTemplateButton = () => {
   const router = useRouter();
   return (
     <button
+      className='button'
       disabled={templateDataResult.loading}
       onClick={() => {
         createTemplateData(defaultInitialData).then((result) => {

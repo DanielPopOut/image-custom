@@ -1,0 +1,40 @@
+@import './bases/basic_design.scss';
+@import '../styles/loader.css';
+
+html,
+body {
+  padding: 0;
+  margin: 0;
+  font-family: -apple-system, BlinkMacSystemFont, Segoe UI, Roboto, Oxygen,
+    Ubuntu, Cantarell, Fira Sans, Droid Sans, Helvetica Neue, sans-serif;
+}
+
+html,
+body,
+#__next {
+  min-height: 100vh;
+}
+
+a {
+  color: inherit;
+  text-decoration: none;
+}
+
+* {
+  box-sizing: border-box;
+}
+
+.linear-opacity {
+  position: relative;
+  mix-blend-mode: hard-light;
+  &::after {
+    position: absolute;
+    content: '';
+    left: 0px;
+    top: 0px;
+    height: 100%;
+    width: 100%;
+    background: linear-gradient(to left top, transparent -60% 0, white);
+    pointer-events: none;
+  }
+}

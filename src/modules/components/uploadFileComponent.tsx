@@ -89,7 +89,7 @@ const ImagePreview = ({
     return null;
   }
   return (
-    <div style={{ position: 'relative', }}>
+    <div style={{ position: 'relative' }}>
       <Image src={url} width={200} height={200} objectFit='contain' />
       <button
         onClick={() => onDelete()}

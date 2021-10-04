@@ -26,6 +26,7 @@ type TemplateContextAction = {
   createNewElement: (elementProps: unknown) => void;
   deleteElement: (elementId?: string) => void;
   setItemToUpdate: (elementId?: string) => void;
+  updateElementsZindex: (zIndexMapping: Record<string, number>) => void;
 };
 export const TemplateContextProvider = ({
   children,
@@ -108,6 +109,13 @@ export const TemplateContextProvider = ({
   };
 
   const createNewElement = (newElement: ItemProps) => {
+    newElement.style.zIndex =
+      Math.max(
+        ...Object.values(state.elements)?.map(
+          (element) => +element.style?.zIndex || 0,
+        ),
+      ) + 1;
+
     updateState({
       ...state,
       elements: {
@@ -136,6 +144,20 @@ export const TemplateContextProvider = ({
     setItemToUpdate(null);
   };
 
+  const updateElementsZindex = (zIndexMapping: Record<string, number> = {}) => {
+    const allElements = { ...state.elements };
+    Object.entries(zIndexMapping).forEach(([elementId, zIndex]) => {
+      const elementToUpdate = allElements[elementId];
+      if (elementToUpdate) {
+        elementToUpdate.style.zIndex = zIndex;
+      }
+    });
+    updateState({
+      ...state,
+      elements: allElements,
+    });
+  };
+
   return (
     <TemplateContext.Provider
       value={{
@@ -146,6 +168,7 @@ export const TemplateContextProvider = ({
         createNewElement,
         deleteElement,
         setItemToUpdate,
+        updateElementsZindex,
         builderNavBarProps: {
           hasPrevious: timeTravelProps.position > 0,
           hasNext:

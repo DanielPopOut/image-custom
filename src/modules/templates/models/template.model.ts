@@ -1,9 +1,25 @@
 import { CSSProperties, HTMLAttributes } from 'react';
+import { stringHelper } from 'src/modules/shared/services/stringHelper';
 
-export class Template {
-  _id: string;
+class BasicTemplateData {
   page: CSSProperties;
   elements: Record<string, ItemProps>;
+}
+
+export class Template extends BasicTemplateData {
+  _id: string;
+  dateCreation?: string;
+  creatorId?: string;
+  version?: number;
+  publishedVersion?: BasicTemplateData;
+  publicationDate?: string;
+  imageUrl?: string;
+  history?: Array<{
+    version: number;
+    data: BasicTemplateData;
+    publicationDate: string;
+    imageUrl?: string;
+  }>;
 
   constructor({
     _id,
@@ -14,6 +30,7 @@ export class Template {
     page: CSSProperties;
     elements: Record<string, ItemProps>;
   }) {
+    super();
     this._id = _id;
     this.page = page;
     this.elements = elements;
@@ -46,6 +63,24 @@ export class Template {
 
     return `https://fonts.googleapis.com/css2?${fontsParams}&display=swap`;
   };
+
+  static generateDefaultQueryVariables = (template: Template) => {
+    const allVariables = stringHelper.getValueToInterpolateInStringArray(
+      Object.values(template.elements).map((element) => {
+        if (element.type === 'text') {
+          return element.value;
+        }
+        return '';
+      }),
+    );
+
+    const queryObject = [...allVariables].reduce((finalObj, variable) => {
+      finalObj[variable] = `VALUE_${variable.toUpperCase()}`;
+      return finalObj;
+    }, {} as Record<string, string>);
+
+    return queryObject;
+  };
 }
 
 export type ItemProps = TextItemProps | ImageItemProps;
@@ -72,4 +107,5 @@ type TextItemStyleProps = {
   height?: number;
   color?: CSSProperties['color'];
   textAlign?: CSSProperties['textAlign'];
+  zIndex?: number;
 };

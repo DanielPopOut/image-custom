@@ -1,17 +1,18 @@
 import styled from '@emotion/styled';
 import { IconArrowBackUp, IconArrowForwardUp } from '@tabler/icons';
+import { ReactNode } from 'react';
 import { IconButtonContainer } from '../../../../../shared/IconsSelector/IconButton';
 
 type BuilderNavBarType = {
   timeTravelProps: TimeTravelProps;
-  onExport: () => void;
+  ActionButtons: ReactNode;
   isSaving: boolean;
 };
 
 export const BuilderNavBar: React.FC<BuilderNavBarType> = ({
   children,
   timeTravelProps,
-  onExport,
+  ActionButtons,
   isSaving,
 }) => {
   return (
@@ -23,12 +24,15 @@ export const BuilderNavBar: React.FC<BuilderNavBarType> = ({
             <BuilderButtons {...timeTravelProps} />
             {isSaving && (
               <>
-                <span className='loader' style={{ fontSize: 16 }} />
+                <span
+                  className='loader'
+                  style={{ fontSize: 16, margin: 0, marginRight: 10 }}
+                />
                 <span>Saving...</span>
               </>
             )}
           </div>
-          <button onClick={onExport}>Export</button>
+          <div className='buttons_container'>{ActionButtons}</div>
         </div>
       </BuilderNavBarContainer>
     </>
@@ -37,8 +41,9 @@ export const BuilderNavBar: React.FC<BuilderNavBarType> = ({
 
 const BuilderNavBarContainer = styled.div`
   min-height: 40px;
+  border-bottom: 1px solid #aaa;
+  overflow: hidden;
   .inner {
-    border-bottom: 1px solid #aaa;
     display: flex;
     justify-content: space-between;
     align-items: center;
@@ -47,7 +52,8 @@ const BuilderNavBarContainer = styled.div`
     position: fixed;
     background: white;
     z-index: 100;
-    height: 40px;
+    height: '100%';
+    max-width: 800px;
 
     .buttons_container {
       display: flex;

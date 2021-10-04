@@ -1,0 +1,25 @@
+$tropical-blue: #cadef7;
+$humming-bird: #d2f9e5;
+
+//blacks
+$mine-shaft: #333333;
+$grey: #aaaaaa;
+$lighter-grey: #dddddd;
+
+$primary: $tropical-blue;
+$secondary: $humming-bird;
+$text-color: $mine-shaft;
+$border-color: $lighter-grey;
+
+$unit: 4px;
+$spacing: 2 * $unit;
+$spacing_s: $unit;
+$spacing_l: 3 * $unit;
+$spacing_xl: 4 * $unit;
+
+:root {
+  --primary-color: $primary;
+  --secondary-color: $secondary;
+  --text-color: $text-color;
+  --border-color: $border-color;
+}
