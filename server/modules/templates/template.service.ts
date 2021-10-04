@@ -48,6 +48,7 @@ class TemplateService {
       );
       const result = await this.cloudinaryService.upload_stream(
         screenshotImage,
+        { folder: 'templates_published' },
       );
       const imageUrl = result.secure_url;
       await this.templateDbService.updateOneFullAction(
