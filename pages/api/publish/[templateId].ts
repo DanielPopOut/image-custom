@@ -28,7 +28,7 @@ apiRoute.use(async (req: NextApiRequestWithUserInfo, res: NextApiResponse) => {
 
     let templateUpdated: Template;
     try {
-      const templateUpdated = await templateService.publishTemplate(
+      templateUpdated = await templateService.publishTemplate(
         templateToPublish,
         req.headers.host,
       );
