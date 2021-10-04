@@ -11,7 +11,8 @@ const getUserToken = async (req: NextApiRequest) => {
     secret,
     secureCookie:
       process.env.NEXTAUTH_URL?.startsWith('https://') ??
-      process.env.VERCEL_ENV === 'preview',
+      process.env.VERCEL_ENV === 'preview' ??
+      process.env.VERCEL_ENV === 'production',
   });
 };
 
