@@ -14,21 +14,17 @@ class TemplateService {
       elements: template.elements,
       page: template.page,
     };
-    await this.templateDbService.updateOneFullAction(
-      template._id,
-      {
-        $set: { publishedVersion: publishedTemplateData, publicationDate },
-        $inc: { version: 1 },
-        $push: {
-          history: {
-            version: (template.version || 0) + 1,
-            data: publishedTemplateData,
-            publicationDate,
-          },
+    await this.templateDbService.updateOneFullAction(template._id, {
+      $set: { publishedVersion: publishedTemplateData, publicationDate },
+      $inc: { version: 1 },
+      $push: {
+        history: {
+          version: (template.version || 0) + 1,
+          data: publishedTemplateData,
+          publicationDate,
         },
       },
-      false,
-    );
+    });
     return await this.findOneById(template._id);
   };
 }
