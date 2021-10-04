@@ -13,7 +13,13 @@ export class Template extends BasicTemplateData {
   version?: number;
   publishedVersion?: BasicTemplateData;
   publicationDate?: string;
-  history?: Array<{ version: number; data: BasicTemplateData }>;
+  imageUrl?: string;
+  history?: Array<{
+    version: number;
+    data: BasicTemplateData;
+    publicationDate: string;
+    imageUrl?: string;
+  }>;
 
   constructor({
     _id,

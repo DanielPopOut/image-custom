@@ -4,8 +4,7 @@ import { ROUTES } from 'src/modules/shared/routes/ROUTES';
 const SCREENSHOT_REMOTE_URL = 'https://screenshot-web-page.vercel.app';
 // const SCREENSHOT_REMOTE_URL = 'http://localhost:3002';
 const DOWNLOAD_SELECTOR = '.to_download';
-
-class ScreenShotService {
+export class ScreenShotService {
   computeUrlToScreen = (
     templateId: string,
     requestQuery: Record<string, string>,

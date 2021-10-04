@@ -1,8 +1,20 @@
 import { Template } from 'src/modules/templates/models/template.model';
+import {
+  CloudinaryService,
+  cloudinaryService,
+} from '../cloudinary/cloudinaryService';
+import {
+  ScreenShotService,
+  screenShotService,
+} from '../screenshot/screenshotService';
 import { templateDbService, TemplateDbService } from './template.dbService';
 
 class TemplateService {
-  constructor(private templateDbService: TemplateDbService) {}
+  constructor(
+    private templateDbService: TemplateDbService,
+    private cloudinaryService: CloudinaryService,
+    private screenshotService: ScreenShotService,
+  ) {}
   findOneById = async (templateId: string) => {
     const template = await this.templateDbService.getOneById(templateId);
     return template;
@@ -27,6 +39,36 @@ class TemplateService {
     });
     return await this.findOneById(template._id);
   };
+
+  updateTemplateScreenshot = async (template: Template) => {
+    try {
+      const screenshotImage = await this.screenshotService.computeUrlAndFetch(
+        template._id,
+        Template.generateDefaultQueryVariables(template),
+      );
+      const result = await this.cloudinaryService.upload_stream(
+        screenshotImage,
+      );
+      const imageUrl = result.secure_url;
+      await this.templateDbService.updateOneFullAction(
+        template._id,
+        {
+          $set: {
+            imageUrl,
+            'history.$[element].imageUrl': imageUrl,
+          },
+        },
+        { arrayFilters: [{ 'element.version': template.version }] },
+      );
+    } catch (e) {
+      console.error('************ ERROR DURING SCREENSHOT UPDATE ************');
+      console.error(e);
+    }
+  };
 }
 
-export const templateService = new TemplateService(templateDbService);
+export const templateService = new TemplateService(
+  templateDbService,
+  cloudinaryService,
+  screenShotService,
+);

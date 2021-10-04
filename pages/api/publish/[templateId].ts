@@ -5,6 +5,7 @@ import {
   authenticationHandler,
   NextApiRequestWithUserInfo,
 } from 'server/shared/isAuthenticated';
+import { Template } from 'src/modules/templates/models/template.model';
 
 const apiRoute = nextConnect();
 
@@ -25,6 +26,7 @@ apiRoute.use(async (req: NextApiRequestWithUserInfo, res: NextApiResponse) => {
       return;
     }
 
+    let templateUpdated: Template;
     try {
       const templateUpdated = await templateService.publishTemplate(
         templateToPublish,
@@ -36,6 +38,7 @@ apiRoute.use(async (req: NextApiRequestWithUserInfo, res: NextApiResponse) => {
       res.status(400).json({ error: 'Error occured contact admin please' });
       return;
     }
+    templateService.updateTemplateScreenshot(templateUpdated);
   } else {
     res.status(400).send('Error');
   }
