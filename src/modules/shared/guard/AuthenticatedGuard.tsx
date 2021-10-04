@@ -1,5 +1,7 @@
 import { signIn, useSession } from 'next-auth/react';
 import React from 'react';
+import { PROTOCOL_AND_HOST } from 'server/shared/config/constants';
+import { ROUTES } from '../routes/ROUTES';
 
 export const AuthenticatedGuard = ({ children }) => {
   const { status } = useSession();
@@ -12,7 +14,7 @@ export const AuthenticatedGuard = ({ children }) => {
     return <>{children}</>;
   }
 
-  signIn();
+  signIn(null, { callbackUrl: `${PROTOCOL_AND_HOST}${ROUTES.MY_TEMPLATES}` });
   return null;
 };
 
