@@ -4,6 +4,7 @@ import {
   IconAlignLeft,
   IconAlignRight,
   IconBold,
+  IconGlass,
   IconItalic,
   IconLayoutAlignBottom,
   IconLayoutAlignCenter,
@@ -239,6 +240,36 @@ export const ActionBar = ({
               />
             </div>
           </IconButtonMenu>{' '}
+        </>
+      )}
+
+      {selectedItem && (
+        <>
+          <IconButtonMenu
+            Icon={
+              <div className='linear-opacity'>
+                <IconGlass />
+              </div>
+            }
+          >
+            <div style={{ padding: 10, minWidth: 200 }}>
+              <label>
+                Opacity{' '}
+                <input
+                  value={selectedItemStyle.opacity}
+                  onChange={(event) => {
+                    updateElementStyle({ opacity: event.target.value });
+                  }}
+                  type='number'
+                  step={0.01}
+                  min={0}
+                  max={1}
+                  size={3}
+                  defaultValue={1}
+                />
+              </label>
+            </div>
+          </IconButtonMenu>
         </>
       )}
 
