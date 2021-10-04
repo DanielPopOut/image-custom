@@ -13,7 +13,7 @@ const IconButtonMenuContainer = styled.div`
     display: none;
     position: absolute;
     top: 100%;
-    z-index: 1;
+    z-index: 1000;
   }
 
   &:hover {
