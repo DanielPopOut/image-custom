@@ -54,12 +54,36 @@ const TemplateElement = ({ template }: { template: Template }) => {
         style={{
           padding: 20,
           border: '1px solid grey',
-          minWidth: 200,
+          minWidth: 300,
           minHeight: 200,
+          background: `center / contain no-repeat url(${template.imageUrl})`,
+          position: 'relative',
+          cursor: 'pointer',
         }}
       >
-        <div>{(template as any)?.name}</div>
-        <div>Créé le {template?.dateCreation}</div>
+        <div
+          style={{
+            position: 'absolute',
+            bottom: 0,
+            left: 0,
+            right: 0,
+            padding: 10,
+            color: 'white',
+            backgroundColor: '#33333333',
+            textShadow: '1px 1px 2px black',
+          }}
+        >
+          <div>{(template as any)?.name}</div>
+          <div style={{ fontSize: '0.8em' }}>
+            Created on {new Date(template?.dateCreation).toDateString()}
+          </div>
+          {template.version && (
+            <div style={{ fontSize: '0.8em' }}>
+              V{template.version} published on{' '}
+              {new Date(template?.publicationDate).toDateString()}
+            </div>
+          )}
+        </div>
       </div>
     </Link>
   );
