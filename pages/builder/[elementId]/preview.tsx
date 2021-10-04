@@ -15,12 +15,11 @@ const ElementComponent = ({ templateData }: { templateData: Template }) => {
   }
 
   const queryElement = router.query;
-  const templateDataValue = templateData;
-  const templateDataToUse = {
-    ...templateDataValue,
-    elements: { ...templateDataValue.elements },
-  };
-  for (const [key, value] of Object.entries(templateDataToUse.elements)) {
+  const template = new Template({
+    _id: templateData._id,
+    ...templateData.publishedVersion,
+  });
+  for (const [key, value] of Object.entries(template.elements)) {
     if (value.type === 'text') {
       value.value = stringHelper.replaceValueInString(
         value.value,
@@ -28,11 +27,6 @@ const ElementComponent = ({ templateData }: { templateData: Template }) => {
       );
     }
   }
-
-  const template = new Template({
-    _id: templateData._id,
-    ...templateData.publishedVersion,
-  });
   const fontFamilyRequest = template.getGoogleRequestForFonts();
 
   return (
@@ -40,7 +34,7 @@ const ElementComponent = ({ templateData }: { templateData: Template }) => {
       <DownloadFonts fontFamilyRequest={fontFamilyRequest} />
       <ResultDesign
         {...{
-          state: templateDataToUse as Template,
+          state: template,
           setItemToUpdate: () => null,
           itemToUpdate: '',
           updateElement: () => null,
