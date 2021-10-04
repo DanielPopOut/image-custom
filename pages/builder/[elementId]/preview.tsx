@@ -1,37 +1,21 @@
+import { GetServerSidePropsContext } from 'next';
 import { useRouter } from 'next/dist/client/router';
-import { useEffect } from 'react';
+import { PROTOCOL_AND_HOST } from 'server/shared/config/constants';
+import { basicResultHandler } from 'src/modules/shared/hooks/generics';
 import { stringHelper } from '../../../src/modules/shared/services/stringHelper';
-import { useGetTemplate } from '../../../src/modules/templates/hooks/hooks';
 import { Template } from '../../../src/modules/templates/models/template.model';
-import { CreateNewTemplateButton } from '../../../src/modules/templates/pages/builderPage/components/CreateNewTemplateButton';
 import { ResultDesign } from '../../../src/modules/templates/pages/builderPage/ResultDesign';
 import { DownloadFonts } from '../../../src/modules/templates/shared/DonwloadFonts';
 
-const ElementComponent = () => {
+const ElementComponent = ({ templateData }: { templateData: Template }) => {
   const router = useRouter();
-  const elementId = router.query.elementId as string;
-  const [templateData, getTemplateData] = useGetTemplate();
 
-  useEffect(() => {
-    if (elementId) {
-      getTemplateData(elementId);
-    }
-  }, [elementId]);
-
-  if (templateData.loading) {
-    return <div>Loading</div>;
-  }
-  if (!templateData.value) {
-    return (
-      <div>
-        <div>Template not found</div>
-        <CreateNewTemplateButton />
-      </div>
-    );
+  if (!templateData?.publishedVersion) {
+    return <div className='to_download'>No version published</div>;
   }
 
   const queryElement = router.query;
-  const templateDataValue = templateData.value;
+  const templateDataValue = templateData;
   const templateDataToUse = {
     ...templateDataValue,
     elements: { ...templateDataValue.elements },
@@ -45,13 +29,9 @@ const ElementComponent = () => {
     }
   }
 
-  if (!templateData.value.publishedVersion) {
-    return <div className='to_download'>No version published</div>;
-  }
-
   const template = new Template({
-    _id: templateData.value._id,
-    ...templateData.value.publishedVersion,
+    _id: templateData._id,
+    ...templateData.publishedVersion,
   });
   const fontFamilyRequest = template.getGoogleRequestForFonts();
 
@@ -71,3 +51,14 @@ const ElementComponent = () => {
 };
 
 export default ElementComponent;
+
+export const getServerSideProps = async (
+  context: GetServerSidePropsContext,
+) => {
+  const templateId = context.query.elementId;
+  const urlToFetch = `${PROTOCOL_AND_HOST}/api/custom/templates/${templateId}`;
+
+  const templateData = await fetch(urlToFetch).then(basicResultHandler);
+
+  return { props: { templateData: templateData } };
+};
