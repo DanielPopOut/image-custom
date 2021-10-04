@@ -127,7 +127,13 @@ const PublishButton = ({ templateId }: { templateId: string }) => {
   return (
     <button
       className='button primary'
-      onClick={() => publishTemplate(templateId)}
+      onClick={() =>
+        publishTemplate(templateId).then((data) => {
+          if (!(data instanceof Error)) {
+            alert('Votre template a bien été publié');
+          }
+        })
+      }
     >
       {publishTemplateState.loading && (
         <span
