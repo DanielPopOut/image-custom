@@ -3,7 +3,7 @@ import { ImageItemProps } from '../../../../models/template.model';
 import { WithCopyPaste } from '../WithCopyPaste';
 import { WithLiveDraggable } from '../WithLiveDraggable';
 import { WithResize } from '../WithResize';
-import { ItemContainer } from './TextItem';
+import { BasicItemActions, ItemContainer } from './TextItem';
 
 const ImageItem = forwardRef(
   (
@@ -13,10 +13,12 @@ const ImageItem = forwardRef(
       onChange,
       id,
       children,
+      deleteElement,
       ...rest
-    }: ImageItemProps & {
-      onChange: (data: Partial<{ style: CSSProperties }>) => void;
-    },
+    }: ImageItemProps &
+      BasicItemActions & {
+        onChange: (data: Partial<{ style: CSSProperties }>) => void;
+      },
     ref: RefCallback<unknown>,
   ) => {
     return (
@@ -25,6 +27,13 @@ const ImageItem = forwardRef(
           ...style,
         }}
         tabIndex={-1}
+        onKeyDown={(e) => {
+          e.stopPropagation();
+          const key = e.key;
+          if (key === 'Backspace' || key === 'Delete') {
+            deleteElement();
+          }
+        }}
         {...rest}
         id={id}
         ref={ref}

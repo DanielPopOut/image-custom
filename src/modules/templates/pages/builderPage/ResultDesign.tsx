@@ -26,6 +26,7 @@ export const ResultDesign = ({
   itemToUpdate,
   updateElement,
   createNewElement,
+  deleteElement,
 }: {
   state: Template;
   itemToUpdate: string;
@@ -35,6 +36,7 @@ export const ResultDesign = ({
     update: Partial<{ value: string; style: CSSProperties }>,
   ) => void;
   createNewElement?: (elementProps: unknown) => void;
+  deleteElement: (itemId: string) => void;
 }) => {
   const updateItemPositionOnDragEnd = (
     itemId: string,
@@ -85,6 +87,7 @@ export const ResultDesign = ({
                   setItemToUpdate(item.id);
                   e.stopPropagation();
                 }}
+                deleteElement={() => deleteElement(item.id)}
                 onChange={(data) => updateElement(item.id, data)}
               />
             );
@@ -98,6 +101,7 @@ export const ResultDesign = ({
                   clipBoardService.copy(item);
                   e.stopPropagation();
                 }}
+                deleteElement={() => deleteElement(item.id)}
                 onDragStart={() => setItemToUpdate(item.id)}
                 onDragEnd={(data) => updateItemPositionOnDragEnd(item.id, data)}
                 onClick={(e) => {

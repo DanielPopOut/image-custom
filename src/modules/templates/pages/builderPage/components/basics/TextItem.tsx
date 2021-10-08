@@ -19,6 +19,10 @@ export const ItemContainer = styled.div`
   cursor: pointer;
 `;
 
+export type BasicItemActions = {
+  deleteElement: () => void;
+};
+
 const TextItem = forwardRef(
   (
     {
@@ -28,12 +32,14 @@ const TextItem = forwardRef(
       onChange,
       id,
       children,
+      deleteElement,
       ...rest
-    }: TextItemProps & {
-      onChange: (
-        data: Partial<{ value: string; style: CSSProperties }>,
-      ) => void;
-    },
+    }: TextItemProps &
+      BasicItemActions & {
+        onChange: (
+          data: Partial<{ value: string; style: CSSProperties }>,
+        ) => void;
+      },
     ref,
   ) => {
     const [debouncedValue, setDebouncedValue] = React.useState(value);
@@ -58,6 +64,13 @@ const TextItem = forwardRef(
         }}
         tabIndex={-1}
         {...rest}
+        onKeyDown={(e) => {
+          e.stopPropagation();
+          const key = e.key;
+          if (key === 'Backspace' || key === 'Delete') {
+            deleteElement();
+          }
+        }}
       >
         {
           // this is needed to work withCopy

@@ -45,6 +45,7 @@ const BuilderPageContent = () => {
     itemToUpdate,
     setItemToUpdate,
     state,
+    builderNavBarProps,
   } = useContext(TemplateContext);
   return (
     <div style={{ display: 'flex', flexDirection: 'column', height: '100vh' }}>
@@ -57,9 +58,14 @@ const BuilderPageContent = () => {
           flex: 1,
         }}
         onKeyDown={(e) => {
-          const key = e.key;
-          if (key === 'Backspace' || key === 'Delete') {
-            deleteElement();
+          if (e.metaKey || e.ctrlKey) {
+            if (e.key === 'z' || e.key === 'Z') {
+              if (e.shiftKey) {
+                builderNavBarProps.forward();
+              } else {
+                builderNavBarProps.back();
+              }
+            }
           }
         }}
         tabIndex={-1}
@@ -105,6 +111,7 @@ const BuilderPageContent = () => {
             itemToUpdate={itemToUpdate}
             updateElement={updateElement}
             createNewElement={createNewElement}
+            deleteElement={deleteElement}
           />
           <QueryAndDownloadUrls state={state} />
         </div>
