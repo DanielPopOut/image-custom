@@ -17,7 +17,12 @@ export const PageParameters = ({
   onChange: (data) => void;
 }) => {
   return (
-    <div style={{ padding: 10 }}>
+    <div
+      style={{ padding: 10 }}
+      onKeyDown={(e) => {
+        e.stopPropagation();
+      }}
+    >
       <h4 style={{ marginTop: 0 }}>Page parameters</h4>
 
       <SizeInput

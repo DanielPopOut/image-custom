@@ -59,6 +59,9 @@ export const ActionBar = ({
         display: 'flex',
         alignItems: 'center',
       }}
+      onKeyDown={(e) => {
+        e.stopPropagation();
+      }}
     >
       <IconButtonMenu
         Icon={
