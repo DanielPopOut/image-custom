@@ -7,12 +7,18 @@ import React, {
   useCallback,
   useContext,
 } from 'react';
+import { uploadImageFnFromFile } from 'src/modules/components/uploadImageFn';
 import { clipBoardService } from '../../../shared/services/clipBoardService';
-import { Template, TextItemProps } from '../../models/template.model';
+import {
+  ItemProps,
+  Template,
+  TextItemProps,
+} from '../../models/template.model';
 import { DraggableImageItem } from './components/basics/ImageItem';
 import { DraggableTextItem } from './components/basics/TextItem';
 import { WithCopyPaste } from './components/WithCopyPaste';
 import { PageContext } from './contexts/PageContext';
+import { getDefaultImage } from './defaultInitialData';
 
 export const ResultDesign = ({
   state,
@@ -101,7 +107,7 @@ export const ResultDesign = ({
 
 const DrawingPage: React.FC<
   HTMLAttributes<HTMLDivElement> & {
-    onCreateNewElement: (data: TextItemProps) => void;
+    onCreateNewElement: (data: ItemProps) => void;
   }
 > = ({ children, style, onClick, onCreateNewElement }) => {
   const { updateSheetData } = useContext(PageContext);
@@ -131,9 +137,25 @@ const DrawingPage: React.FC<
       }}
       shouldCatchPasteBubbling
       onClick={onClick}
-      onPaste={(event) => {
+      onPaste={async (event) => {
         const dataTextFormat = event.clipboardData.getData('text/plain');
-        console.log(event.clipboardData.files.length);
+        if (event.clipboardData.files.length) {
+          const fileToUpload = event.clipboardData.files[0];
+          if (fileToUpload.type.includes('image')) {
+            console.log('here', { fileToUpload });
+            const result = await uploadImageFnFromFile(fileToUpload);
+            if (result.imageUrl) {
+              onCreateNewElement({
+                id: new ObjectId().toHexString(),
+                ...getDefaultImage({
+                  top: 50,
+                  left: 50,
+                  imagePath: result.imageUrl,
+                }),
+              });
+            }
+          }
+        }
         if (!dataTextFormat) {
           event.preventDefault();
           return;
