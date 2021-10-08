@@ -1,17 +1,9 @@
-import styled from '@emotion/styled';
 import React, { CSSProperties, forwardRef, RefCallback } from 'react';
 import { ImageItemProps } from '../../../../models/template.model';
 import { WithCopyPaste } from '../WithCopyPaste';
 import { WithLiveDraggable } from '../WithLiveDraggable';
 import { WithResize } from '../WithResize';
-
-const TextItemContainer = styled.div`
-  &:focus-within {
-    border: 1px dashed red;
-    cursor: grab;
-  }
-  cursor: pointer;
-`;
+import { ItemContainer } from './TextItem';
 
 const ImageItem = forwardRef(
   (
@@ -28,7 +20,7 @@ const ImageItem = forwardRef(
     ref: RefCallback<unknown>,
   ) => {
     return (
-      <TextItemContainer
+      <ItemContainer
         style={{
           ...style,
         }}
@@ -62,7 +54,7 @@ const ImageItem = forwardRef(
           }}
           tagName='article' // Use a custom HTML tag (uses a div by default)
         /> */}
-      </TextItemContainer>
+      </ItemContainer>
     );
   },
 );

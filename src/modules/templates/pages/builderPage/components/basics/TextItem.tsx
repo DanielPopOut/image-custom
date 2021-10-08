@@ -7,9 +7,9 @@ import { WithCopyPaste } from '../WithCopyPaste';
 import { WithLiveDraggable } from '../WithLiveDraggable';
 import { WithResize } from '../WithResize';
 
-const TextItemContainer = styled.div`
+export const ItemContainer = styled.div`
   &:focus-within {
-    border: 1px dashed red;
+    border: 2px solid #fa9696;
     cursor: grab;
   }
   cursor: pointer;
@@ -47,7 +47,7 @@ const TextItem = forwardRef(
       setDebouncedValue(value);
     }, [value]);
     return (
-      <TextItemContainer
+      <ItemContainer
         style={{
           ...style,
         }}
@@ -83,7 +83,7 @@ const TextItem = forwardRef(
           }}
           tagName='article' // Use a custom HTML tag (uses a div by default)
         />
-      </TextItemContainer>
+      </ItemContainer>
     );
   },
 );
