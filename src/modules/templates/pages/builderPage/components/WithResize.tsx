@@ -1,3 +1,4 @@
+import { IconPoint } from '@tabler/icons';
 import { Resizable } from 're-resizable';
 import React, { forwardRef, useEffect } from 'react';
 
@@ -44,6 +45,9 @@ export const WithResize = <
             width: +debouncedStyle.width,
             height: +debouncedStyle.height,
           });
+        }}
+        handleComponent={{
+          bottomRight: <IconPoint color='white' />,
         }}
         onResize={(e, direction, ref, d) => {
           setDebouncedValue({

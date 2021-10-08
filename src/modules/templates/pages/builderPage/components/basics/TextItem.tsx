@@ -8,9 +8,13 @@ import { WithLiveDraggable } from '../WithLiveDraggable';
 import { WithResize } from '../WithResize';
 
 export const ItemContainer = styled.div`
+  border: 2px solid transparent;
   &:focus-within {
     border: 2px solid #fa9696;
     cursor: grab;
+  }
+  &:hover {
+    border: 2px dashed #fa9696;
   }
   cursor: pointer;
 `;
@@ -49,6 +53,7 @@ const TextItem = forwardRef(
     return (
       <ItemContainer
         style={{
+          border: isSelected && '2px solid #fa9696',
           ...style,
         }}
         tabIndex={-1}
