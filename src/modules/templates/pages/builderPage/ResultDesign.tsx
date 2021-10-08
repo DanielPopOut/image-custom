@@ -175,7 +175,7 @@ const DrawingPage: React.FC<
         }
         try {
           let dataParsed: TextItemProps;
-          if (dataTextFormat.includes('{')) {
+          if (dataTextFormat.includes('{') && dataTextFormat.includes('type')) {
             dataParsed = JSON.parse(
               JSON.parse(dataTextFormat),
             ) as TextItemProps;
