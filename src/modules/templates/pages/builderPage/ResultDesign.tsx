@@ -133,14 +133,26 @@ const DrawingPage: React.FC<
       onClick={onClick}
       onPaste={(event) => {
         const dataTextFormat = event.clipboardData.getData('text/plain');
+        console.log(event.clipboardData.files.length);
         if (!dataTextFormat) {
           event.preventDefault();
           return;
         }
         try {
-          const dataParsed = JSON.parse(
-            JSON.parse(dataTextFormat),
-          ) as TextItemProps;
+          let dataParsed: TextItemProps;
+          if (dataTextFormat.includes('{')) {
+            dataParsed = JSON.parse(
+              JSON.parse(dataTextFormat),
+            ) as TextItemProps;
+          } else {
+            dataParsed = {
+              id: null,
+              value: dataTextFormat,
+              type: 'text',
+              style: {},
+            };
+          }
+
           if (dataParsed.type === 'text') {
             event.preventDefault();
             const id = new ObjectId().toHexString();
