@@ -247,6 +247,14 @@ export const ActionBar = ({
 
       {selectedItem && (
         <>
+          <div style={{ marginRight: 5 }}>
+            <ColorInput
+              value={selectedItemStyle.backgroundColor}
+              onChange={(newColor) =>
+                updateElementStyle({ backgroundColor: newColor })
+              }
+            />
+          </div>
           <IconButtonMenu
             Icon={
               <div className='linear-opacity'>
