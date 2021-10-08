@@ -18,7 +18,7 @@ import { DraggableImageItem } from './components/basics/ImageItem';
 import { DraggableTextItem } from './components/basics/TextItem';
 import { WithCopyPaste } from './components/WithCopyPaste';
 import { PageContext } from './contexts/PageContext';
-import { getDefaultImage } from './defaultInitialData';
+import { getDefaultImage, getDefaultText } from './defaultInitialData';
 
 export const ResultDesign = ({
   state,
@@ -182,9 +182,7 @@ const DrawingPage: React.FC<
           } else {
             dataParsed = {
               id: null,
-              value: dataTextFormat,
-              type: 'text',
-              style: {},
+              ...getDefaultText({ top: 50, left: 50, text: dataTextFormat }),
             };
           }
 
