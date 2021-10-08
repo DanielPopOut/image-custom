@@ -49,7 +49,16 @@ export const ResultDesign = ({
   };
 
   return (
-    <div style={{ border: '1px solid black', width: 'fit-content' }}>
+    <div style={{ position: 'relative', width: 'fit-content' }}>
+      <div
+        style={{
+          border: '1px solid black',
+          zIndex: 1,
+          position: 'absolute',
+          pointerEvents: 'none',
+          inset: 0,
+        }}
+      />
       <DrawingPage
         style={state.page}
         onClick={() => {

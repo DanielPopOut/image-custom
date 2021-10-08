@@ -56,7 +56,6 @@ export const ActionBar = ({
     <div
       style={{
         height: 30,
-        marginBottom: 10,
         display: 'flex',
         alignItems: 'center',
       }}

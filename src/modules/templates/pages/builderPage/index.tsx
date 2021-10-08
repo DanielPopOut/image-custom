@@ -64,7 +64,14 @@ const BuilderPageContent = () => {
         }}
         tabIndex={-1}
       >
-        <div style={{ width: 250, borderRight: '1px solid #aaa' }}>
+        <div
+          style={{
+            width: 250,
+            borderRight: '1px solid #aaa',
+            backgroundColor: 'white',
+            zIndex: 100,
+          }}
+        >
           <PageParameters
             defaultValues={state.page}
             onChange={(data) => updatePageData(data)}
@@ -72,15 +79,26 @@ const BuilderPageContent = () => {
           <LayerLevels elements={state.elements} />
         </div>
 
-        <div style={{ padding: 20, position: 'relative' }}>
-          <ActionBar
-            addNewItem={createNewElement}
-            deleteItem={deleteElement}
-            selectedItem={state.elements[itemToUpdate]}
-            updateElementStyle={(data) =>
-              updateElement(itemToUpdate, { style: data })
-            }
-          />
+        <div style={{ paddingLeft: 20, position: 'relative' }}>
+          <div
+            style={{
+              marginLeft: -20,
+              padding: 20,
+              paddingBottom: 10,
+              backgroundColor: 'white',
+              position: 'relative',
+              zIndex: 100,
+            }}
+          >
+            <ActionBar
+              addNewItem={createNewElement}
+              deleteItem={deleteElement}
+              selectedItem={state.elements[itemToUpdate]}
+              updateElementStyle={(data) =>
+                updateElement(itemToUpdate, { style: data })
+              }
+            />
+          </div>
           <ResultDesign
             state={state}
             setItemToUpdate={setItemToUpdate}
