@@ -6,24 +6,28 @@ export const SizeInput = ({
   onChange,
   value,
   label,
+  multiplicationCoeff = 1,
+  transformResult = (value) => value + 'px',
 }: {
   onChange: (data: string) => void;
   value: string;
   label?: string;
+  multiplicationCoeff?: number;
+  transformResult?: (value: number) => string;
 }) => {
   const [inputValue, setInputValue] = useState<string>(null);
   useEffect(() => {
     const matchedValues = ('' + value).match(/([\d.]+)/);
     if (matchedValues) {
       const valueNumber = matchedValues[1];
-      setInputValue(valueNumber);
+      setInputValue((+valueNumber * multiplicationCoeff)?.toString());
     }
   }, [value]);
 
   const onChangeFn = (newValue: string) => {
     if (newValue.match(/^[\d.]+$/) || !newValue) {
       setInputValue(newValue);
-      onChange(newValue + 'px');
+      onChange(transformResult(+newValue / multiplicationCoeff));
     }
   };
   const updateBy = (value: number) => {

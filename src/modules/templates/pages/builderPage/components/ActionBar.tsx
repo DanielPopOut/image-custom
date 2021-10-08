@@ -217,6 +217,8 @@ export const ActionBar = ({
               <SizeInput
                 value={selectedItemStyle.letterSpacing as string}
                 onChange={(data) => updateElementStyle({ letterSpacing: data })}
+                multiplicationCoeff={1000}
+                transformResult={(value) => `${value}em`}
               />
             </div>
             <div style={{ display: 'flex', alignItems: 'center' }}>
@@ -224,6 +226,7 @@ export const ActionBar = ({
               <SizeInput
                 value={selectedItemStyle.lineHeight as string}
                 onChange={(data) => updateElementStyle({ lineHeight: data })}
+                transformResult={(value) => value?.toString()}
               />
             </div>
           </IconButtonMenu>
