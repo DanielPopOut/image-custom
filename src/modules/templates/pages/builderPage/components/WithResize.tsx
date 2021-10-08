@@ -1,7 +1,9 @@
 import { Resizable } from 're-resizable';
 import React, { forwardRef, useEffect } from 'react';
 
-export const WithResize = <P extends React.HTMLAttributes<HTMLDivElement>>(
+export const WithResize = <
+  P extends React.HTMLAttributes<HTMLDivElement> & { isSelected?: boolean },
+>(
   Component: React.ForwardRefExoticComponent<P>,
 ) =>
   forwardRef(({ style, onChange, ...rest }: P, ref) => {
@@ -12,6 +14,7 @@ export const WithResize = <P extends React.HTMLAttributes<HTMLDivElement>>(
       setDebouncedValue(style);
     }, [style]);
     const componentProps = { ...rest, style: debouncedStyle, onChange } as P;
+    const isSelected = rest.isSelected;
     return (
       <Resizable
         style={{
@@ -26,11 +29,11 @@ export const WithResize = <P extends React.HTMLAttributes<HTMLDivElement>>(
         }}
         enable={{
           top: false,
-          right: true,
-          bottom: true,
+          right: isSelected,
+          bottom: isSelected,
           left: false,
           topRight: false,
-          bottomRight: true,
+          bottomRight: isSelected,
           bottomLeft: false,
           topLeft: false,
         }}
