@@ -14,10 +14,14 @@ apiRoute.use(async (req: NextApiRequest, res: NextApiResponse) => {
       templateId,
       req.query as Record<string, string>,
     );
-    res.setHeader('Content-Type', 'image/jpeg');
-    res.setHeader('Content-Disposition', `inline;filename=${fileName}.png`);
+    const body = await result.body;
+    res.setHeader('content-type', result.headers.get('content-type'));
+    res.setHeader(
+      'content-disposition',
+      result.headers.get('content-disposition'),
+    );
     res.statusCode = 200;
-    res.send(result);
+    res.send(body);
   } else {
     res.status(400).send('Error');
   }

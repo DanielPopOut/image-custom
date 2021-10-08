@@ -45,7 +45,7 @@ class TemplateService {
       const screenshotImage = await this.screenshotService.computeUrlAndFetch(
         template._id,
         Template.generateDefaultQueryVariables(template),
-      );
+      ).then((res) => res.body);
       const result = await this.cloudinaryService.upload_stream(
         screenshotImage,
         { folder: 'templates_published' },
