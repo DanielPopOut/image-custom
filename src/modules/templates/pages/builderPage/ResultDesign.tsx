@@ -126,7 +126,6 @@ const DrawingPage: React.FC<
       ref={onRefChange}
       className='to_download'
       style={{
-        backgroundColor: 'white',
         position: 'relative',
         ...style,
       }}
