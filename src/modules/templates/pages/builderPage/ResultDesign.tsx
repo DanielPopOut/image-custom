@@ -146,6 +146,7 @@ const DrawingPage: React.FC<
       className='to_download'
       style={{
         position: 'relative',
+        overflow: 'hidden',
         ...style,
       }}
       shouldCatchPasteBubbling
