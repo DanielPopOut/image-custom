@@ -45,7 +45,7 @@ export const ActionBar = ({
   updateElementStyle,
 }: {
   addNewItem: (textItemProps: ItemProps) => void;
-  deleteItem: () => void;
+  deleteItem: (itemId: string) => void;
   selectedItem: ItemProps;
   updateElementStyle: (data: Partial<CSSProperties>) => void;
 }) => {
@@ -275,7 +275,7 @@ export const ActionBar = ({
 
       {selectedItemStyle && (
         <IconButtonContainer title='Delete element' className='danger'>
-          <IconTrash onClick={deleteItem} />
+          <IconTrash onClick={() => deleteItem(selectedItem.id)} />
         </IconButtonContainer>
       )}
     </div>
