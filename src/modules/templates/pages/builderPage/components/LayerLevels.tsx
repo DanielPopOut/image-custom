@@ -19,6 +19,8 @@ export const LayerLevels = ({
     return {
       id: element.id,
       type: element.type,
+      //@ts-ignore
+      value: (element?.value || '') as string,
       zIndex,
       zIndexScore: zIndex * 1000 + index,
     };
@@ -59,7 +61,8 @@ export const LayerLevels = ({
     200,
     [state],
   );
-  const items = elementsData.map(({ type, id }, index) => {
+  const items = elementsData.map((elementData, index) => {
+    const { type, value, id } = elementData;
     return (
       <div
         style={{
@@ -83,7 +86,7 @@ export const LayerLevels = ({
           }}
         >
           {index}: {type}
-          <span style={{ fontSize: '0.8em' }}>{id}</span>
+          <span style={{ fontSize: '0.8em' }}>{value}</span>
         </div>
         <div style={{ display: 'flex', alignItems: 'center' }}>
           <IconButtonContainer
