@@ -7,12 +7,18 @@ import React, {
   useCallback,
   useContext,
 } from 'react';
+import { uploadImageFnFromFile } from 'src/modules/components/uploadImageFn';
 import { clipBoardService } from '../../../shared/services/clipBoardService';
-import { Template, TextItemProps } from '../../models/template.model';
+import {
+  ItemProps,
+  Template,
+  TextItemProps,
+} from '../../models/template.model';
 import { DraggableImageItem } from './components/basics/ImageItem';
 import { DraggableTextItem } from './components/basics/TextItem';
 import { WithCopyPaste } from './components/WithCopyPaste';
 import { PageContext } from './contexts/PageContext';
+import { getDefaultImage, getDefaultText } from './defaultInitialData';
 
 export const ResultDesign = ({
   state,
@@ -20,6 +26,7 @@ export const ResultDesign = ({
   itemToUpdate,
   updateElement,
   createNewElement,
+  deleteElement,
 }: {
   state: Template;
   itemToUpdate: string;
@@ -29,6 +36,7 @@ export const ResultDesign = ({
     update: Partial<{ value: string; style: CSSProperties }>,
   ) => void;
   createNewElement?: (elementProps: unknown) => void;
+  deleteElement: (itemId: string) => void;
 }) => {
   const updateItemPositionOnDragEnd = (
     itemId: string,
@@ -43,7 +51,16 @@ export const ResultDesign = ({
   };
 
   return (
-    <div style={{ border: '1px solid black', width: 'fit-content' }}>
+    <div style={{ position: 'relative', width: 'fit-content' }}>
+      <div
+        style={{
+          border: '1px solid black',
+          zIndex: 1,
+          position: 'absolute',
+          pointerEvents: 'none',
+          inset: 0,
+        }}
+      />
       <DrawingPage
         style={state.page}
         onClick={() => {
@@ -70,6 +87,7 @@ export const ResultDesign = ({
                   setItemToUpdate(item.id);
                   e.stopPropagation();
                 }}
+                deleteElement={() => deleteElement(item.id)}
                 onChange={(data) => updateElement(item.id, data)}
               />
             );
@@ -83,6 +101,7 @@ export const ResultDesign = ({
                   clipBoardService.copy(item);
                   e.stopPropagation();
                 }}
+                deleteElement={() => deleteElement(item.id)}
                 onDragStart={() => setItemToUpdate(item.id)}
                 onDragEnd={(data) => updateItemPositionOnDragEnd(item.id, data)}
                 onClick={(e) => {
@@ -101,7 +120,7 @@ export const ResultDesign = ({
 
 const DrawingPage: React.FC<
   HTMLAttributes<HTMLDivElement> & {
-    onCreateNewElement: (data: TextItemProps) => void;
+    onCreateNewElement: (data: ItemProps) => void;
   }
 > = ({ children, style, onClick, onCreateNewElement }) => {
   const { updateSheetData } = useContext(PageContext);
@@ -126,22 +145,48 @@ const DrawingPage: React.FC<
       ref={onRefChange}
       className='to_download'
       style={{
-        backgroundColor: 'white',
         position: 'relative',
+        overflow: 'hidden',
         ...style,
       }}
       shouldCatchPasteBubbling
       onClick={onClick}
-      onPaste={(event) => {
+      onPaste={async (event) => {
         const dataTextFormat = event.clipboardData.getData('text/plain');
+        if (event.clipboardData.files.length) {
+          const fileToUpload = event.clipboardData.files[0];
+          if (fileToUpload.type.includes('image')) {
+            console.log('here', { fileToUpload });
+            const result = await uploadImageFnFromFile(fileToUpload);
+            if (result.imageUrl) {
+              onCreateNewElement({
+                id: new ObjectId().toHexString(),
+                ...getDefaultImage({
+                  top: 50,
+                  left: 50,
+                  imagePath: result.imageUrl,
+                }),
+              });
+            }
+          }
+        }
         if (!dataTextFormat) {
           event.preventDefault();
           return;
         }
         try {
-          const dataParsed = JSON.parse(
-            JSON.parse(dataTextFormat),
-          ) as TextItemProps;
+          let dataParsed: TextItemProps;
+          if (dataTextFormat.includes('{') && dataTextFormat.includes('type')) {
+            dataParsed = JSON.parse(
+              JSON.parse(dataTextFormat),
+            ) as TextItemProps;
+          } else {
+            dataParsed = {
+              id: null,
+              ...getDefaultText({ top: 50, left: 50, text: dataTextFormat }),
+            };
+          }
+
           if (dataParsed.type === 'text') {
             event.preventDefault();
             const id = new ObjectId().toHexString();

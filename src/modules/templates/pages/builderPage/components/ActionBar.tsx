@@ -45,7 +45,7 @@ export const ActionBar = ({
   updateElementStyle,
 }: {
   addNewItem: (textItemProps: ItemProps) => void;
-  deleteItem: () => void;
+  deleteItem: (itemId: string) => void;
   selectedItem: ItemProps;
   updateElementStyle: (data: Partial<CSSProperties>) => void;
 }) => {
@@ -56,9 +56,11 @@ export const ActionBar = ({
     <div
       style={{
         height: 30,
-        marginBottom: 10,
         display: 'flex',
         alignItems: 'center',
+      }}
+      onKeyDown={(e) => {
+        e.stopPropagation();
       }}
     >
       <IconButtonMenu
@@ -215,6 +217,8 @@ export const ActionBar = ({
               <SizeInput
                 value={selectedItemStyle.letterSpacing as string}
                 onChange={(data) => updateElementStyle({ letterSpacing: data })}
+                multiplicationCoeff={1000}
+                transformResult={(value) => `${value}em`}
               />
             </div>
             <div style={{ display: 'flex', alignItems: 'center' }}>
@@ -222,6 +226,7 @@ export const ActionBar = ({
               <SizeInput
                 value={selectedItemStyle.lineHeight as string}
                 onChange={(data) => updateElementStyle({ lineHeight: data })}
+                transformResult={(value) => value?.toString()}
               />
             </div>
           </IconButtonMenu>
@@ -245,6 +250,14 @@ export const ActionBar = ({
 
       {selectedItem && (
         <>
+          <div style={{ marginRight: 5 }}>
+            <ColorInput
+              value={selectedItemStyle.backgroundColor}
+              onChange={(newColor) =>
+                updateElementStyle({ backgroundColor: newColor })
+              }
+            />
+          </div>
           <IconButtonMenu
             Icon={
               <div className='linear-opacity'>
@@ -275,7 +288,7 @@ export const ActionBar = ({
 
       {selectedItemStyle && (
         <IconButtonContainer title='Delete element' className='danger'>
-          <IconTrash onClick={deleteItem} />
+          <IconTrash onClick={() => deleteItem(selectedItem.id)} />
         </IconButtonContainer>
       )}
     </div>

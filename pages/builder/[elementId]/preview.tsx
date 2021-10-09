@@ -38,6 +38,7 @@ const ElementComponent = ({ templateData }: { templateData: Template }) => {
           setItemToUpdate: () => null,
           itemToUpdate: '',
           updateElement: () => null,
+          deleteElement: () => null,
         }}
       />
     </>

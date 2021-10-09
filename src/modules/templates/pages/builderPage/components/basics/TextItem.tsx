@@ -7,13 +7,21 @@ import { WithCopyPaste } from '../WithCopyPaste';
 import { WithLiveDraggable } from '../WithLiveDraggable';
 import { WithResize } from '../WithResize';
 
-const TextItemContainer = styled.div`
+export const ItemContainer = styled.div`
+  border: 2px solid transparent;
   &:focus-within {
-    border: 1px dashed red;
+    border: 2px solid #fa9696;
     cursor: grab;
+  }
+  &:hover {
+    border: 2px dashed #fa9696;
   }
   cursor: pointer;
 `;
+
+export type BasicItemActions = {
+  deleteElement: () => void;
+};
 
 const TextItem = forwardRef(
   (
@@ -24,12 +32,14 @@ const TextItem = forwardRef(
       onChange,
       id,
       children,
+      deleteElement,
       ...rest
-    }: TextItemProps & {
-      onChange: (
-        data: Partial<{ value: string; style: CSSProperties }>,
-      ) => void;
-    },
+    }: TextItemProps &
+      BasicItemActions & {
+        onChange: (
+          data: Partial<{ value: string; style: CSSProperties }>,
+        ) => void;
+      },
     ref,
   ) => {
     const [debouncedValue, setDebouncedValue] = React.useState(value);
@@ -47,12 +57,20 @@ const TextItem = forwardRef(
       setDebouncedValue(value);
     }, [value]);
     return (
-      <TextItemContainer
+      <ItemContainer
         style={{
+          border: isSelected && '2px solid #fa9696',
           ...style,
         }}
         tabIndex={-1}
         {...rest}
+        onKeyDown={(e) => {
+          e.stopPropagation();
+          const key = e.key;
+          if (key === 'Backspace' || key === 'Delete') {
+            deleteElement();
+          }
+        }}
       >
         {
           // this is needed to work withCopy
@@ -83,7 +101,7 @@ const TextItem = forwardRef(
           }}
           tagName='article' // Use a custom HTML tag (uses a div by default)
         />
-      </TextItemContainer>
+      </ItemContainer>
     );
   },
 );

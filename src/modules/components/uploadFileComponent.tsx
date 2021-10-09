@@ -1,6 +1,7 @@
 import Image from 'next/image';
 import { useEffect, useState } from 'react';
 import { useAsyncFn } from 'react-use';
+import { uploadImageFn } from './uploadImageFn';
 
 export const UploadFileComponent = ({
   url,
@@ -14,16 +15,11 @@ export const UploadFileComponent = ({
   const [file, setFile] = useState<File>(null);
   const [uploadFileState, uploadFileFn] = useAsyncFn(
     (formData: FormData): Promise<{ imageUrl: string }> => {
-      return fetch('/api/images/upload', {
-        method: 'POST',
-        body: formData,
-      })
-        .then((res) => res.json())
-        .then((result: { imageUrl: string }) => {
-          onChange(result.imageUrl);
-          setImageUrl(result.imageUrl);
-          return result;
-        });
+      return uploadImageFn(formData).then((result: { imageUrl: string }) => {
+        onChange(result.imageUrl);
+        setImageUrl(result.imageUrl);
+        return result;
+      });
     },
     null,
     { loading: false, value: { imageUrl: url } },
