@@ -3,19 +3,7 @@ import { useEffect, useState } from 'react';
 import { SketchPicker } from 'react-color';
 import { useDebounce } from 'react-use';
 import { IconButtonMenu } from 'src/modules/shared/IconsSelector/IconButtonMenu';
-
-const hexToRGBA = (hex: string = '') => {
-  var r = parseInt(hex.slice(1, 3), 16),
-    g = parseInt(hex.slice(3, 5), 16),
-    b = parseInt(hex.slice(5, 7), 16);
-  const alphaPart = hex.slice(7, 9);
-  let alphaValue = 1;
-  if (alphaPart) {
-    alphaValue = parseInt(alphaPart, 16) / 255;
-  }
-
-  return { r, g, b, a: alphaValue };
-};
+import { colorUtils } from './ColorUtils';
 
 export const ColorInput = ({
   value,
@@ -54,17 +42,10 @@ export const ColorInput = ({
       }
     >
       <SketchPicker
-        color={hexToRGBA(state)}
+        color={colorUtils.hexToRGBA(state)}
         onChange={(data) => {
           const alphaValue = data.hsl.a;
-          let alphatValueInHex = '';
-          if (alphaValue) {
-            alphatValueInHex = (alphaValue * 255)
-              .toString(16)
-              .padStart(2, '0')
-              .substr(0, 2);
-          }
-          setState(data?.hex + alphatValueInHex);
+          setState(colorUtils.createHexWithAlpha(data?.hex, alphaValue));
         }}
       />
     </IconButtonMenu>
