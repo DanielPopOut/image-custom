@@ -27,16 +27,16 @@ import {
 } from '@tabler/icons';
 import { ObjectId } from 'bson';
 import { CSSProperties, useContext } from 'react';
-import { BackgroundInputBase } from '../../../../form/BackgroundInput';
-import { BasicFontPicker } from '../../../../form/FontSelector';
-import { IconButtonContainer } from '../../../../shared/IconsSelector/IconButton';
-import { IconButtonMenu } from '../../../../shared/IconsSelector/IconButtonMenu';
-import { IconButtonSelect } from '../../../../shared/IconsSelector/IconButtonSelect';
-import { ItemProps } from '../../../models/template.model';
-import { PageContext } from '../contexts/PageContext';
-import { getDefaultImage, getDefaultText } from '../defaultInitialData';
-import { ColorInput, GradientInput } from './ColorInput';
-import { SizeInput } from './SizeInput';
+import { BackgroundInputBase } from 'src/modules/form/BackgroundInput';
+import { BasicFontPicker } from 'src/modules/form/FontSelector';
+import { IconButtonContainer } from 'src/modules/shared/IconsSelector/IconButton';
+import { IconButtonMenu } from 'src/modules/shared/IconsSelector/IconButtonMenu';
+import { IconButtonSelect } from 'src/modules/shared/IconsSelector/IconButtonSelect';
+import { ItemProps } from '../../../../models/template.model';
+import { PageContext } from '../../contexts/PageContext';
+import { getDefaultImage, getDefaultText } from '../../defaultInitialData';
+import { ColorInput, GradientInput } from '../ColorInput';
+import { SizeInput } from '../SizeInput';
 
 export const ActionBar = ({
   addNewItem,
