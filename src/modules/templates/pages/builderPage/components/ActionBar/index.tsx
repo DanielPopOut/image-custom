@@ -4,6 +4,8 @@ import {
   IconAlignLeft,
   IconAlignRight,
   IconBold,
+  IconFlipHorizontal,
+  IconFlipVertical,
   IconGlass,
   IconItalic,
   IconLayoutAlignBottom,
@@ -305,6 +307,48 @@ export const ActionBar = ({
               onChange={(newColor) =>
                 updateElementStyle({ backgroundColor: newColor })
               }
+            />
+          </div>
+          <div style={{ marginRight: 5 }}>
+            <IconButtonSelect
+              value={
+                (selectedItemStyle.transform as string)?.includes('scaleX(-1)')
+                  ? 1
+                  : null
+              }
+              items={[
+                { Icon: <IconFlipHorizontal stroke={0.5} />, value: null },
+                { Icon: <IconFlipHorizontal stroke={2} />, value: 1 },
+              ]}
+              onChange={(value) => {
+                const currentTransformValue = selectedItemStyle.transform || '';
+                updateElementStyle({
+                  transform: value
+                    ? [currentTransformValue, 'scaleX(-1)'].join(' ')
+                    : currentTransformValue.replace(/scaleX\(-1\)/g, '').trim(),
+                } as CSSProperties);
+              }}
+            />
+          </div>
+          <div style={{ marginRight: 5 }}>
+            <IconButtonSelect
+              value={
+                (selectedItemStyle.transform as string)?.includes('scaleY(-1)')
+                  ? 1
+                  : null
+              }
+              items={[
+                { Icon: <IconFlipVertical stroke={0.5} />, value: null },
+                { Icon: <IconFlipVertical stroke={2} />, value: 1 },
+              ]}
+              onChange={(value) => {
+                const currentTransformValue = selectedItemStyle.transform || '';
+                updateElementStyle({
+                  transform: value
+                    ? [currentTransformValue, 'scaleY(-1)'].join(' ')
+                    : currentTransformValue.replace(/scaleY\(-1\)/g, '').trim(),
+                } as CSSProperties);
+              }}
             />
           </div>
           <IconButtonMenu
