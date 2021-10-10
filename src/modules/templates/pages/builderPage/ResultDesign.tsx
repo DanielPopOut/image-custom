@@ -170,7 +170,7 @@ const DrawingPage: React.FC<
             };
           }
 
-          if (dataParsed.type === 'text') {
+          if (dataParsed.type) {
             event.preventDefault();
             const id = new ObjectId().toHexString();
             const newElement = {
