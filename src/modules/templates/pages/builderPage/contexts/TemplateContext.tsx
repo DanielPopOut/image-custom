@@ -72,56 +72,62 @@ export const TemplateContextProvider = ({
     setTemplate(historyState);
   }, [historyState]);
 
-  const updateState = (newState: Template) => {
+  const updateState = (updateFn: (currentState: Template) => Template) => {
     debugLog('1. update template');
-    setTemplate({ ...state, ...newState });
+    setTemplate(updateFn);
   };
 
   const updatePageData = (newPageProps) => {
-    const newState = { ...state, page: { ...state.page, ...newPageProps } };
-    updateState(newState);
+    const newStateFn = (currentState) => ({
+      ...currentState,
+      page: { ...currentState.page, ...newPageProps },
+    });
+    updateState(newStateFn);
   };
 
   const updateElement = (
     itemId: string,
     update: Partial<{ value: string; style: CSSProperties }>,
   ) => {
-    const elementToUpdate = state.elements[itemId];
-    let newValue = update.value;
-    if (!newValue && elementToUpdate.type === 'text') {
-      newValue = elementToUpdate.value;
-    }
-    const newElement = {
-      ...elementToUpdate,
-      value: newValue,
-      style: {
-        ...elementToUpdate.style,
-        ...update.style,
-      },
-    } as ItemProps;
-    updateState({
-      ...state,
-      elements: {
-        ...state.elements,
-        [itemId]: newElement,
-      },
+    updateState((currentState) => {
+      const elementToUpdate = currentState.elements[itemId];
+      let newValue = update.value;
+      if (!newValue && elementToUpdate.type === 'text') {
+        newValue = elementToUpdate.value;
+      }
+      const newElement = {
+        ...elementToUpdate,
+        value: newValue,
+        style: {
+          ...elementToUpdate.style,
+          ...update.style,
+        },
+      } as ItemProps;
+      return {
+        ...currentState,
+        elements: {
+          ...currentState.elements,
+          [itemId]: newElement,
+        },
+      };
     });
   };
 
   const createNewElement = (newElement: ItemProps) => {
-    newElement.style.zIndex =
-      Math.max(
-        ...Object.values(state.elements)?.map(
-          (element) => +element.style?.zIndex || 0,
-        ),
-      ) + 1;
-
-    updateState({
-      ...state,
-      elements: {
-        ...state.elements,
-        [newElement.id]: newElement,
-      },
+    updateState((currentState) => {
+      newElement.style.zIndex =
+        Math.max(
+          ...Object.values(currentState.elements)?.map(
+            (element) => +element.style?.zIndex || 0,
+          ),
+        ) + 1;
+      return {
+        ...currentState,
+        elements: {
+          ...currentState.elements,
+          [newElement.id]: newElement,
+        },
+      };
     });
     setTimeout(() => {
       window
@@ -131,30 +137,33 @@ export const TemplateContextProvider = ({
   };
 
   const deleteElement = (elementId = itemToUpdate) => {
-    if (!elementId || !state.elements[elementId]) {
-      return;
-    }
-    const allElements = { ...state.elements };
-
-    delete allElements[elementId];
-    updateState({
-      ...state,
-      elements: allElements,
+    updateState((currentState) => {
+      if (!elementId || !currentState.elements[elementId]) {
+        return currentState;
+      }
+      const allElements = { ...currentState.elements };
+      delete allElements[elementId];
+      return {
+        ...currentState,
+        elements: allElements,
+      };
     });
     setItemToUpdate(null);
   };
 
   const updateElementsZindex = (zIndexMapping: Record<string, number> = {}) => {
-    const allElements = { ...state.elements };
-    Object.entries(zIndexMapping).forEach(([elementId, zIndex]) => {
-      const elementToUpdate = allElements[elementId];
-      if (elementToUpdate) {
-        elementToUpdate.style.zIndex = zIndex;
-      }
-    });
-    updateState({
-      ...state,
-      elements: allElements,
+    updateState((currentState) => {
+      const allElements = { ...currentState.elements };
+      Object.entries(zIndexMapping).forEach(([elementId, zIndex]) => {
+        const elementToUpdate = allElements[elementId];
+        if (elementToUpdate) {
+          elementToUpdate.style.zIndex = zIndex;
+        }
+      });
+      return {
+        ...currentState,
+        elements: allElements,
+      };
     });
   };
 
