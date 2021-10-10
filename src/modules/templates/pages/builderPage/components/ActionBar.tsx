@@ -23,7 +23,7 @@ import {
   IconPhoto,
   IconStrikethrough,
   IconTrash,
-  IconUnderline,
+  IconUnderline
 } from '@tabler/icons';
 import { ObjectId } from 'bson';
 import { CSSProperties, useContext } from 'react';
@@ -35,7 +35,7 @@ import { IconButtonSelect } from '../../../../shared/IconsSelector/IconButtonSel
 import { ItemProps } from '../../../models/template.model';
 import { PageContext } from '../contexts/PageContext';
 import { getDefaultImage, getDefaultText } from '../defaultInitialData';
-import { ColorInput } from './ColorInput';
+import { ColorInput, GradientInput } from './ColorInput';
 import { SizeInput } from './SizeInput';
 
 export const ActionBar = ({
@@ -230,6 +230,14 @@ export const ActionBar = ({
               />
             </div>
           </IconButtonMenu>
+          <div style={{ marginLeft: 5 }}>
+            <GradientInput
+              value={selectedItemStyle.backgroundImage as string}
+              onChange={(newColor) =>
+                updateElementStyle({ backgroundImage: newColor })
+              }
+            />
+          </div>
         </>
       )}
 
