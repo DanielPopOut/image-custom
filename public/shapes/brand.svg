@@ -1,0 +1,21 @@
+<svg
+  xmlns="http://www.w3.org/2000/svg"
+  xmlns:xlink="http://www.w3.org/1999/xlink"
+  preserveAspectRatio="xMidYMid meet"
+  version="1.0"
+  viewBox="6.3 8.0 51.3 52.0"
+  zoomAndPan="magnify"
+  role="img"
+  aria-label="socialmedia"
+>
+  <g id="__id9_s8jjp75tgj">
+    <path
+      d="m39 12.55a3.42 3.42 0 0 0 -3.19-4.55h-6.69a8.12 8.12 0 0 0 -7.66 5.43l-14.76 42.02a3.42 3.42 0 0 0 3.23 4.55h8.87a5 5 0 0 0 4.76-3.37l8.44-24z"
+      style="fill: var(--color1)"
+    ></path>
+    <path
+      d="m54.07 60a3.42 3.42 0 0 0 3.22-4.55l-12.17-34.67a1.07 1.07 0 0 0 -2 0l-4.87 13.81-1.75 5a8.77 8.77 0 0 0 0 5.81l3.94 11.24a5 5 0 0 0 4.76 3.36z"
+      style="fill: var(--color2)"
+    ></path>
+  </g>
+</svg>

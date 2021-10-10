@@ -1,6 +1,8 @@
 import styled from '@emotion/styled';
 import { IconArrowBackUp, IconArrowForwardUp } from '@tabler/icons';
+import Link from 'next/link';
 import { ReactNode } from 'react';
+import { ROUTES } from 'src/modules/shared/routes/ROUTES';
 import { IconButtonContainer } from '../../../../../shared/IconsSelector/IconButton';
 
 type BuilderNavBarType = {
@@ -21,6 +23,9 @@ export const BuilderNavBar: React.FC<BuilderNavBarType> = ({
         {children}
         <div className='inner'>
           <div className='buttons_container'>
+            <Link href={ROUTES.MY_TEMPLATES}>
+              <div className='button'> My templates</div>
+            </Link>
             <BuilderButtons {...timeTravelProps} />
             {isSaving && (
               <>

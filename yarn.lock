@@ -1704,6 +1704,11 @@ keyv@^4.0.0:
   dependencies:
     json-buffer "3.0.1"
 
+linear-gradient-parser@^1.1.8:
+  version "1.1.8"
+  resolved "https://registry.yarnpkg.com/linear-gradient-parser/-/linear-gradient-parser-1.1.8.tgz#a226445b023863c93411c6f889a7f0c065dce06a"
+  integrity sha512-p7kv4dH4uQf0eO7EeULcE7+xgViS/kHIdsQaah3T4TxGfAWvZR7TX5kkZu2zHyhXlWTLLP6mUwm2fKlD61n7Ag==
+
 lines-and-columns@^1.1.6:
   version "1.1.6"
   resolved "https://registry.yarnpkg.com/lines-and-columns/-/lines-and-columns-1.1.6.tgz#1c00c743b433cd0a4e80758f7b64a57440d9ff00"
@@ -2303,7 +2308,7 @@ process@0.11.10, process@^0.11.10:
   resolved "https://registry.yarnpkg.com/process/-/process-0.11.10.tgz#7332300e840161bda3e69a1d1d91a7d4bc16f182"
   integrity sha1-czIwDoQBYb2j5podHZGn1LwW8YI=
 
-prop-types@^15.5.10, prop-types@^15.7.1:
+prop-types@^15.5.10, prop-types@^15.7.1, prop-types@^15.7.2:
   version "15.7.2"
   resolved "https://registry.yarnpkg.com/prop-types/-/prop-types-15.7.2.tgz#52c41e75b8c87e72b9d9360e0206b99dcbffa6c5"
   integrity sha512-8QQikdH7//R2vurIJSutZ1smHYTcLpRWEOlHnzcWHmBYrOGUysKwSsrC89BCiFj3CbrfJ/nXFdJepOVrY1GCHQ==
@@ -2456,10 +2461,25 @@ react-is@^16.7.0, react-is@^16.8.1:
   resolved "https://registry.yarnpkg.com/react-is/-/react-is-16.13.1.tgz#789729a4dc36de2999dc156dd6c1d9c18cea56a4"
   integrity sha512-24e6ynE2H+OKt4kqsOvNd8kBpV65zoxbA4BVsEOB3ARVWQki/DHzaUoC5KuON/BiccDaCCTZBuOcfZs70kR8bQ==
 
+react-linear-gradient-picker@^2.0.0:
+  version "2.0.0"
+  resolved "https://registry.yarnpkg.com/react-linear-gradient-picker/-/react-linear-gradient-picker-2.0.0.tgz#507784f2215cdcb761bf62b7121e8e7bd31639f7"
+  integrity sha512-m7R4d2jMwbV/6lg3hqdjEJtR7USc8w0O3SAkocIqZyTWC/Il7fA66TksbnC5Dg3NZLfOkWPXmEiOFJLJO2lxQQ==
+  dependencies:
+    linear-gradient-parser "^1.1.8"
+
 react-refresh@0.8.3:
   version "0.8.3"
   resolved "https://registry.yarnpkg.com/react-refresh/-/react-refresh-0.8.3.tgz#721d4657672d400c5e3c75d063c4a85fb2d5d68f"
   integrity sha512-X8jZHc7nCMjaCqoU+V2I0cOhNW+QMBwSUkeXnTi8IPe6zaRWfn60ZzvFDZqWPfmSJfjub7dDW1SP0jaHWLu/hg==
+
+react-textfit@^1.1.1:
+  version "1.1.1"
+  resolved "https://registry.yarnpkg.com/react-textfit/-/react-textfit-1.1.1.tgz#cce3d974c69b8b4222cfae78200abc366f74d050"
+  integrity sha512-UDSQRo5yBEGueLTE5SgNV9fSmr5CWJkE0E0R0YbcbCO69iuJGfcT6wspKhX2sIwdsDyT9qXOwMC80cnRolir7Q==
+  dependencies:
+    process "^0.11.10"
+    prop-types "^15.7.2"
 
 react-universal-interface@^0.6.2:
   version "0.6.2"

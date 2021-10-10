@@ -5,6 +5,14 @@ import { WithLiveDraggable } from '../WithLiveDraggable';
 import { WithResize } from '../WithResize';
 import { BasicItemActions, ItemContainer } from './TextItem';
 
+const getSmallerDefinitionFromCloudinary = (backgroundUrl: string) => {
+  //backgroundUrl has format url(https://res.cloudinary...);
+  if (backgroundUrl.includes('cloudinary')) {
+    return backgroundUrl.split('upload/').join('upload/w_1000/');
+  }
+  return backgroundUrl;
+};
+
 const ImageItem = forwardRef(
   (
     {
@@ -25,6 +33,9 @@ const ImageItem = forwardRef(
       <ItemContainer
         style={{
           ...style,
+          backgroundImage: getSmallerDefinitionFromCloudinary(
+            style.backgroundImage,
+          ),
         }}
         tabIndex={-1}
         onKeyDown={(e) => {

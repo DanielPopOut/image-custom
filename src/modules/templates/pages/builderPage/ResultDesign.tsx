@@ -15,6 +15,7 @@ import {
   TextItemProps,
 } from '../../models/template.model';
 import { DraggableImageItem } from './components/basics/ImageItem';
+import { DraggableShapeItem } from './components/basics/ShapeItem';
 import { DraggableTextItem } from './components/basics/TextItem';
 import { WithCopyPaste } from './components/WithCopyPaste';
 import { PageContext } from './contexts/PageContext';
@@ -71,46 +72,28 @@ export const ResultDesign = ({
         }}
       >
         {Object.values(state.elements).map((item) => {
+          const sharedProps = {
+            isSelected: itemToUpdate === item.id,
+            key: item.id,
+            onCopy: (e) => {
+              clipBoardService.copy(item);
+              e.stopPropagation();
+            },
+            onDragStart: () => setItemToUpdate(item.id),
+            onDragEnd: (data) => updateItemPositionOnDragEnd(item.id, data),
+            onClick: (e) => {
+              setItemToUpdate(item.id);
+              e.stopPropagation();
+            },
+            deleteElement: () => deleteElement(item.id),
+            onChange: (data: any) => updateElement(item.id, data),
+          };
           if (item.type === 'text') {
-            return (
-              <DraggableTextItem
-                isSelected={itemToUpdate === item.id}
-                key={item.id}
-                {...item}
-                onCopy={(e) => {
-                  clipBoardService.copy(item);
-                  e.stopPropagation();
-                }}
-                onDragStart={() => setItemToUpdate(item.id)}
-                onDragEnd={(data) => updateItemPositionOnDragEnd(item.id, data)}
-                onClick={(e) => {
-                  setItemToUpdate(item.id);
-                  e.stopPropagation();
-                }}
-                deleteElement={() => deleteElement(item.id)}
-                onChange={(data) => updateElement(item.id, data)}
-              />
-            );
+            return <DraggableTextItem {...item} {...sharedProps} />;
           } else if (item.type === 'image') {
-            return (
-              <DraggableImageItem
-                isSelected={itemToUpdate === item.id}
-                key={item.id}
-                {...item}
-                onCopy={(e) => {
-                  clipBoardService.copy(item);
-                  e.stopPropagation();
-                }}
-                deleteElement={() => deleteElement(item.id)}
-                onDragStart={() => setItemToUpdate(item.id)}
-                onDragEnd={(data) => updateItemPositionOnDragEnd(item.id, data)}
-                onClick={(e) => {
-                  setItemToUpdate(item.id);
-                  e.stopPropagation();
-                }}
-                onChange={(data) => updateElement(item.id, data)}
-              />
-            );
+            return <DraggableImageItem {...item} {...sharedProps} />;
+          } else if (item.type === 'shape') {
+            return <DraggableShapeItem {...item} {...sharedProps} />;
           }
         })}
       </DrawingPage>
@@ -187,7 +170,7 @@ const DrawingPage: React.FC<
             };
           }
 
-          if (dataParsed.type === 'text') {
+          if (dataParsed.type) {
             event.preventDefault();
             const id = new ObjectId().toHexString();
             const newElement = {

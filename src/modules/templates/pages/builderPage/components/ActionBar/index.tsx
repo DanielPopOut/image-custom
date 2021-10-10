@@ -4,6 +4,8 @@ import {
   IconAlignLeft,
   IconAlignRight,
   IconBold,
+  IconFlipHorizontal,
+  IconFlipVertical,
   IconGlass,
   IconItalic,
   IconLayoutAlignBottom,
@@ -21,22 +23,29 @@ import {
   IconLineHeight,
   IconOverline,
   IconPhoto,
+  IconRotate,
   IconStrikethrough,
   IconTrash,
   IconUnderline,
 } from '@tabler/icons';
 import { ObjectId } from 'bson';
 import { CSSProperties, useContext } from 'react';
-import { BackgroundInputBase } from '../../../../form/BackgroundInput';
-import { BasicFontPicker } from '../../../../form/FontSelector';
-import { IconButtonContainer } from '../../../../shared/IconsSelector/IconButton';
-import { IconButtonMenu } from '../../../../shared/IconsSelector/IconButtonMenu';
-import { IconButtonSelect } from '../../../../shared/IconsSelector/IconButtonSelect';
-import { ItemProps } from '../../../models/template.model';
-import { PageContext } from '../contexts/PageContext';
-import { getDefaultImage, getDefaultText } from '../defaultInitialData';
-import { ColorInput } from './ColorInput';
-import { SizeInput } from './SizeInput';
+import { BackgroundInputBase } from 'src/modules/form/BackgroundInput';
+import { BasicFontPicker } from 'src/modules/form/FontSelector';
+import { IconButtonContainer } from 'src/modules/shared/IconsSelector/IconButton';
+import { IconButtonMenu } from 'src/modules/shared/IconsSelector/IconButtonMenu';
+import { IconButtonSelect } from 'src/modules/shared/IconsSelector/IconButtonSelect';
+import { ItemProps } from '../../../../models/template.model';
+import { PageContext } from '../../contexts/PageContext';
+import {
+  getDefaultImage,
+  getDefaultShape,
+  getDefaultText,
+} from '../../defaultInitialData';
+import { ShapesSelector } from '../basics/shapes/ShapesSelector';
+import { ColorInput, GradientInput } from '../ColorInput';
+import { AngleSelector } from '../ColorInput/AngleSelector';
+import { SizeInput } from '../SizeInput';
 
 export const ActionBar = ({
   addNewItem,
@@ -100,7 +109,41 @@ export const ActionBar = ({
         >
           Image
         </div>
+        <IconButtonMenu Icon='shape'>
+          <ShapesSelector
+            onSelect={(shapeData) => {
+              addNewItem({
+                id: new ObjectId().toHexString(),
+                ...getDefaultShape({
+                  shapeData,
+                  left: sheetPosition.width / 2,
+                  top: sheetPosition.height / 2,
+                }),
+              });
+            }}
+          />
+        </IconButtonMenu>
       </IconButtonMenu>
+
+      {selectedItem?.type === 'shape' && (
+        <>
+          {Object.keys(selectedItem.shapeData?.colors || {})?.map(
+            (colorKey) => {
+              const styleKey = `--${colorKey}`;
+              return (
+                <div style={{ marginRight: 5 }} key={colorKey}>
+                  <ColorInput
+                    value={selectedItemStyle[styleKey]}
+                    onChange={(newColor) =>
+                      updateElementStyle({ [styleKey]: newColor })
+                    }
+                  />
+                </div>
+              );
+            },
+          )}
+        </>
+      )}
 
       {selectedItem?.type === 'text' && (
         <>
@@ -121,6 +164,7 @@ export const ActionBar = ({
           </div>
 
           <SizeInput
+            suffix='px'
             value={selectedItemStyle.fontSize as string}
             onChange={(value) => {
               updateElementStyle({ fontSize: value } as CSSProperties);
@@ -219,6 +263,7 @@ export const ActionBar = ({
                 onChange={(data) => updateElementStyle({ letterSpacing: data })}
                 multiplicationCoeff={1000}
                 transformResult={(value) => `${value}em`}
+                suffix={<span style={{ fontSize: '0.8em' }}>em</span>}
               />
             </div>
             <div style={{ display: 'flex', alignItems: 'center' }}>
@@ -230,6 +275,14 @@ export const ActionBar = ({
               />
             </div>
           </IconButtonMenu>
+          <div style={{ marginLeft: 5 }}>
+            <GradientInput
+              value={selectedItemStyle.backgroundImage as string}
+              onChange={(newColor) =>
+                updateElementStyle({ backgroundImage: newColor })
+              }
+            />
+          </div>
         </>
       )}
 
@@ -258,6 +311,48 @@ export const ActionBar = ({
               }
             />
           </div>
+          <div style={{ marginRight: 5 }}>
+            <IconButtonSelect
+              value={
+                (selectedItemStyle.transform as string)?.includes('scaleX(-1)')
+                  ? 1
+                  : null
+              }
+              items={[
+                { Icon: <IconFlipVertical stroke={0.5} />, value: null },
+                { Icon: <IconFlipVertical stroke={2} />, value: 1 },
+              ]}
+              onChange={(value) => {
+                const currentTransformValue = selectedItemStyle.transform || '';
+                updateElementStyle({
+                  transform: value
+                    ? [currentTransformValue, 'scaleX(-1)'].join(' ')
+                    : currentTransformValue.replace(/scaleX\(-1\)/g, '').trim(),
+                } as CSSProperties);
+              }}
+            />
+          </div>
+          <div style={{ marginRight: 5 }}>
+            <IconButtonSelect
+              value={
+                (selectedItemStyle.transform as string)?.includes('scaleY(-1)')
+                  ? 1
+                  : null
+              }
+              items={[
+                { Icon: <IconFlipHorizontal stroke={0.5} />, value: null },
+                { Icon: <IconFlipHorizontal stroke={2} />, value: 1 },
+              ]}
+              onChange={(value) => {
+                const currentTransformValue = selectedItemStyle.transform || '';
+                updateElementStyle({
+                  transform: value
+                    ? [currentTransformValue, 'scaleY(-1)'].join(' ')
+                    : currentTransformValue.replace(/scaleY\(-1\)/g, '').trim(),
+                } as CSSProperties);
+              }}
+            />
+          </div>
           <IconButtonMenu
             Icon={
               <div className='linear-opacity'>
@@ -281,6 +376,29 @@ export const ActionBar = ({
                   defaultValue={1}
                 />
               </label>
+            </div>
+          </IconButtonMenu>
+          <IconButtonMenu Icon={<IconRotate />}>
+            <div style={{ padding: 10, minWidth: 200 }}>
+              <AngleSelector
+                value={
+                  +(
+                    selectedItemStyle.transform?.match(
+                      /rotate\((\d*)deg\)/,
+                    )?.[1] || 0
+                  )
+                }
+                onChange={(newRotateValue) => {
+                  const currentTransformValue =
+                    (selectedItemStyle.transform as string) || '';
+                  updateElementStyle({
+                    transform: [
+                      currentTransformValue.replace(/rotate\(.*\)/g, '').trim(),
+                      `rotate(${newRotateValue}deg)`,
+                    ].join(' '),
+                  } as CSSProperties);
+                }}
+              />
             </div>
           </IconButtonMenu>
         </>

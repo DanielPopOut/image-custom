@@ -1,5 +1,5 @@
 import { IconMinus, IconPlus } from '@tabler/icons';
-import { useEffect, useState } from 'react';
+import { ReactNode, useEffect, useState } from 'react';
 import { Input } from '../../../../form/Input';
 
 export const SizeInput = ({
@@ -8,12 +8,14 @@ export const SizeInput = ({
   label,
   multiplicationCoeff = 1,
   transformResult = (value) => value + 'px',
+  suffix = '',
 }: {
   onChange: (data: string) => void;
   value: string;
   label?: string;
   multiplicationCoeff?: number;
   transformResult?: (value: number) => string;
+  suffix?: ReactNode;
 }) => {
   const [inputValue, setInputValue] = useState<string>(null);
   useEffect(() => {
@@ -79,6 +81,7 @@ export const SizeInput = ({
             onChangeFn(event.target.value);
           }}
         />
+        {suffix}
         <IconPlus size='1em' onClick={() => updateBy(1)} />
       </span>
     </label>
