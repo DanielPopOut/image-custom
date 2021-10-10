@@ -43,7 +43,6 @@ export const GradientLinearPicker = ({
   const [, cancel] = useDebounce(
     () => {
       if (!isEqual(valueInterpreted, paletteData)) {
-        console.log(paletteData);
         onChange(
           colorUtils.generateLinearGradientFromPaletteAndAngle(paletteData),
         );

@@ -58,7 +58,6 @@ export class ColorUtils {
     const [colorHexWithAlpha, offset] = gradientColor.split(' ');
     if (colorHexWithAlpha) {
       const { r, g, b, a } = this.hexToRGBA(colorHexWithAlpha);
-      console.log({ offset, r, g, b, a });
       const offSetWithoutPercentage = offset.replace('%', '');
       return {
         color: this.rgbValuesToRgbString({ r, g, b }),
@@ -76,7 +75,6 @@ export class ColorUtils {
       return null;
     }
     const linearGradientValuesString = linearGradientString.match(/\((.*)\)/);
-    console.log({ linearGradientValuesString });
     if (!linearGradientValuesString) {
       return null;
     }
@@ -99,7 +97,6 @@ export class ColorUtils {
       palette.push(this.convertOneGradientColorToPaletteElement(item)),
     );
 
-    console.log({ palette, angle });
     return { colors: palette, angle };
   };
 
