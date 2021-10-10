@@ -121,6 +121,26 @@ export const ActionBar = ({
         </IconButtonMenu>
       </IconButtonMenu>
 
+      {selectedItem?.type === 'shape' && (
+        <>
+          {Object.keys(selectedItem.shapeData?.colors || {})?.map(
+            (colorKey) => {
+              const styleKey = `--${colorKey}`;
+              return (
+                <div style={{ marginRight: 5 }} key={colorKey}>
+                  <ColorInput
+                    value={selectedItemStyle[styleKey]}
+                    onChange={(newColor) =>
+                      updateElementStyle({ [styleKey]: newColor })
+                    }
+                  />
+                </div>
+              );
+            },
+          )}
+        </>
+      )}
+
       {selectedItem?.type === 'text' && (
         <>
           <div style={{ marginRight: 5 }}>
