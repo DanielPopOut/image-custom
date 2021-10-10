@@ -11,7 +11,7 @@ export const AngleSelector = ({
   value: number;
   onChange: (data: number) => void;
 }) => {
-  const [angle, setAngle] = useState(0);
+  const [angle, setAngle] = useState(value);
   useDebounce(
     () => {
       if (!isEqual(value, angle)) {
