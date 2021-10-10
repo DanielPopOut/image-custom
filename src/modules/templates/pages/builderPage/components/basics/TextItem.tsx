@@ -9,7 +9,6 @@ import { WithLiveDraggable } from '../WithLiveDraggable';
 import { WithResize } from '../WithResize';
 
 export const ItemContainer = styled.div`
-  border: 2px solid transparent;
   &:focus-within {
     border: 2px solid #fa9696;
     cursor: grab;
