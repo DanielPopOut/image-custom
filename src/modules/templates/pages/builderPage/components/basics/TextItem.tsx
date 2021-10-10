@@ -10,11 +10,17 @@ import { WithResize } from '../WithResize';
 
 export const ItemContainer = styled.div`
   &:focus-within {
-    border: 2px solid #fa9696;
     cursor: grab;
   }
-  &:hover {
-    border: 2px dashed #fa9696;
+  &:hover,
+  &:focus-within {
+    &:after {
+      position: absolute;
+      inset: 0;
+      border: 2px dashed #fa9696;
+      content: ' ';
+      pointer-events: none;
+    }
   }
   cursor: pointer;
 `;
