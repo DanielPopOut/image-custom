@@ -23,6 +23,7 @@ import {
   IconLineHeight,
   IconOverline,
   IconPhoto,
+  IconRotate,
   IconStrikethrough,
   IconTrash,
   IconUnderline,
@@ -43,6 +44,7 @@ import {
 } from '../../defaultInitialData';
 import { ShapesSelector } from '../basics/shapes/ShapesSelector';
 import { ColorInput, GradientInput } from '../ColorInput';
+import { AngleSelector } from '../ColorInput/AngleSelector';
 import { SizeInput } from '../SizeInput';
 
 export const ActionBar = ({
@@ -374,6 +376,29 @@ export const ActionBar = ({
                   defaultValue={1}
                 />
               </label>
+            </div>
+          </IconButtonMenu>
+          <IconButtonMenu Icon={<IconRotate />}>
+            <div style={{ padding: 10, minWidth: 200 }}>
+              <AngleSelector
+                value={
+                  +(
+                    selectedItemStyle.transform?.match(
+                      /rotate\((\d*)deg\)/,
+                    )?.[1] || 0
+                  )
+                }
+                onChange={(newRotateValue) => {
+                  const currentTransformValue =
+                    (selectedItemStyle.transform as string) || '';
+                  updateElementStyle({
+                    transform: [
+                      currentTransformValue.replace(/rotate\(.*\)/g, '').trim(),
+                      `rotate(${newRotateValue}deg)`,
+                    ].join(' '),
+                  } as CSSProperties);
+                }}
+              />
             </div>
           </IconButtonMenu>
         </>
