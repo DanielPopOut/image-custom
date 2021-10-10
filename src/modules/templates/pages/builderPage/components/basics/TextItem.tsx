@@ -13,7 +13,8 @@ export const ItemContainer = styled.div`
     cursor: grab;
   }
   &:hover,
-  &:focus-within {
+  &:focus-within,
+  &.selected {
     &:after {
       position: absolute;
       inset: 0;
@@ -22,6 +23,14 @@ export const ItemContainer = styled.div`
       pointer-events: none;
     }
   }
+  &:focus-within,
+  &.selected {
+    &:after {
+      border: 2px solid #fa9696;
+      border-style: solid;
+    }
+  }
+
   cursor: pointer;
 `;
 
@@ -65,8 +74,8 @@ const TextItem = memo(
       }, [value]);
       return (
         <ItemContainer
+          className={isSelected ? 'selected' : ''}
           style={{
-            border: isSelected && '2px solid #fa9696',
             ...style,
           }}
           tabIndex={-1}
