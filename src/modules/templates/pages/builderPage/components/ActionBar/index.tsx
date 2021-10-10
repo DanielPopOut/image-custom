@@ -317,8 +317,8 @@ export const ActionBar = ({
                   : null
               }
               items={[
-                { Icon: <IconFlipHorizontal stroke={0.5} />, value: null },
-                { Icon: <IconFlipHorizontal stroke={2} />, value: 1 },
+                { Icon: <IconFlipVertical stroke={0.5} />, value: null },
+                { Icon: <IconFlipVertical stroke={2} />, value: 1 },
               ]}
               onChange={(value) => {
                 const currentTransformValue = selectedItemStyle.transform || '';
@@ -338,8 +338,8 @@ export const ActionBar = ({
                   : null
               }
               items={[
-                { Icon: <IconFlipVertical stroke={0.5} />, value: null },
-                { Icon: <IconFlipVertical stroke={2} />, value: 1 },
+                { Icon: <IconFlipHorizontal stroke={0.5} />, value: null },
+                { Icon: <IconFlipHorizontal stroke={2} />, value: 1 },
               ]}
               onChange={(value) => {
                 const currentTransformValue = selectedItemStyle.transform || '';
