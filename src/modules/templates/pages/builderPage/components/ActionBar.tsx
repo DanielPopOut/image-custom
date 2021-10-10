@@ -23,7 +23,7 @@ import {
   IconPhoto,
   IconStrikethrough,
   IconTrash,
-  IconUnderline
+  IconUnderline,
 } from '@tabler/icons';
 import { ObjectId } from 'bson';
 import { CSSProperties, useContext } from 'react';
@@ -121,6 +121,7 @@ export const ActionBar = ({
           </div>
 
           <SizeInput
+            suffix='px'
             value={selectedItemStyle.fontSize as string}
             onChange={(value) => {
               updateElementStyle({ fontSize: value } as CSSProperties);
@@ -219,6 +220,7 @@ export const ActionBar = ({
                 onChange={(data) => updateElementStyle({ letterSpacing: data })}
                 multiplicationCoeff={1000}
                 transformResult={(value) => `${value}em`}
+                suffix={<span style={{ fontSize: '0.8em' }}>em</span>}
               />
             </div>
             <div style={{ display: 'flex', alignItems: 'center' }}>

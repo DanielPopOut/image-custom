@@ -33,7 +33,8 @@ export const AngleSelector = ({
       <div style={{ flex: 2 }}>
         <SizeInput
           value={angle?.toString()}
-          label='Angle °'
+          label='Angle'
+          suffix='°'
           onChange={(data) => setAngle(+data)}
           transformResult={(data) => data.toString()}
         />
