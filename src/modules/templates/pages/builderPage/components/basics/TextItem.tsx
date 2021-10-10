@@ -113,10 +113,15 @@ const TextItem = memo(
     },
   ),
   (prevProps, newProps) => {
+    if (prevProps.isSelected !== newProps.isSelected) {
+      return false;
+    }
+    if (!newProps.isSelected) {
+      return true;
+    }
     return (
-      !newProps.isSelected ||
-      (prevProps.value === newProps.value &&
-        isEqual(prevProps.style, newProps.style))
+      prevProps.value === newProps.value &&
+      isEqual(prevProps.style, newProps.style)
     );
   },
 );
