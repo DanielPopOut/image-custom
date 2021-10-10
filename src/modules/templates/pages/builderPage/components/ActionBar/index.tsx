@@ -34,7 +34,12 @@ import { IconButtonMenu } from 'src/modules/shared/IconsSelector/IconButtonMenu'
 import { IconButtonSelect } from 'src/modules/shared/IconsSelector/IconButtonSelect';
 import { ItemProps } from '../../../../models/template.model';
 import { PageContext } from '../../contexts/PageContext';
-import { getDefaultImage, getDefaultText } from '../../defaultInitialData';
+import {
+  getDefaultImage,
+  getDefaultShape,
+  getDefaultText,
+} from '../../defaultInitialData';
+import { ShapesSelector } from '../basics/shapes/ShapesSelector';
 import { ColorInput, GradientInput } from '../ColorInput';
 import { SizeInput } from '../SizeInput';
 
@@ -100,6 +105,20 @@ export const ActionBar = ({
         >
           Image
         </div>
+        <IconButtonMenu Icon='shape'>
+          <ShapesSelector
+            onSelect={(shapeData) => {
+              addNewItem({
+                id: new ObjectId().toHexString(),
+                ...getDefaultShape({
+                  shapeData,
+                  left: sheetPosition.width / 2,
+                  top: sheetPosition.height / 2,
+                }),
+              });
+            }}
+          />
+        </IconButtonMenu>
       </IconButtonMenu>
 
       {selectedItem?.type === 'text' && (
