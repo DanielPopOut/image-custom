@@ -1,4 +1,6 @@
 import { CSSProperties } from 'react';
+import { SVGItemProps } from 'src/modules/templates/models/template.model';
+import { shapeHelper } from './shapeHelper';
 import { SVGItem } from './SVGItem';
 
 const allShapes = [
@@ -49,13 +51,6 @@ const allShapes = [
   },
 ] as SVGItemProps[];
 
-type SVGItemProps = {
-  id?: string;
-  name?: string;
-  url: string;
-  colors?: Record<keyof CSSProperties, string>;
-};
-
 export const ShapesSelector = ({
   shapes = allShapes,
   onSelect,
@@ -75,11 +70,9 @@ export const ShapesSelector = ({
       }}
     >
       {shapes.map((shape) => {
-        const colorsCSSProperties = Object.fromEntries(
-          Object.entries(shape.colors).map(([key, value]) => {
-            return [`--${key}`, value];
-          }),
-        ) as CSSProperties;
+        const colorsCSSProperties = shapeHelper.convertColorsToCSSVariables(
+          shape.colors,
+        );
         return (
           <div
             style={{

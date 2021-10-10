@@ -83,7 +83,7 @@ export class Template extends BasicTemplateData {
   };
 }
 
-export type ItemProps = TextItemProps | ImageItemProps;
+export type ItemProps = TextItemProps | ImageItemProps | ShapeItemProps;
 
 export type ImageItemProps = {
   type: 'image';
@@ -92,6 +92,11 @@ export type ImageItemProps = {
 export type TextItemProps = {
   type: 'text';
   value: string;
+} & DefaultItemProps;
+
+export type ShapeItemProps = {
+  type: 'shape';
+  shapeData?: SVGItemProps;
 } & DefaultItemProps;
 
 type DefaultItemProps = {
@@ -108,4 +113,11 @@ type TextItemStyleProps = {
   color?: CSSProperties['color'];
   textAlign?: CSSProperties['textAlign'];
   zIndex?: number;
+};
+
+export type SVGItemProps = {
+  id?: string;
+  name?: string;
+  url: string;
+  colors?: Record<keyof CSSProperties, string>;
 };

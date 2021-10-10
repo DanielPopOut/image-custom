@@ -20,6 +20,8 @@ export const SVGItem = memo(
           {
             width: '100%',
             height: '100%',
+            display: 'inline-flex', // inline-flex because it make the element fit in the parent width & height
+            justifyContent: 'center',
           } as any
         }
         dangerouslySetInnerHTML={{
