@@ -22,7 +22,7 @@ export class ScreenShotService {
   };
 
   screenElementToImage = async (urlToFetch: string) => {
-    const screenshotApiUrl = `${SCREENSHOT_REMOTE_URL}/api/img?removeBackground=true&type=png&selector=${DOWNLOAD_SELECTOR}&url=${urlToFetch}`;
+    const screenshotApiUrl = `${SCREENSHOT_REMOTE_URL}/api/img?removeBackground=true&type=jpeg&selector=${DOWNLOAD_SELECTOR}&url=${urlToFetch}`;
     console.log({ urlToFetch, screenshotApiUrl });
     return await fetch(screenshotApiUrl);
   };
