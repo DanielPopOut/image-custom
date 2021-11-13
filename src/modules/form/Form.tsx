@@ -6,6 +6,7 @@ const Form = <FormData extends unknown>({
   children,
   onSubmit,
   onChange,
+  submitText,
   ...formProps
 }: Omit<
   React.FormHTMLAttributes<HTMLFormElement>,
@@ -15,6 +16,7 @@ const Form = <FormData extends unknown>({
   onSubmit: (data: FormData) => void;
   onChange?: (data: FormData) => void;
   children;
+  submitText?: string;
 }) => {
   const methods = useForm<FormData>({ defaultValues: defaultValues as any });
   const { handleSubmit, register } = methods;
@@ -46,7 +48,7 @@ const Form = <FormData extends unknown>({
             })
           : child;
       })}
-      <input type='submit' />
+      <input type='submit' value={submitText || 'Submit'} />
     </form>
   );
 };
