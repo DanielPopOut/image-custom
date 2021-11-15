@@ -1,3 +1,4 @@
+import { PROTOCOL_AND_HOST } from 'server/shared/config/constants';
 import { API_ROUTES, ROUTES } from '../../../../shared/routes/ROUTES';
 import { Template } from '../../../models/template.model';
 
@@ -20,10 +21,9 @@ export const QueryAndDownloadUrls = ({ state }: { state: Template }) => {
         <div>
           Api url :
           <div>
-            {`https://${
-              process.env.NEXT_PUBLIC_BASE_URL ||
-              process.env.NEXT_PUBLIC_VERCEL_URL
-            }${API_ROUTES.DOWNLOAD_TEMPLATE_ID(state._id)}?${queryString}`}
+            {`${PROTOCOL_AND_HOST}${API_ROUTES.DOWNLOAD_TEMPLATE_ID(
+              state._id,
+            )}?${queryString}`}
           </div>
         </div>
       </div>
