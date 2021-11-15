@@ -21,6 +21,7 @@ export const QueryAndDownloadUrls = ({ state }: { state: Template }) => {
           Api url :
           <div>
             {`https://${
+              process.env.NEXT_PUBLIC_BASE_URL ||
               process.env.NEXT_PUBLIC_VERCEL_URL
             }${API_ROUTES.DOWNLOAD_TEMPLATE_ID(state._id)}?${queryString}`}
           </div>
