@@ -1,4 +1,4 @@
-import { useRouter } from 'next/dist/client/router';
+import { useRouter } from 'next/router';
 import { ROUTES } from '../../../../shared/routes/ROUTES';
 import { useCreateTemplate } from '../../../hooks/hooks';
 import { defaultInitialData } from '../defaultInitialData';

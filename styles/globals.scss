@@ -1,3 +1,4 @@
+@import './normalize.css';
 @import './bases/basic_design.scss';
 @import '../styles/loader.css';
 
@@ -36,5 +37,20 @@ a {
     width: 100%;
     background: linear-gradient(to left top, transparent -60% 0, white);
     pointer-events: none;
+  }
+}
+
+@media (prefers-color-scheme: dark) {
+  body,
+  input,
+  textarea {
+    background-color: #333;
+  }
+
+  *,
+  h1,
+  h2,
+  h3 {
+    color: #ccc;
   }
 }

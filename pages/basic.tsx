@@ -1,4 +1,4 @@
-import { useRouter } from 'next/dist/client/router';
+import { useRouter } from 'next/router';
 
 type CustomImageData = {
   imageUrl: string;
@@ -26,7 +26,7 @@ const Template1 = (data: CustomImageData) => {
   const { name, question } = data.variables;
   return (
     <div
-      id="data_to_screenshot"
+      id='data_to_screenshot'
       style={{ width: 'fit-content', ...dimensions }}
     >
       <img

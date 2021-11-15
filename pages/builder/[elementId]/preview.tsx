@@ -1,5 +1,5 @@
 import { GetServerSidePropsContext } from 'next';
-import { useRouter } from 'next/dist/client/router';
+import { useRouter } from 'next/router';
 import { PROTOCOL_AND_HOST } from 'server/shared/config/constants';
 import { basicResultHandler } from 'src/modules/shared/hooks/generics';
 import { stringHelper } from '../../../src/modules/shared/services/stringHelper';
