@@ -1,6 +1,6 @@
 import styled from '@emotion/styled';
 import { Container } from '../Container';
-import { NavBar } from '../NavBar';
+import { NavBar, NavBarProps } from '../NavBar';
 
 const PageLayoutDiv = styled.div`
   display: flex;
@@ -15,10 +15,13 @@ const PageLayoutDiv = styled.div`
   }
 `;
 
-export const PageLayout = ({ children }) => {
+export const PageLayout: React.FC<{ navBarProps?: NavBarProps }> = ({
+  children,
+  navBarProps,
+}) => {
   return (
     <PageLayoutDiv>
-      <NavBar />
+      <NavBar {...navBarProps} />
       <Container className='content'>{children}</Container>
     </PageLayoutDiv>
   );

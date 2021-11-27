@@ -21,14 +21,7 @@ import { WithCopyPaste } from './components/WithCopyPaste';
 import { PageContext } from './contexts/PageContext';
 import { getDefaultImage, getDefaultText } from './defaultInitialData';
 
-export const ResultDesign = ({
-  state,
-  setItemToUpdate,
-  itemToUpdate,
-  updateElement,
-  createNewElement,
-  deleteElement,
-}: {
+export type ResultDesignProps = {
   state: Template;
   itemToUpdate: string;
   setItemToUpdate: (data: string) => void;
@@ -38,7 +31,18 @@ export const ResultDesign = ({
   ) => void;
   createNewElement?: (elementProps: unknown) => void;
   deleteElement: (itemId: string) => void;
-}) => {
+  domElementToScreenshotId?: string;
+};
+
+export const ResultDesign = ({
+  state,
+  setItemToUpdate,
+  itemToUpdate,
+  updateElement,
+  createNewElement,
+  deleteElement,
+  domElementToScreenshotId,
+}: ResultDesignProps) => {
   const updateItemPositionOnDragEnd = (
     itemId: string,
     dragEvent: DragEvent<HTMLDivElement>,
@@ -70,6 +74,7 @@ export const ResultDesign = ({
         onCreateNewElement={(element) => {
           createNewElement?.(element);
         }}
+        domElementToScreenshotId={domElementToScreenshotId}
       >
         {Object.values(state.elements).map((item) => {
           const sharedProps = {
@@ -104,8 +109,15 @@ export const ResultDesign = ({
 const DrawingPage: React.FC<
   HTMLAttributes<HTMLDivElement> & {
     onCreateNewElement: (data: ItemProps) => void;
+    domElementToScreenshotId?: string;
   }
-> = ({ children, style, onClick, onCreateNewElement }) => {
+> = ({
+  children,
+  style,
+  onClick,
+  onCreateNewElement,
+  domElementToScreenshotId,
+}) => {
   const { updateSheetData } = useContext(PageContext);
   const onRefChange = useCallback(
     (node: HTMLDivElement) => {
@@ -127,6 +139,7 @@ const DrawingPage: React.FC<
     <MainDiv
       ref={onRefChange}
       className='to_download'
+      id={domElementToScreenshotId || 'no_id_given'}
       style={{
         position: 'relative',
         overflow: 'hidden',

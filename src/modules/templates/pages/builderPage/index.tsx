@@ -1,5 +1,6 @@
 import { useContext } from 'react';
-import { clipBoardService } from '../../../shared/services/clipBoardService';
+import { ROUTES } from 'src/modules/shared/routes/ROUTES';
+import Link from 'next/link';
 import { usePublishTemplate, useUpdateTemplate } from '../../hooks/hooks';
 import { Template } from '../../models/template.model';
 import { ActionBar } from './components/ActionBar';
@@ -136,12 +137,7 @@ const BuilderNavBarWithTemplateContext = () => {
       ActionButtons={
         <>
           <PublishButton templateId={state._id} />
-          <ExportButton
-            onExport={() => {
-              clipBoardService.copy(state);
-              setTimeout(() => alert('Copied in clipboard'), 1000);
-            }}
-          />
+          <GenerateDesignsButton templateId={state._id} />
         </>
       }
       isSaving={isSaving}
@@ -183,5 +179,13 @@ const ExportButton = ({ onExport }) => {
     <button className='button' onClick={onExport}>
       Export
     </button>
+  );
+};
+
+const GenerateDesignsButton = ({ templateId }: { templateId: string }) => {
+  return (
+    <Link href={ROUTES.TEMPLATE.GENERATE_IMAGES(templateId)}>
+      <button className='button'>Generate images</button>
+    </Link>
   );
 };
