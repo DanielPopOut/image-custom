@@ -19,14 +19,10 @@ const ElementComponent = ({ templateData }: { templateData: Template }) => {
     _id: templateData._id,
     ...templateData.publishedVersion,
   });
-  for (const [key, value] of Object.entries(template.elements)) {
-    if (value.type === 'text') {
-      value.value = stringHelper.replaceValueInString(
-        value.value,
-        queryElement as Record<string, string>,
-      );
-    }
-  }
+  Template.replaceValuesInTemplate(
+    template,
+    queryElement as Record<string, string>,
+  );
   const fontFamilyRequest = template.getGoogleRequestForFonts();
 
   return (

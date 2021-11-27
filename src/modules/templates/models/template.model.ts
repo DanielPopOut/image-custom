@@ -81,6 +81,20 @@ export class Template extends BasicTemplateData {
 
     return queryObject;
   };
+
+  static replaceValuesInTemplate = (
+    template: Template,
+    queryElement: Record<string, string>,
+  ) => {
+    for (const [key, value] of Object.entries(template.elements)) {
+      if (value.type === 'text') {
+        value.value = stringHelper.replaceValueInString(
+          value.value,
+          queryElement as Record<string, string>,
+        );
+      }
+    }
+  };
 }
 
 export type ItemProps = TextItemProps | ImageItemProps | ShapeItemProps;
