@@ -5,16 +5,28 @@ import { Template } from '../../models/template.model';
 import { ResultDesign } from '../builderPage/ResultDesign';
 import domtoimage from 'dom-to-image';
 import { PreviewResultDesign } from '../../shared/PreviewResultDesign';
+import { stringHelper } from 'src/modules/shared/services/stringHelper';
 
 const DOM_ELEMENT_TO_SCREENSHOT_ID = 'UpdateTemplateWithParams';
-
+const CUSTOM_IMAGE_NAME_FIELD = '__imageName__';
 export const UpdateTemplateWithParams = ({
   template,
 }: {
   template: Template;
 }) => {
-  const [formValues, setFormValues] = useState<Record<string, string>>({});
   const templateVariables = Template.generateDefaultQueryVariables(template);
+  const [formValues, setFormValues] = useState<Record<string, string>>({
+    [CUSTOM_IMAGE_NAME_FIELD]: Object.keys(templateVariables)
+      .map((key) => `{${key}}`)
+      .join('_'),
+  });
+  const [generatedImages, setGeneratedImages] = useState<
+    Array<{
+      fileName: string;
+      dataUrl: string;
+      blob: Blob;
+    }>
+  >([]);
 
   const ComponentToRender = () => {
     return (
@@ -27,49 +39,123 @@ export const UpdateTemplateWithParams = ({
   };
 
   return (
-    <div style={{ display: 'flex' }}>
-      <div>
-        <Form
-          onSubmit={(data) => setFormValues(data)}
-          defaultValues={formValues}
-          style={{ display: 'flex', flexDirection: 'column', padding: 20 }}
-        >
-          {Object.entries(templateVariables).map((result) => {
-            return <Input name={result[0]} label={result[0]} />;
+    <div>
+      <h1>Generate images</h1>
+      <div style={{ display: 'flex' }}>
+        <div style={{ padding: 20 }}>
+          <div>
+            <h2 style={{ marginTop: 0 }}>Update variables</h2>
+          </div>
+          <Form
+            onSubmit={(data) => {
+              const fileName = stringHelper.replaceValueInString(
+                formValues[CUSTOM_IMAGE_NAME_FIELD],
+                formValues,
+              );
+              domtoimage
+                .toBlob(document.getElementById(DOM_ELEMENT_TO_SCREENSHOT_ID))
+                .then(function (blob) {
+                  console.log(blob);
+                  setGeneratedImages([
+                    ...generatedImages,
+                    { blob, dataUrl: URL.createObjectURL(blob), fileName },
+                  ]);
+                })
+                .catch(function (error) {
+                  console.error('oops, something went wrong!', error);
+                });
+            }}
+            submitText={'Generate image'}
+            onChange={(data) => setFormValues(data)}
+            defaultValues={formValues}
+            style={{ display: 'flex', flexDirection: 'column' }}
+          >
+            {Object.entries(templateVariables).map((result) => {
+              return <Input name={result[0]} label={result[0]} />;
+            })}
+
+            <Input name='__imageName__' label={'generated image name'} />
+          </Form>
+        </div>
+        <div>
+          <ComponentToRender />
+        </div>
+      </div>
+      {generatedImages.length ? (
+        <div style={{ display: 'flex', flexDirection: 'column', gap: 10 }}>
+          <div>
+            <button className='button'>
+              Download {generatedImages.length} images
+            </button>
+          </div>
+          {generatedImages.map((generatedImage) => {
+            return (
+              <GeneratedImage
+                key={generatedImage.dataUrl}
+                fileName={generatedImage.fileName}
+                dataUrl={generatedImage.dataUrl}
+              ></GeneratedImage>
+            );
           })}
-        </Form>
-      </div>
-      <div>
-        <ComponentToRender />
-      </div>
-      <GeneratePreview domElementId={DOM_ELEMENT_TO_SCREENSHOT_ID} />
+        </div>
+      ) : null}
     </div>
   );
 };
 
-const GeneratePreview = ({ domElementId }: { domElementId: string }) => {
-  const [generatedDataUrl, setDataUrl] = useState<string>(null);
+const GeneratedImage = ({
+  fileName,
+  dataUrl,
+}: {
+  fileName: string;
+  dataUrl: string;
+}) => {
+  const [isOpen, toggleOpen] = useState(false);
   return (
-    <div style={{ display: 'flex', flexDirection: 'column' }}>
-      <button
-        onClick={() => {
-          domtoimage
-            .toPng(document.getElementById(domElementId))
-            .then(function (dataUrl) {
-              setDataUrl(dataUrl);
-              //   var img = new Image();
-              //   img.src = dataUrl;
-              //   console.log(dataUrl);
-              // document.body.appendChild(img);
-            })
-            .catch(function (error) {
-              console.error('oops, something went wrong!', error);
-            });
-        }}
-      >
-        Go preview
-      </button>
-      {generatedDataUrl && <img src={generatedDataUrl}></img>}
+    <div
+      style={{
+        padding: 20,
+        margin: 'auto',
+        border: '1px solid #ddd',
+        width: '100%',
+      }}
+    >
+      <div>
+        <span
+          style={{
+            cursor: 'pointer',
+            textDecoration: 'underline',
+            marginRight: 10,
+          }}
+          onClick={() => toggleOpen(!isOpen)}
+        >
+          {isOpen ? 'Close' : 'See'}
+        </span>
+        Filename: {fileName} (
+        <span
+          onClick={() => saveBlob(dataUrl, fileName + '.png')}
+          style={{ cursor: 'pointer' }}
+        >
+          download
+        </span>
+        )
+      </div>
+      {isOpen && (
+        <div style={{ margin: '10px auto 0', width: 'fit-content' }}>
+          <img src={dataUrl}></img>
+        </div>
+      )}
     </div>
   );
 };
+
+function saveBlob(url, fileName) {
+  var a = document.createElement('a');
+  document.body.appendChild(a);
+  a.style.display = 'none';
+
+  a.href = url;
+  a.download = fileName;
+  a.click();
+  a.remove();
+}
