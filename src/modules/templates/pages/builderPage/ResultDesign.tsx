@@ -28,6 +28,7 @@ export const ResultDesign = ({
   updateElement,
   createNewElement,
   deleteElement,
+  domElementToScreenshotId,
 }: {
   state: Template;
   itemToUpdate: string;
@@ -38,6 +39,7 @@ export const ResultDesign = ({
   ) => void;
   createNewElement?: (elementProps: unknown) => void;
   deleteElement: (itemId: string) => void;
+  domElementToScreenshotId?: string;
 }) => {
   const updateItemPositionOnDragEnd = (
     itemId: string,
@@ -70,6 +72,7 @@ export const ResultDesign = ({
         onCreateNewElement={(element) => {
           createNewElement?.(element);
         }}
+        domElementToScreenshotId={domElementToScreenshotId}
       >
         {Object.values(state.elements).map((item) => {
           const sharedProps = {
@@ -104,8 +107,15 @@ export const ResultDesign = ({
 const DrawingPage: React.FC<
   HTMLAttributes<HTMLDivElement> & {
     onCreateNewElement: (data: ItemProps) => void;
+    domElementToScreenshotId?: string;
   }
-> = ({ children, style, onClick, onCreateNewElement }) => {
+> = ({
+  children,
+  style,
+  onClick,
+  onCreateNewElement,
+  domElementToScreenshotId,
+}) => {
   const { updateSheetData } = useContext(PageContext);
   const onRefChange = useCallback(
     (node: HTMLDivElement) => {
@@ -127,6 +137,7 @@ const DrawingPage: React.FC<
     <MainDiv
       ref={onRefChange}
       className='to_download'
+      id={domElementToScreenshotId || 'no_id_given'}
       style={{
         position: 'relative',
         overflow: 'hidden',
