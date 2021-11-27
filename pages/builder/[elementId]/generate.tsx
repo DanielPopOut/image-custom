@@ -1,5 +1,6 @@
 import { useRouter } from 'next/router';
 import { useEffect } from 'react';
+import { PageLayout } from 'src/modules/shared/components/Layout';
 import { GeneratorPage } from 'src/modules/templates/pages/generationPage';
 import { useGetTemplate } from '../../../src/modules/templates/hooks/hooks';
 import { Template } from '../../../src/modules/templates/models/template.model';
@@ -32,7 +33,11 @@ const ElementComponent = () => {
     return <div>No version published</div>;
   }
 
-  return <GeneratorPage initialData={templateData.value as Template} />;
+  return (
+    <PageLayout>
+      <GeneratorPage initialData={templateData.value as Template} />
+    </PageLayout>
+  );
 };
 
 export default ElementComponent;
