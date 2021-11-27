@@ -34,7 +34,7 @@ const ElementComponent = () => {
   }
 
   return (
-    <PageLayout>
+    <PageLayout navBarProps={{ goBackButton: true }}>
       <GeneratorPage initialData={templateData.value as Template} />
     </PageLayout>
   );
