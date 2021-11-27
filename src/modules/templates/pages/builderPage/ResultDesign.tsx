@@ -21,15 +21,7 @@ import { WithCopyPaste } from './components/WithCopyPaste';
 import { PageContext } from './contexts/PageContext';
 import { getDefaultImage, getDefaultText } from './defaultInitialData';
 
-export const ResultDesign = ({
-  state,
-  setItemToUpdate,
-  itemToUpdate,
-  updateElement,
-  createNewElement,
-  deleteElement,
-  domElementToScreenshotId,
-}: {
+export type ResultDesignProps = {
   state: Template;
   itemToUpdate: string;
   setItemToUpdate: (data: string) => void;
@@ -40,7 +32,17 @@ export const ResultDesign = ({
   createNewElement?: (elementProps: unknown) => void;
   deleteElement: (itemId: string) => void;
   domElementToScreenshotId?: string;
-}) => {
+};
+
+export const ResultDesign = ({
+  state,
+  setItemToUpdate,
+  itemToUpdate,
+  updateElement,
+  createNewElement,
+  deleteElement,
+  domElementToScreenshotId,
+}: ResultDesignProps) => {
   const updateItemPositionOnDragEnd = (
     itemId: string,
     dragEvent: DragEvent<HTMLDivElement>,
