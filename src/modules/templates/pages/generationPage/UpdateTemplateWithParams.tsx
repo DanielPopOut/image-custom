@@ -2,10 +2,10 @@ import { useState } from 'react';
 import Form from 'src/modules/form/Form';
 import { Input } from 'src/modules/form/Input';
 import { Template } from '../../models/template.model';
-import { ResultDesign } from '../builderPage/ResultDesign';
 import domtoimage from 'dom-to-image';
 import { PreviewResultDesign } from '../../shared/PreviewResultDesign';
 import { stringHelper } from 'src/modules/shared/services/stringHelper';
+import JSZip from 'jszip';
 
 const DOM_ELEMENT_TO_SCREENSHOT_ID = 'UpdateTemplateWithParams';
 const CUSTOM_IMAGE_NAME_FIELD = '__imageName__';
@@ -47,11 +47,14 @@ export const UpdateTemplateWithParams = ({
             <h2 style={{ marginTop: 0 }}>Update variables</h2>
           </div>
           <Form
-            onSubmit={(data) => {
-              const fileName = stringHelper.replaceValueInString(
-                formValues[CUSTOM_IMAGE_NAME_FIELD],
-                formValues,
-              );
+            onSubmit={() => {
+              const fileName =
+                stringHelper
+                  .replaceValueInString(
+                    formValues[CUSTOM_IMAGE_NAME_FIELD],
+                    formValues,
+                  )
+                  .trim() + '.png';
               domtoimage
                 .toBlob(document.getElementById(DOM_ELEMENT_TO_SCREENSHOT_ID))
                 .then(function (blob) {
@@ -84,7 +87,24 @@ export const UpdateTemplateWithParams = ({
       {generatedImages.length ? (
         <div style={{ display: 'flex', flexDirection: 'column', gap: 10 }}>
           <div>
-            <button className='button'>
+            <button
+              className='button'
+              onClick={() => {
+                var zip = new JSZip();
+
+                generatedImages.forEach((generatedImage) => {
+                  zip.file(generatedImage.fileName, generatedImage.blob);
+                });
+
+                zip.generateAsync({ type: 'blob' }).then(function (content) {
+                  const ISODate = new Date().toISOString();
+                  saveBlob(
+                    URL.createObjectURL(content),
+                    `images_${ISODate}.zip`,
+                  );
+                });
+              }}
+            >
               Download {generatedImages.length} images
             </button>
           </div>
