@@ -2,10 +2,8 @@ import { GetServerSidePropsContext } from 'next';
 import { useRouter } from 'next/router';
 import { PROTOCOL_AND_HOST } from 'server/shared/config/constants';
 import { basicResultHandler } from 'src/modules/shared/hooks/generics';
-import { stringHelper } from '../../../src/modules/shared/services/stringHelper';
 import { Template } from '../../../src/modules/templates/models/template.model';
-import { ResultDesign } from '../../../src/modules/templates/pages/builderPage/ResultDesign';
-import { DownloadFonts } from '../../../src/modules/templates/shared/DonwloadFonts';
+import { PreviewResultDesign } from '../../../src/modules/templates/shared/PreviewResultDesign';
 
 const ElementComponent = ({ templateData }: { templateData: Template }) => {
   const router = useRouter();
@@ -14,28 +12,13 @@ const ElementComponent = ({ templateData }: { templateData: Template }) => {
     return <div className='to_download'>No version published</div>;
   }
 
-  const queryElement = router.query;
-  const template = new Template({
-    _id: templateData._id,
-    ...templateData.publishedVersion,
-  });
-  Template.replaceValuesInTemplate(
-    template,
-    queryElement as Record<string, string>,
-  );
-  const fontFamilyRequest = template.getGoogleRequestForFonts();
+  const queryElement = router.query as Record<string, string>;
 
   return (
     <>
-      <DownloadFonts fontFamilyRequest={fontFamilyRequest} />
-      <ResultDesign
-        {...{
-          state: template,
-          setItemToUpdate: () => null,
-          itemToUpdate: '',
-          updateElement: () => null,
-          deleteElement: () => null,
-        }}
+      <PreviewResultDesign
+        templateData={templateData}
+        queryElements={queryElement}
       />
     </>
   );
