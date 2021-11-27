@@ -136,12 +136,12 @@ const BuilderNavBarWithTemplateContext = () => {
       ActionButtons={
         <>
           <PublishButton templateId={state._id} />
-          <ExportButton
+          {/* <ExportButton
             onExport={() => {
               clipBoardService.copy(state);
               setTimeout(() => alert('Copied in clipboard'), 1000);
             }}
-          />
+          /> */}
         </>
       }
       isSaving={isSaving}
