@@ -10,13 +10,17 @@ export const DownloadFonts = ({
   }
   return (
     <Head>
-      <link rel='preconnect' href='https://fonts.googleapis.com' />
+      <link
+        rel='preconnect'
+        href='https://fonts.googleapis.com'
+        crossOrigin='anonymous'
+      />
       <link
         rel='preconnect'
         href='https://fonts.gstatic.com'
         crossOrigin='anonymous'
       />
-      <link href={fontFamilyRequest} rel='stylesheet'></link>
+      <link href={fontFamilyRequest} rel='stylesheet' crossOrigin='anonymous'></link>
     </Head>
   );
 };
